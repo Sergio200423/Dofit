@@ -1027,9 +1027,12 @@ body {
 }
 
 .logo {
-  background-image: url(../img/svg/Logo.svg);
   width: 49px;
   height: 49px;
+  background-image: url(../img/svg/gym.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: transparent;
 }
 
 .menu-toggle {
@@ -1051,7 +1054,7 @@ body {
 }
 
 .document {
-  background-image: url(../img/svg/Bulk/Document-white.svg);
+  background-image: url(../img/svg/Bulk/3-User-gray.svg);
   width: 24px;
   height: 24px;
 }
@@ -1148,7 +1151,7 @@ body {
 }
 
 .radio {
-  background-image: url(../img/svg/radio.svg);
+  background-image: url(../img/svg/baloon.svg);
   width: 24px;
   height: 24px;
 }
@@ -3497,6 +3500,12 @@ label {
   display: none;
 }
 
+@media (prefers-color-scheme: dark)
+{
+  .home{
+    background-image: url('../img/svg/Bulk/Home-gray.svg');
+  }
+}
 @media (min-width: 576px) {
   .container {
     max-width: 540px;
