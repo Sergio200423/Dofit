@@ -1,8 +1,11 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout 
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+
+@login_required
 def index(request):
     return render(request, 'index.html')
 
@@ -11,8 +14,13 @@ def signin_view(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         
-        if username == 'Sergio' and password == '1234':
-            # Simula el inicio de sesión exitoso
+        # Agregar prints para verificar los datos ingresados
+        print(f"Username: {username}")
+        print(f"Password: {password}")
+        
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
             messages.success(request, 'Inicio de sesión exitoso')
             return redirect('index')
         else:
@@ -20,5 +28,18 @@ def signin_view(request):
             return redirect('signin')
     return render(request, 'signin.html')
 
+
+def logout_view(request):
+    logout(request)
+    return redirect('signin')
+
 def signup_view(request):
     return render(request, 'signup.html')
+
+@login_required
+def clientes_view(request):
+    return render(request, 'clientes.html')
+
+@login_required
+def productos_view(request):
+    return render(request, 'productos.html')
