@@ -43,3 +43,10 @@ def clientes_view(request):
 @login_required
 def productos_view(request):
     return render(request, 'productos.html')
+
+def registro_clientes_view(request):
+    return render(request, 'registro_clientes.html')
+
+
+def asistencia_view(request):
+    return render(request, 'asistencia.html')
