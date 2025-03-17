@@ -5,9 +5,8 @@
     <main class="main users chart-page" id="skip-target">
       <div class="container">
         <h2 class="main-title">Registro de Clientes</h2>
-
         <div class="row">
-          <div class="col-lg-9">
+          <div class="col-lg-12">
 
             <div class="users-table table-wrapper">
               <table class="posts-table">
@@ -234,12 +233,33 @@
               </table>
             </div>
           </div>
-          <div class="col-lg-3">
-          </div>
         </div>
       </div>
+          
+             <!-- Botón que abre el modal -->
+             <a href="#" class="btn btn-lg-square back-to-top" data-bs-toggle="modal" data-bs-target="#addClientesModal" id="addClientesButton" style="background-color: #1a75bb; border-color: #1a75bb;">
+              <i class="bi bi-plus" style="color: aliceblue;">Agregar Cliente</i>
+          </a>
+  
+          <!-- Modal vacío -->
+          <div class="modal fade" id="addClientesModal" tabindex="-1" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content" id="modalContent">
+                      <!-- El contenido de `registro_clientes.html` se cargará aquí -->
+                  </div>
+              </div>
+          </div>
+  
+          <!-- JavaScript para cargar el contenido del modal -->
+          <script>
+          document.getElementById("addClientesButton").addEventListener("click", function() {
+              fetch("{% url 'registro_clientes' %}")
+                  .then(response => response.text())
+                  .then(html => {
+                      document.getElementById("modalContent").innerHTML = html;
+                  })
+                  .catch(error => console.error("Error al cargar el contenido del modal:", error));
+          });
+          </script>
     </main>
-    <!-- ! Footer -->
-  </div>
-</div>
 {% endblock %}
