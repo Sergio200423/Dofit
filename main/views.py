@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout 
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.views import LogoutView 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
@@ -50,3 +51,6 @@ def registro_clientes_view(request):
 
 def asistencia_view(request):
     return render(request, 'asistencia.html')
+
+def registro_productos_view(request):
+    return render(request, 'base.html')
