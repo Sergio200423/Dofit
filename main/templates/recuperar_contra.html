@@ -7,133 +7,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inicio de sesión - Dofit</title>
     <link rel="stylesheet" href="{% static 'css/style.min.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
 </head>
 <body>
-    <div class="login-wrapper">
-        <div class="login-container">
-            <div class="login-image card">
-                <img src="{% static 'img/dofit.jpg' %}" alt="Login Image">
+    <div class="d-flex align-items-center justify-content-center min-vh-100">
+        <div class="card text-center">
+            <div class="card-header">
+                Encontrar tu cuenta
             </div>
-            <div class="login-form card">
-                <h1>¡Bienvenido!</h1>
-                <p>Inicia sesión para continuar</p>
-                <form action="{% url 'signin' %}" method="POST">
-                    {% csrf_token %}
-                    <label>
-                        <p>Usuario</p>
-                        <input type="text" name="username" placeholder="Ingresa tu usuario" required>
-                    </label>
-                    <label>
-                        <p>Contraseña</p>
-                        <input type="password" name="password" placeholder="Ingresa tu contraseña" required>
-                    <!-- Separar "¿Olvidaste tu contraseña?" -->
-                    <div style="text-align: left; width: 100%; margin-bottom: 1rem;">
-                        <a href="{% url 'signup' %}" style="text-align: left;"><br>¿Olvidaste tu contraseña?</a>
-                    </div>
-
-                     <!--
-                    <div>
-                        <input type="checkbox" id="rememberMe" style="display: flex; align-items: center; gap: 8px; justify-content: flex-start;">
-                        <label for="rememberMe" style="margin: 0;" style="display: flex; align-items: center; gap: 8px; justify-content: flex-start;">Recordarme la próxima vez</label>
-                    </div>
-                    -->
-                    
-                    <div style="display: flex; justify-content: center; width: 100%;">
-                        <button type="submit" style="padding: 10px 20px; margin-right: 20px;">Ingresar</button>
-                    </div>
-                    
-                                        
-                </form>
+            <div class="card-body">
+              <p class="card-text">Por favor ingresa el nombre de usuario o numero de telefono.</p>
+              <div class="row g-3 align-items-center">
+                <div class="col-auto">
+                  <input type="password" id="inputPassword6" class="form-control" aria-describedby="passwordHelpInline" placeholder="Usuario o numero de telefono">
+                </div>
+              </div>
             </div>
-        </div>
+            <div class="card-footer text-body-secondary">
+              <button>Cancelar</button>
+              <button>Buscar</button>
+            </div>
+          </div>
     </div>
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-        .login-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: #f5f5f5;
-            padding: 1.5rem;
-        }
-        .login-container {
-            display: flex;
-            max-width: 1000px;
-            width: 95%;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-        .card {
-            padding: 2.2rem;
-            flex: 1;
-        }
-        .login-image {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: #e0e0e0;
-        }
-        .login-image img {
-            width: 100%;
-            max-width: 400px;
-        }
-        .login-form {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .login-form h1 {
-            margin-bottom: 1.2rem;
-        }
-        .login-form p {
-            margin-bottom: 1.8rem;
-            color: #555;
-        }
-        .login-form form {
-            width: 100%;
-            max-width: 350px;
-            display: flex;
-            flex-direction: column;
-        }
-        .login-form label {
-            margin-bottom: 1.2rem;
-            width: 100%;
-        }
-        .login-form input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-        }
-        .login-form a {
-            text-align: right;
-            display: block;
-            margin-bottom: 1.2rem;
-            color: #2575fc;
-            text-decoration: none;
-        }
-        .login-form button {
-            background: #2575fc;
-            color: #fff;
-            border: none;
-            padding: 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        .login-form button:hover {
-            background: #6a11cb;
-        }
-    </style>
+    
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
