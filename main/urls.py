@@ -13,8 +13,9 @@ urlpatterns = [
     path('productos/', views.productos_view, name='productos'),
     path('logout/', views.logout_view, name='logout'),
     path('registro_productos/', views.registro_productos_view, name='registro_productos'),
-
     path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
+    path('recuperar_contra', views.recuperar_contra_view, name='registro_contra'),
+    path('recuperar_contra_password', views.recuperar_contra_password_view, name='recuperar_contra_password'),
 ]
 
 INSTALLED_APPS = [
