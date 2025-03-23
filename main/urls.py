@@ -15,9 +15,8 @@ urlpatterns = [
     path('registro_productos/', views.registro_productos_view, name='registro_productos'),
     path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
     path('recuperar_contraseña/', views.recuperar_contraseña_view, name='recuperar_contraseña'),
-    path('recuperar_contra_password/', views.recuperar_contra_password_view, name='recuperar_contra_password'),
-    path('email_enviado/', views.email_enviado_view, name='email_enviado'),
-    path('nueva_contraseña/', views.crear_nueva_contra_view, name='nueva_contraseña')    
+    path('correo_enviado/', views.correo_enviado_view, name='email_enviado'),
+    path('nueva_contraseña/', views.nueva_contraseña_view, name='nueva_contraseña')    
 ]
 
 INSTALLED_APPS = [

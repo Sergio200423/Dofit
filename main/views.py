@@ -102,8 +102,8 @@ def recuperar_contraseña_view(request):
 def recuperar_contra_password_view(request):
     return render(request, 'recuperar_contra_password.html')
 
-def email_enviado_view(request):
+def correo_enviado_view(request):
     return render(request, 'email_enviado.html')
 
-def crear_nueva_contra_view(request):
-    return render(request, 'crear_nueva_contra.html')
+def nueva_contraseña_view(request):
+    return render(request, 'nueva_contraseña.html')
