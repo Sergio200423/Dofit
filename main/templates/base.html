@@ -35,7 +35,6 @@
                 <span class="icon logo" aria-hidden="true"></span>
                 <div class="logo-text">
                     <span class="logo-title">Dofit</span>
-                    <span class="logo-subtitle">Dashboard</span>
                 </div>
 
             </a>
@@ -47,7 +46,7 @@
         <div class="sidebar-body">
             <ul class="sidebar-body-menu">
                 <li>
-                    <a class="active" href="/"><span class="icon home" aria-hidden="true"></span>Dashboard</a>
+                    <a class="active" href="/"><span class="icon home" aria-hidden="true"></span>Inicio</a>
                 </li>
                 <li>
                     <a class="show-cat-btn" href="./clientes.html">
@@ -59,11 +58,9 @@
                     </a>
                     <ul class="cat-sub-menu">
                         <li>
-                            <a href="{% url 'registro_clientes' %}">Registro de Clientes</a>
+                            <a href="{% url 'clientes' %}">Registro de Clientes</a>
                         </li>
-                        <li>
-                            <a href="{% url 'asistencia' %}">Asistencia</a>
-                        </li>
+
                     </ul>
                 </li>
                 <li>
@@ -189,7 +186,7 @@
     <div class="main-nav-start">
       <div class="search-wrapper">
         <i data-feather="search" aria-hidden="true"></i>
-        <input type="text" placeholder="Enter keywords ..." required>
+        <input type="text" placeholder="Buscar ..." required>
       </div>
     </div>
     <div class="main-nav-end">
@@ -269,11 +266,11 @@
         <ul class="users-item-dropdown nav-user-dropdown dropdown">
           <li><a href="##">
               <i data-feather="user" aria-hidden="true"></i>
-              <span>Profile</span>
+              <span>Perfil</span>
             </a></li>
           <li><a href="##">
               <i data-feather="settings" aria-hidden="true"></i>
-              <span>Account settings</span>
+              <span>Configuración</span>
             </a></li>
             <li>
                 <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
@@ -281,7 +278,7 @@
                 </form>
                 <a class="danger" href="#" onclick="document.getElementById('logout-form').submit(); return false;">
                   <i data-feather="log-out" aria-hidden="true"></i>
-                  <span>Log out</span>
+                  <span>Cerrar Sesión</span>
                 </a>
               </li>
               
