@@ -82,7 +82,7 @@ def asistencia_view(request):
 def registro_productos_view(request):
     return render(request, 'base.html')
 
-def recuperar_contra_view(request):
+def recuperar_contraseña_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -101,3 +101,9 @@ def recuperar_contra_view(request):
 
 def recuperar_contra_password_view(request):
     return render(request, 'recuperar_contra_password.html')
+
+def email_enviado_view(request):
+    return render(request, 'email_enviado.html')
+
+def crear_nueva_contra_view(request):
+    return render(request, 'crear_nueva_contra.html')

@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cambio de contraseña</title>
+    <title>Correo enviado</title>
     <!-- Favicon -->
     <link rel="shortcut icon" href="{% static 'img/svg/gym2' %}" type="image/x-icon">
     <!-- Custom styles -->
@@ -24,12 +24,25 @@
         
         
         <article class="sign-up">
-            <h1 class="sign-up__title"><br>Cambio de contraseña</h1>
-            <p class="sign-up__subtitle">Ingresa tu correo electrónico y te enviaremos un mensaje con instrucciones para cambiar tu contraseña</p>
+            <br>
             <form class="sign-up-form form" action="" method="">
                 <label class="form-label-wrapper">
-                    <p class="form-label">Correo electrónico</p>
-                    <input class="form-input" type="email" placeholder="Enter your email" required>
+                    <h1 class="sign-up__title">Mensaje enviado</h1>
+                    <div class="icon-text">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-envelope-check-fill" viewBox="0 0 16 16">
+                            <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414zM0 4.697v7.104l5.803-3.558zM6.761 8.83l-6.57 4.026A2 2 0 0 0 2 14h6.256A4.5 4.5 0 0 1 8 12.5a4.49 4.49 0 0 1 1.606-3.446l-.367-.225L8 9.586zM16 4.697v4.974A4.5 4.5 0 0 0 12.5 8a4.5 4.5 0 0 0-1.965.45l-.338-.207z"/>
+                            <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0m-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686"/>
+                        </svg>
+                        <p class="sign-up__subtitle">Te hemos enviado un correo electrónico. Revisa tus mensajes y sigue las instrucciones para reestablecer tu contraseña</p>
+                    </div>
+                    <p class="sign-up__subtitle">
+                        ¿No recibiste el correo?
+                        <a style="color: #2575FC;" class="sign-up__subtitle" href="">Reenviar correo</a>
+                    </p>
+                    <p class="sign-up__subtitle">
+                        ¿Te equivocaste de correo?
+                        <a style="color: #2575FC;" class="sign-up__subtitle" href="{% url 'recuperar_contraseña' %}">Cambiar correo electrónico</a>
+                    </p>
                 </label>
                 <!--
                 <label class="form-label-wrapper">
