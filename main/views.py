@@ -57,6 +57,7 @@ def signin_view(request):
 
 def logout_view(request):
     logout(request)
+    messages.success(request, 'Has cerrado sesión correctamente')
     return redirect('signin')
 
 def signup_view(request):
