@@ -13,7 +13,7 @@ from django.contrib.messages import get_messages
 
 #Las vistas de todo el sistema
 
-@login_required
+
 def index(request):
     return render(request, 'index.html')
 
@@ -75,11 +75,11 @@ def logout_view(request):
 def clientes_view(request):
     return render(request, 'clientes.html')
 
-@login_required
+
 def productos_view(request):
     return render(request, 'productos.html')
 
-@login_required
+
 def registro_clientes_view(request):
     return render(request, 'registro_clientes.html')
 
@@ -87,9 +87,9 @@ def registro_clientes_view(request):
 def asistencia_view(request):
     return render(request, 'asistencia.html')
 
-@login_required
+
 def registro_productos_view(request):
-    return render(request, 'base.html')
+    return render(request, 'registro_productos.html')
 
 def recuperar_contraseña_view(request):
     #Validamos si el metodo es POST
