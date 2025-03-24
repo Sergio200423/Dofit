@@ -8,6 +8,38 @@
  * 2. Prevent adjustments of font size after orientation changes in iOS.
  */
 
+ .code-container {
+  display: flex;
+  gap: 8px; /* Espacio reducido entre los inputs */
+  justify-content: center;
+}
+
+.code-input {
+  width: 35px;  /* Reduce el ancho */
+  height: 45px;  /* Reduce la altura */
+  font-size: 22px;
+  text-align: center;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.code-input:focus {
+  border-color: #ff3366;
+}
+
+.icon-text {
+  display: flex;
+  align-items: center; /* Centra verticalmente */
+  justify-content: center; /* Centra horizontalmente */
+  gap: 8px; /* Espacio entre el icono y el texto */
+  text-align: center;
+}
+
+
+
+
 @import url(../fonts/stylesheet.css);
 
 html {
@@ -1865,10 +1897,6 @@ label {
   padding: 5px 16px;
 }
 
-
-.users {
-  /* Users Table */
-}
 
 
 

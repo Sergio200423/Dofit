@@ -58,6 +58,7 @@ def signin_view(request):
 
 def logout_view(request):
     logout(request)
+    messages.success(request, 'Has cerrado sesión correctamente')
     return redirect('signin')
 
 def signup_view(request):
@@ -155,12 +156,12 @@ def recuperar_contra_password_view(request):
             return redirect('recuperar_contra_password')
     return render(request, 'recuperar_contra_password.html')
 
-def email_enviado_view(request):
+def correo_enviado_view(request):
     if request.method == 'POST':
         return redirect('nueva_contraseña')
     return render(request, 'email_enviado.html')
 
-def crear_nueva_contra_view(request):
+def nueva_contraseña_view(request):
     if request.method == 'POST':
         contra = request.POST.get('contra')
         confirmar_contra = request.POST.get('confirmar_contra')
@@ -173,4 +174,4 @@ def crear_nueva_contra_view(request):
             user.save()
             messages.success(request, 'Contraseña actualizada correctamente')
             return redirect('signin')
-    return render(request, 'crear_nueva_contra.html')
+    return render(request, 'nueva_contraseña.html')

@@ -1,4 +1,19 @@
 {% load static %}
+{% if messages %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          {% for message in messages %}
+                Swal.fire({
+                    icon: "success",
+                    title: "¡Bienvenido!",
+                    text: "{{ message }}",
+                    confirmButtonText: "OK"
+                });
+            {% endfor %}
+        });
+    </script>
+{% endif %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,7 +33,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
-    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
   </head>
 
@@ -305,6 +321,7 @@
       <li><a href="##">Puchase</a></li>
     </ul>
   </div>
+  
 </footer>
   </div>
 </div>
