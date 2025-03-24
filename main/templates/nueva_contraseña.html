@@ -26,7 +26,8 @@
         <article class="sign-up">
             <h1 class="sign-up__title"><br>Nueva contraseña</h1>
             <p class="sign-up__subtitle">Tu nueva contraseña debe ser diferente a todas tus antiguas contraseñas registradas</p>
-            <form class="sign-up-form form" action="" method="">
+            <form class="sign-up-form form" action="{% url 'nueva_contraseña' %}" method="POST">
+            {% csrf_token %}
                 <label class="form-label-wrapper">
                     <p class="form-label">Nueva contraseña</p>
                     <input class="form-input" type="password" placeholder="Ingresa tu nueva contraseña" required>
