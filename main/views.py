@@ -72,7 +72,6 @@ def logout_view(request):
     messages.error(request, 'Nos vemos pronto')
     return redirect('signin')
 
-
 def clientes_view(request):
     return render(request, 'clientes.html')
 
