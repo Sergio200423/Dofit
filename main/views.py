@@ -59,7 +59,7 @@ def signin_view(request):
 
 def logout_view(request):
     logout(request)
-    messages.info(request, 'Nos vemos pronto')
+    messages.info(request, 'Cierre de sesión exitoso')
     return redirect('signin')
 
 def signup_view(request):
