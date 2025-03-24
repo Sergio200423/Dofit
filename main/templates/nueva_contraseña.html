@@ -30,10 +30,10 @@
             {% csrf_token %}
                 <label class="form-label-wrapper">
                     <p class="form-label">Nueva contraseña</p>
-                    <input class="form-input" type="password" placeholder="Ingresa tu nueva contraseña" required>
+                    <input class="form-input" type="password" placeholder="Ingresa tu nueva contraseña" required name="contraseña">
                     <p class="sign-up__subtitle" style="text-align: left; font-size: small;">Tiene que tener al menos 8 caracteres</p>
                     <p class="form-label">Confirma tu contraseña</p>
-                    <input class="form-input" type="password" placeholder="Ingresa de nuevo tu contraseña" required> 
+                    <input class="form-input" type="password" placeholder="Ingresa de nuevo tu contraseña" required name="confirmar_contraseña"> 
                     <p class="sign-up__subtitle" style="text-align: left; font-size: small;">Ambas contraseñas deben de ser iguales</p>
                 </label>
 
