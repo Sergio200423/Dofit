@@ -28,9 +28,7 @@ class Membresia(models.Model):
     def __str__(self):
         return f"Membresía {self.id_membresia} - ${self.precio}"
 
-
 class Cliente(models.Model):
-
     ESTADOS = [
         ('activo', 'Activo'),
         ('inactivo', 'Inactivo'),
@@ -40,9 +38,8 @@ class Cliente(models.Model):
     sexo = models.CharField(max_length=1, choices=[('F', 'Femenino'), ('M', 'Masculino')], default='')
     fecha_nacimiento = models.DateField(null=True, blank=True)
     empleado = models.ForeignKey(Empleado, on_delete=models.SET_NULL, null=True, related_name="clientes")
-    membresia = models.ForeignKey(Membresia, on_delete=models.SET_NULL, null=True, blank=True, related_name="clientes")
+    id_membresia = models.IntegerField(null=True, blank=True)  # Almacena directamente el ID de la membresía
     estado = models.CharField(max_length=30, choices=ESTADOS, default='Activo')
-
 
     def __str__(self):
         return self.nombre_cliente
@@ -87,9 +84,7 @@ class Pago(models.Model):
     total_a_pagar = models.FloatField(null=True, blank=True)
     
     def calcular_total_a_pagar(self):
-        if self.tipo == 'Membresia' and self.cliente.membresia:
-            return self.cliente.membresia.precio
-        elif self.tipo == 'Producto':
+        if self.tipo == 'Producto':
             productos_pagados = self.productospagados.all()
             total = sum(pp.cantidad * pp.producto.precio for pp in productos_pagados)
             return total
