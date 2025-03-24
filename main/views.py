@@ -11,6 +11,7 @@ from django.contrib.sessions.models import Session
 from main.utils import GenerarCodigoAleatorio as gca
 from django.contrib.messages import get_messages
 
+from .models import Cliente
 #Las vistas de todo el sistema
 
 @login_required
@@ -74,6 +75,7 @@ def logout_view(request):
 
 @login_required
 def clientes_view(request):
+    clientes = Cliente.objects.all()
     return render(request, 'clientes.html')
 
 @login_required
