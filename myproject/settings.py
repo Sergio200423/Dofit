@@ -128,3 +128,11 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'main/static')]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/signin/'
+
+#Configuracion del correo electronico predeterminado 
+#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Servidor SMTP de Gmail
+EMAIL_PORT = 587  # Puerto para conexiones TLS
+EMAIL_USE_TLS = True  # Habilitar TLS
+EMAIL_HOST_USER = 'sergiodanielxd2004@gmail.com'  # Tu correo electrónico
+EMAIL_HOST_PASSWORD = 'gptbzdykhrsqjnci'  # Contraseña de tu correo

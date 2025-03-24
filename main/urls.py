@@ -17,7 +17,8 @@ urlpatterns = [
     path('recuperar_contraseña/', views.recuperar_contraseña_view, name='recuperar_contraseña'),
     path('recuperar_contra_password/', views.recuperar_contra_password_view, name='recuperar_contra_password'),
     path('email_enviado/', views.email_enviado_view, name='email_enviado'),
-    path('nueva_contraseña/', views.crear_nueva_contra_view, name='nueva_contraseña')    
+    path('reenviar_correo/', views.reenviar_correo_view, name='reenviar_correo'),
+    path('nueva_contraseña/', views.crear_nueva_contra_view, name='nueva_contraseña') 
 ]
 
 INSTALLED_APPS = [

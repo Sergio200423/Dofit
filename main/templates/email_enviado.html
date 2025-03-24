@@ -25,7 +25,8 @@
         
         <article class="sign-up">
             <br>
-            <form class="sign-up-form form" action="" method="">
+            <form class="sign-up-form form" action="{% url 'email_enviado' %}" method="POST">
+                {% csrf_token %}
                 <label class="form-label-wrapper">
                     <h1 class="sign-up__title">Mensaje enviado</h1>
                     <div class="icon-text">
@@ -37,7 +38,7 @@
                     </div>
                     <p class="sign-up__subtitle">
                         ¿No recibiste el correo?
-                        <a style="color: #2575FC;" class="sign-up__subtitle" href="">Reenviar correo</a>
+                        <a style="color: #2575FC;" class="sign-up__subtitle" href="{% url 'reenviar_correo' %}">Reenviar correo</a>
                     </p>
                     <p class="sign-up__subtitle">
                         ¿Te equivocaste de correo?
@@ -50,7 +51,7 @@
                     <input class="form-input" type="password" placeholder="Enter your password" required>
                 </label>
             -->
-                <button class="form-btn primary-default-btn transparent-btn">Enviar</button>
+                <button class="form-btn primary-default-btn transparent-btn">Configurar contraseña</button>
             </form>
         </article>
     </main>

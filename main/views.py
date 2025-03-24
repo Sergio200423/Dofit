@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.utils import timezone
 from datetime import timedelta
+from django.core.mail import send_mail
 
 # Create your views here.
 
@@ -83,27 +84,93 @@ def registro_productos_view(request):
     return render(request, 'base.html')
 
 def recuperar_contraseña_view(request):
+    #Validamos si el metodo es POST
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        #Obtenemos el correo del usuario ingresado por el usuario
+        correo = request.POST.get('correo')
 
-        user = authenticate(request, username=username)
-
-        if user is not None:
-            user.set_password(password)
-            user.save()
-            return redirect('signin')
-        else:
-            messages.error(request, 'Usuario o contraseña incorrectos')
-            return redirect('signin')
+        request.session['correo_usuario'] = correo
         
+        #Procesamos el correo con el modulo de python "send mail"
+        resultado = send_mail(
+            'Recuperar contraseña',
+            'Tu contraseña es: 123456',
+            'sergiodanielxd2004@gmail.com',
+            [correo],
+            fail_silently=False,
+        )
+
+        if resultado > 0:
+            messages.success(request, 'Correo enviado correctamente')
+            return redirect('email_enviado')
+        else:    
+            messages.error(request, 'Error al enviar el correo')
+            return redirect('recuperar_contra')
     return render(request, 'recuperar_contra.html')
 
+
+def reenviar_correo_view(request):
+    # Recuperamos el correo de la sesión
+    correo = request.session.get('correo_usuario')
+
+    if correo:
+        # Reenviamos el correo
+        resultado = send_mail(
+            'Recuperar contraseña',
+            'Tu contraseña es: 123456',
+            'sergiodanielxd2004@gmail.com',
+            [correo],
+            fail_silently=False,
+        )
+
+        if resultado > 0:
+            messages.success(request, 'Correo reenviado correctamente')
+        else:
+            messages.error(request, 'Error al reenviar el correo')
+    else:
+        messages.error(request, 'No se encontró un correo para reenviar')
+
+    return redirect('email_enviado')
+
 def recuperar_contra_password_view(request):
+    #Validamos si el metodo es POST
+    if request.method == 'POST':
+        #Obtenemos el correo del usuario ingresado por el usuario
+        correo = request.POST.get('correo')
+        
+        #Procesamos el correo con el modulo de python "send mail"
+        resultado = send_mail(
+            'Recuperar contraseña',
+            'Tu contraseña es: 123456',
+            'sergiodanielxd2004@gmail.com',
+            [correo],
+            fail_silently=False,
+        )
+
+        if resultado > 0:
+            messages.success(request, 'Correo enviado correctamente')
+            return redirect('email_enviado')
+        else:    
+            messages.error(request, 'Error al enviar el correo')
+            return redirect('recuperar_contra_password')
     return render(request, 'recuperar_contra_password.html')
 
 def email_enviado_view(request):
+    if request.method == 'POST':
+        return redirect('nueva_contraseña')
     return render(request, 'email_enviado.html')
 
 def crear_nueva_contra_view(request):
+    if request.method == 'POST':
+        contra = request.POST.get('contra')
+        confirmar_contra = request.POST.get('confirmar_contra')
+
+        if contra != confirmar_contra:
+            messages.error(request, 'Las contraseñas no coinciden')
+        else:
+            user = User.objects.get(username='admin')
+            user.set_password(contra)
+            user.save()
+            messages.success(request, 'Contraseña actualizada correctamente')
+            return redirect('signin')
     return render(request, 'crear_nueva_contra.html')

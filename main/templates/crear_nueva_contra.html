@@ -25,11 +25,14 @@
         
         <article class="sign-up">
             <h1 class="sign-up__title"><br>Cambio de contraseña</h1>
-            <p class="sign-up__subtitle">Ingresa tu correo electrónico y te enviaremos un mensaje con instrucciones para cambiar tu contraseña</p>
-            <form class="sign-up-form form" action="" method="">
+            <p class="sign-up__subtitle">Ingresa tu nueva contraseña</p>
+            <form class="sign-up-form form" action="{% url 'nueva_contraseña' %}" method="POST">
+                {% csrf_token %}
                 <label class="form-label-wrapper">
-                    <p class="form-label">Correo electrónico</p>
-                    <input class="form-input" type="email" placeholder="Enter your email" required>
+                    <p class="form-label">Contraseña</p>
+                    <input class="form-input" type="password" placeholder="Ingresa tu contraseña" name="contra" required>
+                    <p class="form-label">Confirmar contraseña</p>
+                    <input class="form-input" type="password" placeholder="Ingresa tu contraseña" name="confirmar_contra" required>
                 </label>
                 <!--
                 <label class="form-label-wrapper">
