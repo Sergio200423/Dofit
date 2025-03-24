@@ -8,14 +8,24 @@ from django.utils import timezone
 from datetime import timedelta
 from django.core.mail import send_mail
 from django.contrib.sessions.models import Session
+from main.utils import GenerarCodigoAleatorio as gca
+from django.contrib.messages import get_messages
 
-# Create your views here.
+#Las vistas de todo el sistema
 
 @login_required
 def index(request):
     return render(request, 'index.html')
 
 def signin_view(request):
+
+    #Procesar y limpiar los mensajes
+
+    storage=get_messages(request)
+
+    for _ in storage:
+        pass #eliminacion de mensajes
+
     # Obtener el contador de intentos fallidos de la sesión
     failed_attempts = request.session.get('failed_attempts', 0)
     lockout_time = request.session.get('lockout_time')
@@ -59,11 +69,8 @@ def signin_view(request):
 
 def logout_view(request):
     logout(request)
-    messages.info(request, 'Cierre de sesión exitoso')
+    messages.error(request, 'Nos vemos pronto')
     return redirect('signin')
-
-def signup_view(request):
-    return render(request, 'signup.html')
 
 @login_required
 def clientes_view(request):
@@ -90,13 +97,20 @@ def recuperar_contraseña_view(request):
     if request.method == 'POST':
         #Obtenemos el correo del usuario ingresado por el usuario
         correo = request.POST.get('correo')
+        codigo = gca.generar_codigo_verificacion()
+
+        storage=get_messages(request)
+
+        for _ in storage:
+            pass #eliminacion de mensajes
 
         request.session['correo_usuario'] = correo
+        request.session['codigo_verificacion'] = codigo
         
         #Procesamos el correo con el modulo de python "send mail"
         resultado = send_mail(
             'Recuperar contraseña',
-            'Tu contraseña es: 123456',
+            f'Tu codigo de verificacion es: {codigo}',
             'sergiodanielxd2004@gmail.com',
             [correo],
             fail_silently=False,
@@ -114,12 +128,13 @@ def recuperar_contraseña_view(request):
 def reenviar_correo_view(request):
     # Recuperamos el correo de la sesión
     correo = request.session.get('correo_usuario')
+    codigo = request.session.get('codigo_verificacion')
 
     if correo:
         # Reenviamos el correo
         resultado = send_mail(
             'Recuperar contraseña',
-            'Tu contraseña es: 123456',
+            f'Tu codigo de verificacion es: {codigo}',
             'sergiodanielxd2004@gmail.com',
             [correo],
             fail_silently=False,
@@ -139,18 +154,21 @@ def recuperar_contra_password_view(request):
     if request.method == 'POST':
         #Obtenemos el correo del usuario ingresado por el usuario
         correo = request.POST.get('correo')
+        codigo = gca.generar_codigo_verificacion()
+
+        request.session['correo_usuario'] = correo
+        request.session['codigo_verificacion'] = codigo
         
         #Procesamos el correo con el modulo de python "send mail"
         resultado = send_mail(
             'Recuperar contraseña',
-            'Tu contraseña es: 123456',
+            f'Tu codigo de verificacion es: {codigo}',
             'sergiodanielxd2004@gmail.com',
             [correo],
             fail_silently=False,
         )
 
         if resultado > 0:
-            messages.success(request, 'Correo enviado correctamente')
             return redirect('email_enviado')
         else:    
             messages.error(request, 'Error al enviar el correo')
@@ -159,7 +177,24 @@ def recuperar_contra_password_view(request):
 
 def correo_enviado_view(request):
     if request.method == 'POST':
-        return redirect('nueva_contraseña')
+        messages.success(request, 'Correo enviado correctamente')
+        # Asegúrate de que cada valor tenga un valor predeterminado si es None
+        primer_numero = request.POST.get('primerNumero', '')
+        segundo_numero = request.POST.get('segundoNumero', '')
+        tercer_numero = request.POST.get('tercerNumero', '')
+        cuarto_numero = request.POST.get('cuartoNumero', '')
+
+        # Concatenar los valores
+        codigo = primer_numero + segundo_numero + tercer_numero + cuarto_numero
+        codigo = int(codigo)
+        
+        if codigo == request.session.get('codigo_verificacion'):
+            # Si el código es correcto, redirige a la página de cambio de contraseña
+            return redirect('nueva_contraseña')
+        else:
+            messages.error(request, 'Código incorrecto')
+            print('Código incorrecto')
+            return redirect('email_enviado')
     return render(request, 'email_enviado.html')
 
 def nueva_contraseña_view(request):

@@ -24,17 +24,6 @@
         
         
         <article class="sign-up">
-<<<<<<< HEAD:main/templates/crear_nueva_contra.html
-            <h1 class="sign-up__title"><br>Cambio de contraseña</h1>
-            <p class="sign-up__subtitle">Ingresa tu nueva contraseña</p>
-            <form class="sign-up-form form" action="{% url 'nueva_contraseña' %}" method="POST">
-                {% csrf_token %}
-                <label class="form-label-wrapper">
-                    <p class="form-label">Contraseña</p>
-                    <input class="form-input" type="password" placeholder="Ingresa tu contraseña" name="contra" required>
-                    <p class="form-label">Confirmar contraseña</p>
-                    <input class="form-input" type="password" placeholder="Ingresa tu contraseña" name="confirmar_contra" required>
-=======
             <h1 class="sign-up__title"><br>Nueva contraseña</h1>
             <p class="sign-up__subtitle">Tu nueva contraseña debe ser diferente a todas tus antiguas contraseñas registradas</p>
             <form class="sign-up-form form" action="" method="">
@@ -45,7 +34,6 @@
                     <p class="form-label">Confirma tu contraseña</p>
                     <input class="form-input" type="password" placeholder="Ingresa de nuevo tu contraseña" required> 
                     <p class="sign-up__subtitle" style="text-align: left; font-size: small;">Ambas contraseñas deben de ser iguales</p>
->>>>>>> 9b7e2708cfd1bd83c20df3dd56687b9508f568d6:main/templates/nueva_contraseña.html
                 </label>
 
                 <!--
