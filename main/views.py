@@ -169,9 +169,18 @@ def nueva_contraseña_view(request):
         if contra != confirmar_contra:
             messages.error(request, 'Las contraseñas no coinciden')
         else:
+            # Obtén el usuario (en este caso, el superusuario)
             user = User.objects.get(username='admin')
-            user.set_password(contra)
+            user.set_password(contra)  # Cambia la contraseña
             user.save()
-            messages.success(request, 'Contraseña actualizada correctamente')
+
+            # Cierra todas las sesiones activas del usuario
+            sessions = Session.objects.all()
+            for session in sessions:
+                data = session.get_decoded()
+                if data.get('_auth_user_id') == str(user.id):
+                    session.delete()
+
+            messages.success(request, 'Contraseña actualizada correctamente. Todas las sesiones han sido cerradas.')
             return redirect('signin')
     return render(request, 'nueva_contraseña.html')
