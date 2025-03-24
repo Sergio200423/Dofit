@@ -199,8 +199,8 @@ def correo_enviado_view(request):
 
 def nueva_contraseña_view(request):
     if request.method == 'POST':
-        contra = request.POST.get('contra')
-        confirmar_contra = request.POST.get('confirmar_contra')
+        contra = request.POST.get('contraseña')
+        confirmar_contra = request.POST.get('confirmar_contraseña')
 
         if contra != confirmar_contra:
             messages.error(request, 'Las contraseñas no coinciden')
