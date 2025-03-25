@@ -1,65 +1,69 @@
 {% extends 'base.html' %}
-{% block title %}Inicio - Gimnasio Dofit{% endblock %}
+{% block title %}Registro de Clientes - Gimnasio Dofit{% endblock %}
 {% block content %}
-    <!-- ! Main -->
+
+{% include 'registro_clientes.html' %}
     <main class="main users chart-page" id="skip-target">
       <div class="container">
         <div class="row">
           <div class="col-lg-12 d-flex justify-content-between align-items-center mb-3">
             <h2 class="main-title">Registro de Clientes</h2>
             <!-- Botón de añadir cliente alineado a la derecha -->
-            <button class="btn btn-primary" type="button" data-mdb-ripple-init>
-              Añadir Cliente
-            </button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#testModal">
+              Registrar Cliente
+          </button>
           </div>
     
           <div class="col-lg-12">
-            <div class="table-responsive">
-              <table class="table align-middle mb-0 bg-white">
-                <thead class="bg-light">
-                  <tr>
-                    <th>Nombre</th>
-                    <th>Sexo</th>
-                    <th>Fecha de nacimiento</th>
-                    <th>Entrenador</th>
-                    <th>Membresía</th>
-                    <th>Estado</th>
-                    <th>Acción</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      <div class="d-flex align-items-center">
-                        <div class="ms-3">
-                          <p class="fw-bold mb-1">Alex Ray</p>
-                          <p class="text-muted mb-0">alex.ray@gmail.com</p>
-                        </div>
+            <table class="table align-middle mb-0 bg-white">
+              <thead class="bg-light">
+                <tr>
+                  <th>No.Registro</th>
+                  <th>Nombre</th>
+                  <th>Sexo</th>
+                  <th>Fecha de Nacimiento</th>
+                  <th>Membresía</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for cliente in clientes %}
+                <tr>
+                  <td>{{ cliente.id_cliente }}</td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <div class="ms-3">
+                        <p class="fw-bold mb-1">{{ cliente.nombre_cliente }}</p>
                       </div>
-                    </td>
-                    <td>
-                      <p class="fw-normal mb-1">Consultant</p>
-                      <p class="text-muted mb-0">Finance</p>
-                    </td>
-                    <td>
-                      <span class="badge badge-primary rounded-pill d-inline">Onboarding</span>
-                    </td>
-                    <td>Junior</td>
-                    <td>Junior</td>
-                    <td>Junior</td>
-                    <td>
-                      <button type="button" class="btn btn-link btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark">
-                        Edit
-                      </button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                    </div>
+                  </td>
+                  <td>{{ cliente.sexo }}</td>
+                  <td>{{ cliente.fecha_nacimiento }}</td>
+                  <td>
+                    {% if cliente.membresia %}
+                      {{ cliente.membresia.nombre }}
+                    {% else %}
+                      Sin Membresía
+                    {% endif %}
+                  </td>
+                  <td>
+                    <span class="badge badge-primary rounded-pill d-inline"></span>
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-link btn-rounded btn-sm fw-bold" data-mdb-ripple-color="dark">
+                      Editar
+                    </button>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
           </div>
-          
         </div>
       </div>
+      <ul></ul>
     </main>
-    
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 {% endblock %}
