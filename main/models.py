@@ -16,7 +16,6 @@ class Membresia(models.Model):
     nombre = models.CharField(max_length=30, null=True, blank=True)
     duracion = models.IntegerField(null=True, blank=True)  # Duración en días
     precio = models.FloatField(null=True, blank=True)
-    fecha_inicio = models.DateField(null=True, blank=True)
 
     @property
     def estado(self):
@@ -38,8 +37,9 @@ class Cliente(models.Model):
     sexo = models.CharField(max_length=1, choices=[('F', 'Femenino'), ('M', 'Masculino')], default='')
     fecha_nacimiento = models.DateField(null=True, blank=True)
     empleado = models.ForeignKey(Empleado, on_delete=models.SET_NULL, null=True, related_name="clientes")
-    id_membresia = models.IntegerField(null=True, blank=True)  # Almacena directamente el ID de la membresía
+    membresia = models.ForeignKey(Membresia, on_delete=models.SET_NULL, null=True, related_name="clientes")  # Cambiado de id_membresia a membresia
     estado = models.CharField(max_length=30, choices=ESTADOS, default='Activo')
+    fecha_inicio = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return self.nombre_cliente

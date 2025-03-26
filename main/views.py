@@ -12,6 +12,9 @@ from main.utils import GenerarCodigoAleatorio as gca
 from django.contrib.messages import get_messages
 
 from .models import Cliente
+from .models import Producto
+from .models import Membresia
+
 #Las vistas de todo el sistema
 
 
@@ -21,7 +24,6 @@ def index(request):
 def signin_view(request):
 
     #Procesar y limpiar los mensajes
-
     storage=get_messages(request)
 
     for _ in storage:
@@ -73,17 +75,68 @@ def logout_view(request):
     messages.error(request, 'Nos vemos pronto')
     return redirect('signin')
 
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import Cliente, Membresia
+
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import Cliente, Membresia
+
 def clientes_view(request):
-    clientes = Cliente.objects.all()
-    return render(request, 'clientes.html')
+    if request.method == 'POST':
+        # Procesar el formulario enviado desde el modal
+        nombre = request.POST.get('nombre')
+        sexo = request.POST.get('sexo')
+        fecha_nacimiento = request.POST.get('fecha_nacimiento')
+        nombre_membresia = request.POST.get('membresia')  # Nombre de la membresía enviado desde el formulario
+
+        # Busca la membresía en la base de datos por nombre
+        membresia = Membresia.objects.filter(nombre=nombre_membresia).first()
+
+        # Crear un nuevo cliente
+        Cliente.objects.create(
+            nombre_cliente=nombre,
+            sexo=sexo,
+            fecha_nacimiento=fecha_nacimiento,
+            membresia=membresia,  # Asigna la membresía encontrada
+        )
+
+        # Mostrar un mensaje de éxito
+        messages.success(request, 'Cliente registrado exitosamente.')
+
+        # Redirigir a la misma página para evitar reenvío de formulario
+        return redirect('clientes')
+
+    # Si es una solicitud GET, renderizar la página con los datos necesarios
+    clientes = Cliente.objects.select_related('membresia').all()
+    membresias = Membresia.objects.all()
+    return render(request, 'clientes.html', {'clientes': clientes, 'membresias': membresias})
 
 
 def productos_view(request):
-    return render(request, 'productos.html')
+    return render(request, 'registro_productos.html')
 
+def maquinas_view(request):
+    return render(request, 'maquinas.html')
+
+def pagos_view(request):
+    return render(request, 'pagos.html')
+
+def registro_pagos_view(request):
+    return render(request, 'registro_pagos.html')
 
 def registro_clientes_view(request):
-    return render(request, 'registro_clientes.html')
+    if request.method == 'POST':
+
+        print("procesando el formulario")
+        # Procesa el formulario
+        pass
+
+    # Depuración: imprime las membresías en la consola
+    membresias = Membresia.objects.all()
+    print(membresias)  # Esto imprimirá las membresías en la consola
+    return render(request, 'registro_clientes.html', {'membresias': membresias})
 
 @login_required
 def asistencia_view(request):
@@ -91,7 +144,7 @@ def asistencia_view(request):
 
 
 def registro_productos_view(request):
-    return render(request, 'registro_productos.html')
+    return render(request, 'productos.html')
 
 def recuperar_contraseña_view(request):
     #Validamos si el metodo es POST
@@ -221,3 +274,7 @@ def nueva_contraseña_view(request):
             messages.success(request, 'Contraseña actualizada correctamente. Todas las sesiones han sido cerradas.')
             return redirect('signin')
     return render(request, 'nueva_contraseña.html')
+
+def productos_view(request):
+    productos = Producto.objects.all()
+    return render(request, 'productos.html')
