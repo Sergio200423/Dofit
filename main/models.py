@@ -114,3 +114,18 @@ class PagoProducto(models.Model):
 
     def __str__(self):
         return f"PagoProducto {self.id_pago_producto} - {self.cantidad} x {self.producto.nombre_producto}"
+    
+class Maquina(models.Model):
+    ESTADOS = [
+        ('activa', 'Activa'),
+        ('inactiva', 'Inactiva'),
+    ]
+    
+    id_maquina = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=50, null=True, blank=True)
+    cantidad = models.IntegerField(null=True, blank=True)
+    estado = models.CharField(max_length=10, choices=ESTADOS, default='activa')
+    descripcion = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.nombre} - {self.estado}"

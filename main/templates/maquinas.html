@@ -13,7 +13,7 @@
     width: 100%;
     height: 300px; /* Tamaño fijo para todas las imágenes */
     object-fit: cover; /* Recorta la imagen sin deformarla */
-  }
+  }     
 
   .card-body {
     flex-grow: 1; /* Hace que el contenido crezca uniformemente */
@@ -33,10 +33,10 @@
         </div>
         <div class="card-body">
           <h5 class="card-title">Máquina de Poleas</h5>
-          <p class="card-text">Cantidad:</p>
-          <p class="card-text">Estado:</p>
-          <p class="card-text">Descripción:</p>
-          <br><a href="#!" class="btn btn-primary">Editar</a>
+          <p class="card-text"><strong>Cantidad:</strong> <span class="cantidad-text">5</span></p>
+          <p class="card-text"><strong>Estado:</strong> <span class="estado-text">Activa</span></p>
+          <p class="card-text"><strong>Descripción:</strong> <span class="descripcion-text">Máquina para ejercicios de poleas.</span></p>
+          <a href="#" class="btn btn-primary edit-btn" data-bs-toggle="modal" data-bs-target="#editModal">Editar</a>
         </div>
       </div>
     </div>
@@ -48,11 +48,11 @@
           <img src="https://gymdescuento.es/5508-large_default/femoral-de-pie.jpg" />
         </div>
         <div class="card-body">
-          <h5 class="card-title">Curl Femoral de Pie</h5>
-          <p class="card-text">Cantidad:</p>
-          <p class="card-text">Estado:</p>
-          <p class="card-text">Descripción:</p>
-          <br><a href="#!" class="btn btn-primary">Editar</a>
+          <h5 class="card-title">Máquina Femoral</h5>
+          <p class="card-text"><strong>Cantidad:</strong> <span class="cantidad-text">3</span></p>
+          <p class="card-text"><strong>Estado:</strong> <span class="estado-text">Inactiva</span></p>
+          <p class="card-text"><strong>Descripción:</strong> <span class="descripcion-text">Máquina para femoral de pie.</span></p>
+          <a href="#" class="btn btn-primary edit-btn" data-bs-toggle="modal" data-bs-target="#editModal">Editar</a>
         </div>
       </div>
     </div>
@@ -64,11 +64,11 @@
           <img src="https://jbs-fitness.es/wp-content/uploads/2020/07/Prensa-45o-Strength.png" />
         </div>
         <div class="card-body">
-          <h5 class="card-title">Prensa</h5>
-          <p class="card-text">Cantidad:</p>
-          <p class="card-text">Estado:</p>
-          <p class="card-text">Descripción:</p>
-          <br><a href="#!" class="btn btn-primary">Editar</a>
+          <h5 class="card-title">Máquina Prensa</h5>
+          <p class="card-text"><strong>Cantidad:</strong> <span class="cantidad-text">3</span></p>
+          <p class="card-text"><strong>Estado:</strong> <span class="estado-text">Inactiva</span></p>
+          <p class="card-text"><strong>Descripción:</strong> <span class="descripcion-text">Trabaja cuádriceps, glúteos y pantorrillas.</span></p>
+          <a href="#" class="btn btn-primary edit-btn" data-bs-toggle="modal" data-bs-target="#editModal">Editar</a>
         </div>
       </div>
     </div>
@@ -77,34 +77,34 @@
 
 <div class="container mt-4">
     <div class="row">
-      <!-- Primera Card -->
+      <!-- Cuarta Card -->
       <div class="col-md-4">
         <div class="card">
           <div class="bg-image hover-overlay">
             <img src="https://www.ultrafitness.mx/420-large_default/leverage-aparato-para-hombro-con-apalancamiento.jpg" />
           </div>
           <div class="card-body">
-            <h5 class="card-title">Press de Hombros</h5>
-            <p class="card-text">Cantidad:</p>
-            <p class="card-text">Estado:</p>
-            <p class="card-text">Descripción:</p>
-            <br><a href="#!" class="btn btn-primary">Editar</a>
+            <h5 class="card-title">Máquina de Hombros</h5>
+            <p class="card-text"><strong>Cantidad:</strong> <span class="cantidad-text">3</span></p>
+            <p class="card-text"><strong>Estado:</strong> <span class="estado-text">Inactiva</span></p>
+            <p class="card-text"><strong>Descripción:</strong> <span class="descripcion-text">Máquina para femoral de pie.</span></p>
+            <a href="#" class="btn btn-primary edit-btn" data-bs-toggle="modal" data-bs-target="#editModal">Editar</a>
           </div>
         </div>
       </div>
   
-      <!-- Segunda Card -->
+      <!-- Quinta Card -->
       <div class="col-md-4">
         <div class="card">
           <div class="bg-image hover-overlay">
-            <img src="https://indoor.com.co/wp-content/uploads/2024/03/071385_720x.jpg" />
+            <img src="https://cdn.etenonfitness.com/assets/products/PL1011/PL1011%20-%20Etenon%20extension%20de%20cuadriceps%20diagonal%20SS-full.jpg" />
           </div>
           <div class="card-body">
-            <h5 class="card-title">Hack</h5>
-            <p class="card-text">Cantidad:</p>
-            <p class="card-text">Estado:</p>
-            <p class="card-text">Descripción:</p>
-            <br><a href="#!" class="btn btn-primary">Editar</a>
+            <h5 class="card-title">Máquina Extension de Cuadriceps</h5>
+            <p class="card-text"><strong>Cantidad:</strong> <span class="cantidad-text">3</span></p>
+            <p class="card-text"><strong>Estado:</strong> <span class="estado-text">Inactiva</span></p>
+            <p class="card-text"><strong>Descripción:</strong> <span class="descripcion-text">Máquina para femoral de pie.</span></p>
+            <a href="#" class="btn btn-primary edit-btn" data-bs-toggle="modal" data-bs-target="#editModal">Editar</a>
           </div>
         </div>
       </div>
@@ -116,14 +116,90 @@
             <img src="https://walmartni.vtexassets.com/arquivos/ids/606531/28604_01.jpg?v=638762207529600000" />
           </div>
           <div class="card-body">
-            <h5 class="card-title">Bicicleta</h5>
-            <p class="card-text">Cantidad:</p>
-            <p class="card-text">Estado:</p>
-            <p class="card-text">Descripción:</p>
-            <br><a href="#!" class="btn btn-primary">Editar</a>
+            <h5 class="card-title">Bicicleta Estática</h5>
+            <p class="card-text"><strong>Cantidad:</strong> <span class="cantidad-text">3</span></p>
+            <p class="card-text"><strong>Estado:</strong> <span class="estado-text">Inactiva</span></p>
+            <p class="card-text"><strong>Descripción:</strong> <span class="descripcion-text">Máquina para femoral de pie.</span></p>
+            <a href="#" class="btn btn-primary edit-btn" data-bs-toggle="modal" data-bs-target="#editModal">Editar</a>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+<!-- Modal de Edición (Único para todas las Cards) -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Editar Máquina</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editForm">
+          <div class="mb-3">
+            <label for="cantidad" class="form-label">Cantidad</label>
+            <input type="number" min="0" class="form-control" id="cantidad">
+          </div>
+          <div class="mb-3">
+            <label for="estado" class="form-label">Estado</label>
+            <select class="form-control" id="estado">
+              <option value="Activa">Activa</option>
+              <option value="Inactiva">Inactiva</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="descripcion" class="form-label">Descripción</label>
+            <textarea class="form-control" id="descripcion"></textarea>
+          </div>
+          <button type="button" class="btn btn-success" onclick="guardarCambios()">Guardar Cambios</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Script para Manejar el Modal y la Edición -->
+<script>
+  let currentCard = null;
+
+  document.querySelectorAll(".edit-btn").forEach(button => {
+    button.addEventListener("click", function () {
+      // Encontrar la tarjeta asociada
+      currentCard = this.closest(".card");
+
+      // Obtener valores actuales de la tarjeta
+      let cantidad = currentCard.querySelector(".cantidad-text").textContent;
+      let estado = currentCard.querySelector(".estado-text").textContent;
+      let descripcion = currentCard.querySelector(".descripcion-text").textContent;
+
+      // Rellenar el modal con los datos de la card seleccionada
+      document.getElementById("cantidad").value = cantidad;
+      document.getElementById("estado").value = estado;
+      document.getElementById("descripcion").value = descripcion;
+    });
+  });
+
+  function guardarCambios() {
+    if (!currentCard) return;
+
+    // Obtener nuevos valores del modal
+    let nuevaCantidad = document.getElementById("cantidad").value;
+    let nuevoEstado = document.getElementById("estado").value;
+    let nuevaDescripcion = document.getElementById("descripcion").value;
+
+    // Actualizar los valores en la tarjeta correspondiente
+    currentCard.querySelector(".cantidad-text").textContent = nuevaCantidad;
+    currentCard.querySelector(".estado-text").textContent = nuevoEstado;
+    currentCard.querySelector(".descripcion-text").textContent = nuevaDescripcion;
+
+    // Cerrar el modal
+    var modal = new bootstrap.Modal(document.getElementById("editModal"));
+    modal.hide();
+  }
+</script>
+
+<!-- Bootstrap JS (necesario para los modales) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
 {% endblock %}
