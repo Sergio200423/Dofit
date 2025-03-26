@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import timedelta, date
+from django.utils import timezone
 
 class Empleado(models.Model):
     id_empleado = models.AutoField(primary_key=True)
@@ -17,13 +18,6 @@ class Membresia(models.Model):
     duracion = models.IntegerField(null=True, blank=True)  # Duración en días
     precio = models.FloatField(null=True, blank=True)
 
-    @property
-    def estado(self):
-        if not self.fecha_inicio or not self.duracion:
-            return "Sin inicio o duración"
-        fecha_fin = self.fecha_inicio + timedelta(days=self.duracion)
-        return 'Activa' if fecha_fin >= date.today() else 'Expirada'
-
     def __str__(self):
         return f"Membresía {self.id_membresia} - ${self.precio}"
 
@@ -38,9 +32,17 @@ class Cliente(models.Model):
     fecha_nacimiento = models.DateField(null=True, blank=True)
     empleado = models.ForeignKey(Empleado, on_delete=models.SET_NULL, null=True, related_name="clientes")
     membresia = models.ForeignKey(Membresia, on_delete=models.SET_NULL, null=True, related_name="clientes")  # Cambiado de id_membresia a membresia
-    estado = models.CharField(max_length=30, choices=ESTADOS, default='Activo')
     fecha_inicio = models.DateField(null=True, blank=True)
 
+    @property
+    def estado(self):
+        if self.membresia and self.fecha_inicio:
+        # Verifica que la duración de la membresía no sea None
+            if self.membresia.duracion is not None:
+                fecha_fin = self.fecha_inicio + timedelta(days=self.membresia.duracion)
+                return 'activo' if fecha_fin >= timezone.now().date() else 'inactivo'
+        return 'inactivo'  # Si no tiene membresía o fecha de inicio, el cliente está inactivo
+    
     def __str__(self):
         return self.nombre_cliente
 

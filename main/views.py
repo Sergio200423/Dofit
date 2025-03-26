@@ -100,6 +100,7 @@ def clientes_view(request):
             sexo=sexo,
             fecha_nacimiento=fecha_nacimiento,
             membresia=membresia,  # Asigna la membresía encontrada
+            fecha_inicio=timezone.now().date()  # Establece la fecha de inicio como la fecha actual
         )
 
         # Mostrar un mensaje de éxito
