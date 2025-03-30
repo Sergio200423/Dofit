@@ -10,6 +10,7 @@ from django.core.mail import send_mail
 from django.contrib.sessions.models import Session
 from main.utils import GenerarCodigoAleatorio as gca
 from django.contrib.messages import get_messages
+from main.utils import ValidarUsuarioContraseña as vuc
 
 from .models import Cliente
 from .models import Producto
@@ -18,9 +19,12 @@ from .models import Membresia
 #Las vistas de todo el sistema
 
 
+#Vista para la pagina principal
 def index(request):
     return render(request, 'index.html')
 
+
+#Vista para la pagina de inicio de sesion
 def signin_view(request):
 
     #Procesar y limpiar los mensajes
@@ -29,24 +33,34 @@ def signin_view(request):
     for _ in storage:
         pass #eliminacion de mensajes
 
-    # Obtener el contador de intentos fallidos de la sesión
-    failed_attempts = request.session.get('failed_attempts', 0)
-    lockout_time = request.session.get('lockout_time')
+    
+    # # Obtener el contador de intentos fallidos de la sesión
+    # failed_attempts = request.session.get('failed_attempts', 0)
+    # lockout_time = request.session.get('lockout_time')
 
-    # Verificar si el usuario está bloqueado
-    if lockout_time:
-        lockout_time = timezone.datetime.fromisoformat(lockout_time)
-        if timezone.now() < lockout_time:
-            messages.error(request, 'Demasiados intentos fallidos. Inténtalo de nuevo más tarde.')
-            return redirect('signin')
-        else:
-            # Restablecer el contador y el tiempo de bloqueo después de que expire el tiempo de bloqueo
-            request.session['failed_attempts'] = 0
-            request.session['lockout_time'] = None
+    # # Verificar si el usuario está bloqueado
+    # if lockout_time:
+    #     lockout_time = timezone.datetime.fromisoformat(lockout_time)
+    #     if timezone.now() < lockout_time:
+    #         messages.error(request, 'Demasiados intentos fallidos. Inténtalo de nuevo más tarde.')
+    #         return redirect('signin')
+    #     else:
+    #         # Restablecer el contador y el tiempo de bloqueo después de que expire el tiempo de bloqueo
+    #         request.session['failed_attempts'] = 0
+    #         request.session['lockout_time'] = None
 
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
+        
+        if not vuc.validarNombreUsuario(username):
+            messages.error(request, 'El usuario no existe.')
+            return redirect('signin')
+
+        # Validar si la contraseña es correcta
+        if not vuc.validarContraseña(username, password):
+            messages.error(request, 'La contraseña es incorrecta.')
+            return redirect('signin')
         
         user = authenticate(request, username=username, password=password)
         if user is not None and user.is_active:
@@ -56,17 +70,17 @@ def signin_view(request):
             request.session['failed_attempts'] = 0
             return redirect('index')
         else:
-            # Incrementar el contador de intentos fallidos
-            failed_attempts += 1
-            request.session['failed_attempts'] = failed_attempts
+            # # Incrementar el contador de intentos fallidos
+            # # failed_attempts += 1
+            # # request.session['failed_attempts'] = failed_attempts
 
-            if failed_attempts >= 3:
-                # Bloquear el acceso durante 5 minutos después de 3 intentos fallidos
-                lockout_time = timezone.now() + timedelta(minutes=5)
-                request.session['lockout_time'] = lockout_time.isoformat()
-                messages.error(request, 'Demasiados intentos fallidos. Inténtalo de nuevo en 5 minutos.')
-            else:
-                messages.error(request, 'Usuario o contraseña incorrectos')
+            # # if failed_attempts >= 3:
+            # #     # Bloquear el acceso durante 5 minutos después de 3 intentos fallidos
+            # #     lockout_time = timezone.now() + timedelta(minutes=5)
+            # #     request.session['lockout_time'] = lockout_time.isoformat()
+            #     messages.error(request, 'Demasiados intentos fallidos. Inténtalo de nuevo en 5 minutos.')
+            # else:
+            #     messages.error(request, 'Usuario o contraseña incorrectos')
             return redirect('signin')
     return render(request, 'signin.html')
 
@@ -116,7 +130,42 @@ def clientes_view(request):
 
 
 def productos_view(request):
-    return render(request, 'registro_productos.html')
+    if request.method == 'POST':
+        nombre = request.POST.get('nombre').strip()
+        precio = request.POST.get('precio')
+        cantidad = request.POST.get('cantidad').strip()
+        descripcion = request.POST.get('descripcion')
+        tipo = request.POST.get('tipo')
+        fecha_ingreso = request.POST.get('fecha_ingreso')
+
+        if not nombre or not precio or not cantidad or not descripcion or not tipo or not fecha_ingreso:
+            # Si algún campo está vacío, muestra un mensaje de error
+            messages.error(request, 'Todos los campos son obligatorios.')
+            print("Algun campo esta vacio")
+            return redirect('productos')
+
+        try:
+            precio = float(precio)  # Validar que el precio sea un número
+            cantidad = int(cantidad)  # Validar que la cantidad sea un número entero
+        except ValueError:
+            messages.error(request, 'El precio debe ser un número y la cantidad debe ser un entero.')
+            return redirect('productos')
+
+        print("Procesando el formulario")
+        Producto.objects.create(
+            nombre=nombre,
+            precio=precio,
+            cantidad=cantidad,
+            descripcion=descripcion,
+            tipo=tipo,
+            fecha_ingreso=fecha_ingreso
+        )
+
+        messages.success(request, 'Producto registrado exitosamente.')
+
+    productos = Producto.objects.all()
+    tipos = Producto.TIPOS
+    return render(request, 'productos.html', {'productos': productos, 'tipos': tipos})
 
 def maquinas_view(request):
     return render(request, 'maquinas.html')
@@ -145,7 +194,15 @@ def asistencia_view(request):
 
 
 def registro_productos_view(request):
-    return render(request, 'productos.html')
+    if request.method == 'POST':
+        
+        print("Procesando el formulario")
+        pass
+
+    productos = Producto.objects.all()
+    tipos = Producto.TIPOS
+    return render(request, 'registro_productos.html', {'productos': productos, 'tipos': tipos})
+
 
 def recuperar_contraseña_view(request):
     #Validamos si el metodo es POST
@@ -261,7 +318,7 @@ def nueva_contraseña_view(request):
             messages.error(request, 'Las contraseñas no coinciden')
         else:
             # Obtén el usuario (en este caso, el superusuario)
-            user = User.objects.get(username='admin')
+            user = User.objects.get(username='sergio')
             user.set_password(contra)  # Cambia la contraseña
             user.save()
 
@@ -276,6 +333,4 @@ def nueva_contraseña_view(request):
             return redirect('signin')
     return render(request, 'nueva_contraseña.html')
 
-def productos_view(request):
-    productos = Producto.objects.all()
-    return render(request, 'productos.html')
+

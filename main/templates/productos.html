@@ -2,6 +2,14 @@
 {% block title %}Registro de Productos - Gimnasio Dofit{% endblock %}
 {% block content %}
 
+{% if messages %}
+<div>
+    {% for message in messages %}
+    <p style="color: red;">{{ message }}</p>
+    {% endfor %}
+</div>
+{% endif %}
+
 {% include 'registro_productos.html' %}
     <main class="main users chart-page" id="skip-target">
       <div class="container">
@@ -52,7 +60,6 @@
               </table>
             </div>
           </div>
-          
         </div>
       </div>
     </main>

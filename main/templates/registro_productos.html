@@ -37,13 +37,20 @@
               <!-- Cantidad existente -->
               <div class="mb-3">
                 <label for="cantidad" class="form-label">Cantidad</label>
-                <input type="number" min="0" class="form-control" id="cantidad" name="cantidad" required>
+                <input type="number" min="0" class="form-control" id="cantidad" name="cantidad" placeholder="Ingresa la cantidad de productos" required>
               </div>
 
               <!-- Tipo -->
               <div class="mb-3">
                 <label for="tipo" class="form-label">Tipo</label>
                 <select class="form-select" id="tipo" name="tipo">
+                  {% if tipos %}
+                    {% for value, display in tipos %}
+                      <option value="{{ value }}">{{ display }}</option>
+                    {% endfor %}
+                  {% else %}
+                    <option value="">No hay tipos disponibles</option>
+                  {% endif %}
                 </select>
               </div>
 

@@ -60,13 +60,23 @@ class Producto(models.Model):
         ('disponible', 'Disponible'),
         ('agotado', 'Agotado'),
     ]
+
+    TIPOS = [
+    ('Barra energetica', 'Barra energética'),
+    ('proteina', 'Proteína'),
+    ('vitaminas', 'Vitaminas'),
+    ('suplementos', 'Suplementos'),
+    ('bebidas', 'Bebidas'),
+    ('caramelos', 'Caramelos'),
+    ]
+
     id_producto = models.AutoField(primary_key=True)
     nombre_producto = models.CharField(max_length=25, null=True, blank=True)
     precio = models.FloatField(null=True, blank=True)
     descripcion = models.CharField(max_length=80, null=True, blank=True)
     fecha_ingreso = models.DateField(null=True, blank=True)
     existencia = models.IntegerField(null=True, blank=True)
-    tipo = models.CharField(max_length=20, null=True, blank=True)
+    tipo = models.CharField(max_length=20, choices=TIPOS, default="suplementos")
     estado = models.CharField(max_length=30, choices=ESTADOS, default='Disponible')
 
     def __str__(self):
