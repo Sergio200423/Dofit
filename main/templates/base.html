@@ -288,7 +288,7 @@
               <span>Configuración</span>
             </a></li>
             <li>
-                <form id="logout-form" action="{% url 'logout' %}" method="post" style="display: none;">
+                <form id="logout-form" action="{% url 'index' %}" method="post" style="display: none;">
                   {% csrf_token %}
                 </form>
                 <a class="danger" href="#" onclick="document.getElementById('logout-form').submit(); return false;">

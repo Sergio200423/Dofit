@@ -36,7 +36,7 @@ def index(request):
         'texto': 'Clientes registrado correctamente.'
     })
 
-    return render(request, 'index.html')
+    return render(request, 'inicio.html')
 
 
 #Vista para la pagina de inicio de sesion
