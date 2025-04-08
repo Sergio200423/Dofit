@@ -3,10 +3,24 @@
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             {% for message in messages %}
-                {% if message != "¡Nos vemos pronto!" %}
+                {% if message.level == 25 %}  <!-- Nivel de éxito -->
                     Swal.fire({
                         icon: "success",
-                        title: "Cierre de sesion exitoso",
+                        title: "Cierre de sesión exitoso",  <!-- Título personalizado -->
+                        text: "{{ message|escapejs }}",
+                        confirmButtonText: "OK"
+                    });
+                {% elif message.level == 40 %}  <!-- Nivel de error -->
+                    Swal.fire({
+                        icon: "error",
+                        title: "Ups...",  <!-- Título personalizado -->
+                        text: "{{ message|escapejs }}",
+                        confirmButtonText: "OK"
+                    });
+                {% else %}
+                    Swal.fire({
+                        icon: "info",
+                        title: "Información",
                         text: "{{ message|escapejs }}",
                         confirmButtonText: "OK"
                     });
@@ -39,22 +53,21 @@
                     <div id="alert-message" style="display: none; color: red; margin-bottom: 10px;"></div>
                     <label>
                         <p>Usuario</p>
-                        <input type="text" name="username" placeholder="Ingresa tu usuario" required>
+                        <input type="text" name="username" placeholder="Ingresa tu usuario" required
+                        oninvalid="this.setCustomValidity('Por favor, ingresa un usuario.')"
+                        oninput="this.setCustomValidity('')">
                     </label>
                     <label>
                         <p>Contraseña</p>
-                        <input type="password" name="password" placeholder="Ingresa tu contraseña" required>
+                        <input type="password" name="password" placeholder="Ingresa tu contraseña" required
+                        oninvalid="this.setCustomValidity('Por favor, ingresa una contraseña.')"
+                        oninput="this.setCustomValidity('')">
+                        
                     <!-- Separar "¿Olvidaste tu contraseña?" -->
                     <div style="text-align: left; width: 100%; margin-bottom: 1rem;">
                         <a href="{% url 'recuperar_contraseña' %}" style="text-align: left;"><br>¿Olvidaste tu contraseña?</a>
                     </div>
 
-                     <!--
-                    <div>
-                        <input type="checkbox" id="rememberMe" style="display: flex; align-items: center; gap: 8px; justify-content: flex-start;">
-                        <label for="rememberMe" style="margin: 0;" style="display: flex; align-items: center; gap: 8px; justify-content: flex-start;">Recordarme la próxima vez</label>
-                    </div>
-                    -->
                     <div style="display: flex; justify-content: center; width: 100%;">
                         <button id="submit" style="padding: 10px 20px; margin-right: 20px; ;">Ingresar</button>
                     </div>

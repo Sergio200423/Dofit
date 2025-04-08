@@ -8,19 +8,34 @@ from django.utils import timezone
 from datetime import timedelta
 from django.core.mail import send_mail
 from django.contrib.sessions.models import Session
-from main.utils import GenerarCodigoAleatorio as gca
-from django.contrib.messages import get_messages
-from main.utils import ValidarUsuarioContraseña as vuc
 
-from .models import Cliente
+from django.contrib.messages import get_messages
+from django.http import JsonResponse
+
+from main.utils import ValidarUsuarioContraseña as vuc
+from main.servicio import servicioClientes as sc
+from main.utils import GenerarCodigoAleatorio as gca
+
+from main.repositorio import repositorioMembresia as rm
+from main.repositorio import repositorioCliente as rc
+
 from .models import Producto
-from .models import Membresia
+from django.shortcuts import render, redirect
+from django.contrib import messages
 
 #Las vistas de todo el sistema
 
-
 #Vista para la pagina principal
 def index(request):
+    mensajes = []  # Lista para almacenar mensajes
+
+    # Ejemplo: Generar un mensaje de bienvenida
+    mensajes.append({
+        'icono': 'success',
+        'titulo': 'Exito',  
+        'texto': 'Clientes registrado correctamente.'
+    })
+
     return render(request, 'index.html')
 
 
@@ -33,31 +48,19 @@ def signin_view(request):
     for _ in storage:
         pass #eliminacion de mensajes
 
-    
-    # # Obtener el contador de intentos fallidos de la sesión
-    # failed_attempts = request.session.get('failed_attempts', 0)
-    # lockout_time = request.session.get('lockout_time')
-
-    # # Verificar si el usuario está bloqueado
-    # if lockout_time:
-    #     lockout_time = timezone.datetime.fromisoformat(lockout_time)
-    #     if timezone.now() < lockout_time:
-    #         messages.error(request, 'Demasiados intentos fallidos. Inténtalo de nuevo más tarde.')
-    #         return redirect('signin')
-    #     else:
-    #         # Restablecer el contador y el tiempo de bloqueo después de que expire el tiempo de bloqueo
-    #         request.session['failed_attempts'] = 0
-    #         request.session['lockout_time'] = None
-
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
         
+        # Validar si el nombre de usuario es incorrecto
         if not vuc.validarNombreUsuario(username):
-            messages.error(request, 'El usuario no existe.')
+            if not vuc.validarContraseña(username, password):  # Si también la contraseña es incorrecta
+                messages.error(request, 'El usuario y la contraseña son incorrectos.')
+            else:
+                messages.error(request, 'El usuario no existe.')
             return redirect('signin')
 
-        # Validar si la contraseña es correcta
+        # Validar si la contraseña es incorrecta
         if not vuc.validarContraseña(username, password):
             messages.error(request, 'La contraseña es incorrecta.')
             return redirect('signin')
@@ -70,63 +73,83 @@ def signin_view(request):
             request.session['failed_attempts'] = 0
             return redirect('index')
         else:
-            # # Incrementar el contador de intentos fallidos
-            # # failed_attempts += 1
-            # # request.session['failed_attempts'] = failed_attempts
-
-            # # if failed_attempts >= 3:
-            # #     # Bloquear el acceso durante 5 minutos después de 3 intentos fallidos
-            # #     lockout_time = timezone.now() + timedelta(minutes=5)
-            # #     request.session['lockout_time'] = lockout_time.isoformat()
-            #     messages.error(request, 'Demasiados intentos fallidos. Inténtalo de nuevo en 5 minutos.')
-            # else:
-            #     messages.error(request, 'Usuario o contraseña incorrectos')
             return redirect('signin')
     return render(request, 'signin.html')
 
 def logout_view(request):
     logout(request)
-    messages.error(request, 'Nos vemos pronto')
+    messages.success(request, 'Nos vemos pronto', extra_tags='success|Cierre de sesion exitoso')
     return redirect('signin')
 
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from .models import Cliente, Membresia
-
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from .models import Cliente, Membresia
-
 def clientes_view(request):
+
     if request.method == 'POST':
+
         # Procesar el formulario enviado desde el modal
-        nombre = request.POST.get('nombre')
+        nombre_cliente = request.POST.get('nombre')
         sexo = request.POST.get('sexo')
         fecha_nacimiento = request.POST.get('fecha_nacimiento')
         nombre_membresia = request.POST.get('membresia')  # Nombre de la membresía enviado desde el formulario
+        
 
+        valido, mensaje = sc.validarCamposVacios(
+            nombre_cliente, fecha_nacimiento, sexo, timezone.now()
+        )
+        if not valido:
+            return JsonResponse({
+                'InformacionAceptada': False,
+                'message': mensaje
+            })
         # Busca la membresía en la base de datos por nombre
-        membresia = Membresia.objects.filter(nombre=nombre_membresia).first()
+        membresia = rm.obtenerMembresiaPorNombre(nombre_membresia)
 
-        # Crear un nuevo cliente
-        Cliente.objects.create(
-            nombre_cliente=nombre,
-            sexo=sexo,
+        # Validar la fecha de nacimiento
+        valido, mensaje = sc.validarFechaNacimiento(fecha_nacimiento)
+        if not valido:
+            
+            return JsonResponse({
+                'message': mensaje,
+                'InformacionAceptada': False
+            })
+
+        rc.crearCiente(
+            nombre=nombre_cliente,
             fecha_nacimiento=fecha_nacimiento,
-            membresia=membresia,  # Asigna la membresía encontrada
-            fecha_inicio=timezone.now().date()  # Establece la fecha de inicio como la fecha actual
+            sexo=sexo,
+            fecha_inicio=timezone.now(),  # Fecha de inicio de membresía actual
+            membresia=membresia
         )
 
-        # Mostrar un mensaje de éxito
-        messages.success(request, 'Cliente registrado exitosamente.')
-
-        # Redirigir a la misma página para evitar reenvío de formulario
-        return redirect('clientes')
+        # Respuesta de éxito
+        return JsonResponse({
+            'message': 'Cliente registrado exitosamente.',
+            'InformacionAceptada': True
+        })
+    
+    if request.method == 'GET' and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        clientes = rc.UnirClienteMembresia()  # Obtener todos los clientes y sus membresías
+        clientes_data = [
+            {
+                'id': cliente.id_cliente,
+                'nombre': cliente.nombre_cliente,
+                'sexo': cliente.sexo,
+                'fecha_nacimiento': cliente.fecha_nacimiento,
+                'membresia': cliente.membresia.nombre,
+                'estado': cliente.estado
+            }
+            for cliente in clientes
+        ]
+        return JsonResponse({'clientes': clientes_data})
 
     # Si es una solicitud GET, renderizar la página con los datos necesarios
-    clientes = Cliente.objects.select_related('membresia').all()
-    membresias = Membresia.objects.all()
-    return render(request, 'clientes.html', {'clientes': clientes, 'membresias': membresias})
+    clientes = rc.UnirClienteMembresia()  # Obtener todos los clientes y sus membresías
+    membresias = rm.obtenerMembresias()  # Obtener todas las membresías de la base de datos
+    opciones_sexo = rc.obtenerOpcionesSexo()  # Obtener las opciones de sexo definidas en el modelo Cliente
+    return render(request, 'clientes.html', {
+        'clientes': clientes,
+        'membresias': membresias,
+        'opciones_sexo': opciones_sexo,
+    })
 
 
 def productos_view(request):
@@ -177,16 +200,12 @@ def registro_pagos_view(request):
     return render(request, 'registro_pagos.html')
 
 def registro_clientes_view(request):
-    if request.method == 'POST':
-
-        print("procesando el formulario")
-        # Procesa el formulario
+    if request.method == 'Post':
+        print("Procesando el formulario")
         pass
 
-    # Depuración: imprime las membresías en la consola
-    membresias = Membresia.objects.all()
-    print(membresias)  # Esto imprimirá las membresías en la consola
-    return render(request, 'registro_clientes.html', {'membresias': membresias})
+    
+    return render(request, 'registro_clientes.html')
 
 @login_required
 def asistencia_view(request):
@@ -194,14 +213,7 @@ def asistencia_view(request):
 
 
 def registro_productos_view(request):
-    if request.method == 'POST':
-        
-        print("Procesando el formulario")
-        pass
-
-    productos = Producto.objects.all()
-    tipos = Producto.TIPOS
-    return render(request, 'registro_productos.html', {'productos': productos, 'tipos': tipos})
+    return render(request, 'registro_productos.html')
 
 
 def recuperar_contraseña_view(request):

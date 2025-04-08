@@ -10,6 +10,7 @@ urlpatterns = [
 
     #Clientes
     path('clientes/', views.clientes_view, name='clientes'),
+    path('api/clientes/', views.clientes_view, name='obtener_clientes'),
     path('registro_clientes/', views.registro_clientes_view, name='registro_clientes'),
     path('asistencia/', views.asistencia_view, name='asistencia'),
     

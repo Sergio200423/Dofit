@@ -1,18 +1,4 @@
 {% load static %}
-{% if messages %}
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-          {% for message in messages %}
-                Swal.fire({
-                    icon: "success",
-                    title: "¡Bienvenido!",
-                    text: "{{ message }}",
-                    confirmButtonText: "OK"
-                });
-            {% endfor %}
-        });
-    </script>
-{% endif %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -95,7 +81,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a class="show-cat-btn" href="##">
+                    <a class="show-cat-btn" href="./pagos.html">
                       <img src="/static/img/billetes-de-banco.png" alt="in" width="28">
                         <span aria-hidden="true"></span>&nbsp;&nbsp;Pagos
                         <span class="category__btn transparent-btn" title="Open list">
@@ -105,10 +91,7 @@
                     </a>
                     <ul class="cat-sub-menu">
                         <li>
-                            <a href="media-01.html">Media-01</a>
-                        </li>
-                        <li>
-                            <a href="media-02.html">Media-02</a>
+                            <a href="{% url 'pagos' %}">Registro de pagos</a>
                         </li>
                     </ul>
                 </li>
@@ -334,6 +317,7 @@
 <script src="{% static 'plugins/feather.min.js' %}"></script>
 <!-- Custom scripts -->
 <script src="{% static 'js/script.js' %}"></script>
+
 </body>
 
 </html>
