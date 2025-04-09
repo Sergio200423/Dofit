@@ -25,6 +25,9 @@ from django.contrib import messages
 
 #Las vistas de todo el sistema
 
+def inicio_view(request):
+    return render(request, 'inicio.html')
+
 #Vista para la pagina principal
 def index(request):
     mensajes = []  # Lista para almacenar mensajes
@@ -36,7 +39,7 @@ def index(request):
         'texto': 'Clientes registrado correctamente.'
     })
 
-    return render(request, 'inicio.html')
+    return render(request, 'index.html')
 
 
 #Vista para la pagina de inicio de sesion
@@ -68,18 +71,18 @@ def signin_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None and user.is_active:
             login(request, user)
+            print("Se logro")
             messages.success(request, 'Inicio de sesión exitoso')
-            # Restablecer el contador de intentos fallidos después de un inicio de sesión exitoso
-            request.session['failed_attempts'] = 0
             return redirect('index')
         else:
             return redirect('signin')
     return render(request, 'signin.html')
 
 def logout_view(request):
+    print("Estoy cerrando")
     logout(request)
     messages.success(request, 'Nos vemos pronto', extra_tags='success|Cierre de sesion exitoso')
-    return redirect('signin')
+    return redirect('signin.html')
 
 def clientes_view(request):
 
