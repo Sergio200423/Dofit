@@ -129,22 +129,12 @@
 
                   </ul>
               </li>
-                <li>
-                    <a href="comments.html">
-                        <span class="icon message" aria-hidden="true"></span>
-                        Comments
-                    </a>
-                    <span class="msg-counter">7</span>
-                </li>
             </ul>
             <span class="system-menu__title">system</span>
             <ul class="sidebar-body-menu">
                 <li>
-                    <a href="appearance.html"><span class="icon edit" aria-hidden="true"></span>Appearance</a>
-                </li>
-                <li>
                     <a class="show-cat-btn" href="##">
-                        <span class="icon category" aria-hidden="true"></span>Extentions
+                        <span class="icon user-3" aria-hidden="true"></span>Usuarios
                         <span class="category__btn transparent-btn" title="Open list">
                             <span class="sr-only">Open list</span>
                             <span class="icon arrow-down" aria-hidden="true"></span>
@@ -152,32 +142,15 @@
                     </a>
                     <ul class="cat-sub-menu">
                         <li>
-                            <a href="extention-01.html">Extentions-01</a>
+                            <a href="users-01.html">Admin</a>
                         </li>
                         <li>
-                            <a href="extention-02.html">Extentions-02</a>
+                            <a href="users-02.html">Empleado</a>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    <a class="show-cat-btn" href="##">
-                        <span class="icon user-3" aria-hidden="true"></span>Users
-                        <span class="category__btn transparent-btn" title="Open list">
-                            <span class="sr-only">Open list</span>
-                            <span class="icon arrow-down" aria-hidden="true"></span>
-                        </span>
-                    </a>
-                    <ul class="cat-sub-menu">
-                        <li>
-                            <a href="users-01.html">Users-01</a>
-                        </li>
-                        <li>
-                            <a href="users-02.html">Users-02</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="##"><span class="icon setting" aria-hidden="true"></span>Settings</a>
+                    <a href="##"><span class="icon setting" aria-hidden="true"></span>Configuración</a>
                 </li>
             </ul>
         </div>
@@ -226,51 +199,47 @@
         <i class="moon-icon" data-feather="moon" aria-hidden="true"></i>
       </button>
       <div class="notification-wrapper">
-        <button class="gray-circle-btn dropdown-btn" title="To messages" type="button">
+        <button class="gray-circle-btn dropdown-btn" title="To messages" type="button" style="position: relative;">
           <span class="sr-only">To messages</span>
-          <span class="icon notification active" aria-hidden="true"></span>
+          <span class="icon notification" aria-hidden="true"></span>
+      
+          {% if notificaciones %}
+          <span class="notification-dot"></span> <!-- dot rojo -->
+          {% endif %}
         </button>
+      
         <ul class="users-item-dropdown notification-dropdown dropdown">
-          <li>
-            <a href="##">
-              <div class="notification-dropdown-icon info">
-                <i data-feather="check"></i>
-              </div>
+          {% if notificaciones %}
+            {% for noti in notificaciones %}
+              <li>
+                <a href="#">
+                  <div class="notification-dropdown-icon {{ noti.tipo }}">
+                    <i data-feather="{{ noti.icono }}" aria-hidden="true"></i>
+                  </div>
+                  <div class="notification-dropdown-text">
+                    <span class="notification-dropdown__title">{{ noti.titulo }}</span>
+                    <span class="notification-dropdown__subtitle">{{ noti.mensaje }}</span>
+                  </div>
+                </a>
+              </li>
+            {% endfor %}
+          {% else %}
+            <li>
               <div class="notification-dropdown-text">
-                <span class="notification-dropdown__title">System just updated</span>
-                <span class="notification-dropdown__subtitle">The system has been successfully upgraded. Read more
-                  here.</span>
+                <span class="notification-dropdown__title">Sin notificaciones</span>
+                <span class="notification-dropdown__subtitle">Todo está en orden por ahora.</span>
               </div>
-            </a>
-          </li>
-          <li>
-            <a href="##">
-              <div class="notification-dropdown-icon danger">
-                <i data-feather="info" aria-hidden="true"></i>
-              </div>
-              <div class="notification-dropdown-text">
-                <span class="notification-dropdown__title">The cache is full!</span>
-                <span class="notification-dropdown__subtitle">Unnecessary caches take up a lot of memory space and
-                  interfere ...</span>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a href="##">
-              <div class="notification-dropdown-icon info">
-                <i data-feather="check" aria-hidden="true"></i>
-              </div>
-              <div class="notification-dropdown-text">
-                <span class="notification-dropdown__title">New Subscriber here!</span>
-                <span class="notification-dropdown__subtitle">A new subscriber has subscribed.</span>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a class="link-to-page" href="##">Go to Notifications page</a>
-          </li>
+            </li>
+          {% endif %}
+      
+          <li><a class="link-to-page" href="#">Ir a todas las notificaciones</a></li>
         </ul>
       </div>
+      <script src="https://unpkg.com/feather-icons"></script>
+      <script>
+        feather.replace();
+      </script>
+            
       <div class="nav-user-wrapper">
         <button href="##" class="nav-user-btn dropdown-btn" title="My profile" type="button">
           <span class="sr-only">My profile</span>

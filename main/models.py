@@ -33,6 +33,10 @@ class Cliente(models.Model):
     empleado = models.ForeignKey(Empleado, on_delete=models.SET_NULL, null=True, related_name="clientes")
     membresia = models.ForeignKey(Membresia, on_delete=models.SET_NULL, null=True, related_name="clientes")  # Cambiado de id_membresia a membresia
     fecha_inicio = models.DateField(null=True, blank=True)
+    def fecha_vencimiento(self):
+        if self.fecha_inicio and self.membresia:
+            return self.fecha_inicio + timedelta(days=self.membresia.duracion or 0)
+        return None
 
     @property
     def estado(self):

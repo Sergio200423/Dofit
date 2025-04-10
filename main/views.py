@@ -8,6 +8,8 @@ from django.utils import timezone
 from datetime import timedelta
 from django.core.mail import send_mail
 from django.contrib.sessions.models import Session
+from django.utils import timezone
+from datetime import timedelta
 
 from django.contrib.messages import get_messages
 from django.http import JsonResponse
@@ -19,7 +21,7 @@ from main.utils import GenerarCodigoAleatorio as gca
 from main.repositorio import repositorioMembresia as rm
 from main.repositorio import repositorioCliente as rc
 
-from .models import Producto
+from .models import Cliente, Producto
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
@@ -27,7 +29,10 @@ from django.contrib import messages
 
 #Vista para la pagina principal
 def index(request):
-    return render(request, 'inicio.html')
+    notificaciones = obtener_notificaciones()
+    return render(request, 'inicio.html', {
+        'notificaciones': notificaciones,
+    })
 
 def inicio_view(request):
     return render(request, 'index.html')
@@ -338,5 +343,41 @@ def nueva_contraseña_view(request):
             messages.success(request, 'Contraseña actualizada correctamente. Todas las sesiones han sido cerradas.')
             return redirect('signin')
     return render(request, 'nueva_contraseña.html')
+
+#vista para las notificiones
+
+def obtener_notificaciones():
+    hoy = timezone.now().date()
+    notificaciones = []
+
+    clientes = Cliente.objects.filter(fecha_inicio__isnull=False, membresia__isnull=False)
+
+    for cliente in clientes:
+        fecha_inicio = cliente.fecha_inicio
+        duracion = cliente.membresia.duracion or 0
+        fecha_fin = fecha_inicio + timedelta(days=duracion)
+
+        if fecha_fin < hoy:
+            notificaciones.append({
+                "titulo": f"Membresía vencida",
+                "mensaje": f"{cliente.nombre_cliente} venció el {fecha_fin.strftime('%d/%m/%Y')}.",
+                "icono": "alert-circle",  # ícono de Feather
+                "tipo": "danger"
+            })
+        elif fecha_fin == hoy:
+            notificaciones.append({
+                "titulo": f"Vence hoy",
+                "mensaje": f"La membresía de {cliente.nombre_cliente} vence hoy.",
+                "icono": "clock",
+                "tipo": "info"
+            })
+        elif fecha_fin == hoy + timedelta(days=1):
+            notificaciones.append({
+                "titulo": f"Vence mañana",
+                "mensaje": f"La membresía de {cliente.nombre_cliente} vence mañana.",
+                "icono": "alert-triangle",
+                "tipo": "info"
+            })
+    return notificaciones
 
 
