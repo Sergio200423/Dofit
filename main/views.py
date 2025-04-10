@@ -25,22 +25,12 @@ from django.contrib import messages
 
 #Las vistas de todo el sistema
 
-def inicio_view(request):
-    return render(request, 'inicio.html')
-
 #Vista para la pagina principal
 def index(request):
-    mensajes = []  # Lista para almacenar mensajes
+    return render(request, 'inicio.html')
 
-    # Ejemplo: Generar un mensaje de bienvenida
-    mensajes.append({
-        'icono': 'success',
-        'titulo': 'Exito',  
-        'texto': 'Clientes registrado correctamente.'
-    })
-
+def inicio_view(request):
     return render(request, 'index.html')
-
 
 #Vista para la pagina de inicio de sesion
 def signin_view(request):
@@ -73,7 +63,7 @@ def signin_view(request):
             login(request, user)
             print("Se logro")
             messages.success(request, 'Inicio de sesión exitoso')
-            return redirect('index')
+            return redirect('inicio')
         else:
             return redirect('signin')
     return render(request, 'signin.html')
@@ -82,7 +72,7 @@ def logout_view(request):
     print("Estoy cerrando")
     logout(request)
     messages.success(request, 'Nos vemos pronto', extra_tags='success|Cierre de sesion exitoso')
-    return redirect('signin.html')
+    return redirect('inicio.html')
 
 def clientes_view(request):
 
@@ -93,7 +83,7 @@ def clientes_view(request):
         sexo = request.POST.get('sexo')
         fecha_nacimiento = request.POST.get('fecha_nacimiento')
         nombre_membresia = request.POST.get('membresia')  # Nombre de la membresía enviado desde el formulario
-        
+        fecha_inicio = request.POST.get('fecha_inicio')
 
         valido, mensaje = sc.validarCamposVacios(
             nombre_cliente, fecha_nacimiento, sexo, timezone.now()
@@ -119,7 +109,7 @@ def clientes_view(request):
             nombre=nombre_cliente,
             fecha_nacimiento=fecha_nacimiento,
             sexo=sexo,
-            fecha_inicio=timezone.now(),  # Fecha de inicio de membresía actual
+            fecha_inicio=fecha_inicio,  # Fecha de inicio de membresía actual
             membresia=membresia
         )
 
@@ -138,7 +128,8 @@ def clientes_view(request):
                 'sexo': cliente.sexo,
                 'fecha_nacimiento': cliente.fecha_nacimiento,
                 'membresia': cliente.membresia.nombre,
-                'estado': cliente.estado
+                'estado': cliente.estado,
+                'fecha_inicio': cliente.fecha_inicio,
             }
             for cliente in clientes
         ]

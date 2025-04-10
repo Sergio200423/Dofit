@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
-    var form = document.getElementById('registroCliente');
+    var form = document.getElementById('registroClientes');
     var alertMessage = document.getElementById('alert-message');
-    var modalElement = document.getElementById('testModal'); // Asegúrate de que el ID del modal sea correcto
+    var modalElement = document.getElementById('modalRegistroClientes'); // Asegúrate de que el ID del modal sea correcto
 
     if (modalElement) {
         // Escuchar el evento 'show.bs.modal' para limpiar el mensaje de alerta al abrir el modal
@@ -65,6 +65,50 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
         console.error("Formulario no encontrado"); // Depuración
     }
+
+    // Función para actualizar la lista de clientes
+    function actualizarListaClientes() {
+        fetch('/api/clientes/', {
+            method: 'GET',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest' // Indicar que es una solicitud AJAX
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.clientes) {
+                const listaClientes = document.getElementById('lista-clientes'); // Contenedor de la lista
+                listaClientes.innerHTML = ''; // Limpiar la lista actual
+    
+                data.clientes.forEach(cliente => {
+                    const clienteRow = document.createElement('tr');
+                    clienteRow.innerHTML = `
+                        <td>${cliente.id}</td>
+                        <td>
+                          <div class="d-flex align-items-center">
+                            <div class="ms-3">
+                              <p class="fw-bold mb-1">${cliente.nombre}</p>
+                            </div>
+                          </div>
+                        </td>
+                        <td>${cliente.sexo}</td>
+                        <td>${cliente.fecha_nacimiento}</td>
+                        <td>${cliente.membresia}</td>
+                        <td>${cliente.estado || 'Activo'}</td>
+                        <td>
+                          <button type="button" class="btn btn-link btn-rounded btn-sm fw-bold">
+                            Editar
+                          </button>
+                        </td>
+                    `;
+                    listaClientes.appendChild(clienteRow);
+                });
+            } else {
+                console.error('No se encontraron clientes.');
+            }
+        })
+        .catch(error => {
+            console.error('Error al obtener la lista de clientes:', error);
+        });
+    }
 });
-
-
