@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cambio de contraseña</title>
     <!-- Favicon -->
-    <link rel="shortcut icon" href="{% static 'img/svg/gym2' %}" type="image/x-icon">
+    <link rel="shortcut icon" href="{% static 'img/svg/gym2.svg' %}" type="image/x-icon">
     <!-- Custom styles -->
     <link rel="stylesheet" href="{% static 'css/style.min.css' %}">
 </head>
@@ -32,20 +32,14 @@
                     <p class="form-label">Correo electrónico</p>
                     <input class="form-input" type="email" placeholder="Enter your email" required name="correo">
                 </label>
-                <!--
-                <label class="form-label-wrapper">
-                    <p class="form-label">Password</p>
-                    <input class="form-input" type="password" placeholder="Enter your password" required>
-                </label>
-            -->
                 <button class="form-btn primary-default-btn transparent-btn">Enviar</button>
             </form>
         </article>
     </main>
     <!-- Chart library -->
-    <script src="{% static 'plugins/chart.min.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
     <!-- Icons library -->
-    <script src="{% static 'plugins/feather.min.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.29.0/dist/feather.min.js"></script>
     <!-- Custom scripts -->
     <script src="{% static 'js/script.js' %}"></script>
 </body>

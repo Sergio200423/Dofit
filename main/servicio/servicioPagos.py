@@ -1,23 +1,32 @@
-from datetime import date
+from datetime import datetime, date
 from main.repositorio.repositorioPago import crearPago
 from main.servicio.servicioProducto import validarExistencia
-from main.repositorio.repositorioMembresia import obtenerMembresiaPorCliente
+from main.repositorio.repositorioMembresiaCliente import RepositorioMembresiaCliente
 
 def validarCamposPago(tipo, fecha, cliente, items):
-    """
-    Valida que los campos del pago no estén vacíos.
-    :param tipo: Tipo de pago ('Membresia' o 'Producto')
-    :param fecha: Fecha del pago
-    :param cliente: Objeto Cliente asociado al pago
-    :param items: Lista de productos o membresías asociadas al pago
-    :return: (bool, str) -> True si los datos son válidos, False y un mensaje de error en caso contrario
-    """
-    if not tipo or not fecha or not cliente or not items:
-        return False, "Todos los campos son obligatorios."
-    if tipo not in ['Membresia', 'Producto']:
-        return False, "El tipo de pago debe ser 'Membresia' o 'Producto'."
+    if not tipo:
+        print("Error: El campo 'tipo' está vacío.")
+        return False, "El campo 'tipo' es obligatorio."
+    if not fecha:
+        print("Error: El campo 'fecha' está vacío.")
+        return False, "El campo 'fecha' es obligatorio."
+    try:
+        fecha = datetime.strptime(fecha, '%Y-%m-%d').date()  # Convierte la fecha a datetime.date
+    except ValueError:
+        print("Error: El formato de la fecha es inválido.")
+        return False, "El formato de la fecha debe ser 'YYYY-MM-DD'."
     if fecha > date.today():
+        print(f"Error: La fecha del pago '{fecha}' es una fecha futura.")
         return False, "La fecha del pago no puede ser una fecha futura."
+    if not cliente:
+        print("Error: El campo 'cliente' está vacío.")
+        return False, "El campo 'cliente' es obligatorio."
+    if not items:
+        print("Error: El campo 'items' está vacío.")
+        return False, "Debe proporcionar productos o membresías asociadas al pago."
+    if tipo not in ['Membresia', 'Producto']:
+        print(f"Error: El tipo de pago '{tipo}' no es válido.")
+        return False, "El tipo de pago debe ser 'Membresia' o 'Producto'."
     return True, ""
 
 def calcularTotalProductos(productos):
@@ -36,17 +45,28 @@ def calcularTotalProductos(productos):
             raise ValueError(mensaje)
         total += producto.precio * cantidad
     return total
-
+    
 def calcularTotalMembresia(cliente):
     """
-    Calcula el total a pagar para la membresía de un cliente.
+    Calcula el total a pagar para la membresía de un cliente utilizando el RepositorioMembresiaCliente.
     :param cliente: Objeto Cliente
     :return: Total a pagar por la membresía
     """
-    membresia = obtenerMembresiaPorCliente(cliente)
-    if not membresia:
+    # Obtener las membresías activas del cliente
+    resultado = RepositorioMembresiaCliente.obtener_membresias_cliente(cliente.id_cliente)
+
+    if not resultado["success"]:
+        raise ValueError(resultado["error"])
+
+    # Verificar si el cliente tiene una membresía activa
+    membresias = resultado["membresias"]
+    membresia_activa = next((m for m in membresias if m.fecha_fin >= date.today()), None)
+
+    if not membresia_activa:
         raise ValueError("El cliente no tiene una membresía activa.")
-    return membresia.precio
+
+    # Retornar el precio de la membresía activa
+    return membresia_activa.membresia.precio
 
 def registrarPago(tipo, fecha, cliente, productos=None, renovar_membresia=False):
     """
@@ -58,12 +78,16 @@ def registrarPago(tipo, fecha, cliente, productos=None, renovar_membresia=False)
     :param renovar_membresia: Indica si se debe renovar la membresía (opcional)
     :return: (bool, str) -> True si el pago se creó correctamente, False y un mensaje de error en caso contrario
     """
+    print("Iniciando la función registrarPago...")
+    print(f"Registrando pago: tipo={tipo}, fecha={fecha}, cliente={cliente}, productos={productos}, renovar_membresia={renovar_membresia}")
+
     # Validar campos básicos
     items = productos if productos else []
     if renovar_membresia:
         items.append("Membresia")
     valido, mensaje = validarCamposPago(tipo, fecha, cliente, items)
     if not valido:
+        print(f"Error en la validación de campos: {mensaje}")
         return False, mensaje
 
     # Calcular el total a pagar
@@ -71,17 +95,33 @@ def registrarPago(tipo, fecha, cliente, productos=None, renovar_membresia=False)
     try:
         if tipo == 'Producto' or tipo == 'Ambos':
             if not productos:
+                print("Error: No se proporcionaron productos para el pago de tipo 'Producto'.")
                 return False, "Debe proporcionar productos para el pago de tipo 'Producto'."
-            total_a_pagar += calcularTotalProductos(productos)
+            total_productos = calcularTotalProductos(productos)
+            print(f"Total calculado para productos: {total_productos}")
+            total_a_pagar += total_productos
+
         if tipo == 'Membresia' or tipo == 'Ambos':
             if renovar_membresia:
-                total_a_pagar += calcularTotalMembresia(cliente)
+                total_membresia = calcularTotalMembresia(cliente)
+                print(f"Total calculado para membresía: {total_membresia}")
+                total_a_pagar += total_membresia
     except ValueError as e:
+        print(f"Error al calcular el total: {str(e)}")
         return False, str(e)
+
+    # Validar que el total a pagar no sea None
+    if total_a_pagar is None:
+        print("Error: El total a pagar es None.")
+        return False, "El total a pagar no se pudo calcular correctamente."
+
+    print(f"Total a pagar calculado: {total_a_pagar}")
 
     # Crear el pago en la base de datos
     try:
         pago = crearPago(tipo=tipo, fecha=fecha, cliente=cliente, total_a_pagar=total_a_pagar)
+        print(f"Pago creado exitosamente: {pago}")
         return True, f"Pago registrado exitosamente. Total a pagar: ${total_a_pagar:.2f}"
     except Exception as e:
+        print(f"Error al registrar el pago: {str(e)}")
         return False, f"Error al registrar el pago: {str(e)}"

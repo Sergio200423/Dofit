@@ -1,21 +1,36 @@
 from main.models import Pago
 
-def crearPago(tipo, fecha, cliente, total_a_pagar=None):
+def crearPago(tipo, fecha, cliente, total_a_pagar):
     """
     Crea un nuevo pago en la base de datos.
-    :param tipo: Tipo de pago ('Membresia' o 'Producto')
+    :param tipo: Tipo de pago ('Membresia', 'Producto')
     :param fecha: Fecha del pago
     :param cliente: Objeto Cliente asociado al pago
-    :param total_a_pagar: Total a pagar (opcional, se calcula automáticamente si no se proporciona)
+    :param total_a_pagar: Total calculado manualmente (opcional)
     :return: Objeto Pago creado
     """
-    pago = Pago.objects.create(
+    # Crear el objeto Pago
+    pago = Pago(
         tipo=tipo,
         fecha=fecha,
         cliente=cliente,
         total_a_pagar=total_a_pagar
     )
+
+    pago.save()
+
     return pago
+
+def obtenerUltimoPagoPorCliente(cliente):
+    """
+    Obtiene el último pago registrado para un cliente.
+    :param cliente: Objeto Cliente
+    :return: Objeto Pago si existe, None en caso contrario
+    """
+    try:
+        return Pago.objects.filter(cliente=cliente).latest('fecha')
+    except Pago.DoesNotExist:
+        return None
 
 def obtenerPagos():
     """

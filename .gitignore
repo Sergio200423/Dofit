@@ -5,6 +5,3 @@ __pycache__/
 
 # Ignore database file
 db.sqlite3
-
-# Ignore migration files
-main/migrations/

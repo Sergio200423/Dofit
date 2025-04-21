@@ -17,6 +17,7 @@ urlpatterns = [
     
     #Productos
     path('productos/', views.productos_view, name='productos'), 
+    path('api/productos/', views.productos_view, name='obtener_productos'),
     path('registro_productos/', views.registro_productos_view, name='registro_productos'),
     
     #Pagos

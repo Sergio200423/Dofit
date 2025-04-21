@@ -196,6 +196,7 @@ jQuery(document).ready(function($) {
 	  // });
 
 	  $('.slide-one-item-alt').owlCarousel({
+		
 	    center: false,
 	    items: 1,
 	    loop: true,
@@ -247,17 +248,7 @@ jQuery(document).ready(function($) {
 	};
 	siteCarousel();
 
-	var siteStellar = function() {
-		$(window).stellar({
-	    responsive: false,
-	    parallaxBackgrounds: true,
-	    parallaxElements: true,
-	    horizontalScrolling: false,
-	    hideDistantElements: false,
-	    scrollProperty: 'scroll'
-	  });
-	};
-	// siteStellar();
+	
 
 	var siteCountDown = function() {
 
@@ -288,22 +279,31 @@ jQuery(document).ready(function($) {
 	siteSticky();
 
 	// navigation
-  var OnePageNavigation = function() {
-    var navToggler = $('.site-menu-toggle');
-   	$("body").on("click", ".main-menu li a[href^='#'], .smoothscroll[href^='#'], .site-mobile-menu .site-nav-wrap li a", function(e) {
-      e.preventDefault();
-
-      var hash = this.hash;
-
-      $('html, body').animate({
-        'scrollTop': $(hash).offset().top
-      }, 600, 'easeInOutExpo', function(){
-        window.location.hash = hash;
-      });
-
-    });
-  };
-  OnePageNavigation();
+	var OnePageNavigation = function() {
+		var navToggler = $('.site-menu-toggle');
+		$("body").on("click", ".main-menu li a[href^='#'], .smoothscroll[href^='#'], .site-mobile-menu .site-nav-wrap li a", function(e) {
+		  var hash = this.hash;
+	  
+		  // Excluir enlaces que no sean hashes válidos
+		  if (!hash || hash === '#' || $(this).attr('href').startsWith("{% url")) {
+			return; // Permite que el navegador maneje el enlace normalmente
+		  }
+	  
+		  e.preventDefault();
+	  
+		  // Verifica si el hash es válido y si el elemento existe
+		  if ($(hash).length) {
+			$('html, body').animate({
+			  'scrollTop': $(hash).offset().top
+			}, 600, 'easeInOutExpo', function() {
+			  window.location.hash = hash;
+			});
+		  } else {
+			console.warn("Elemento objetivo no encontrado o hash inválido:", hash);
+		  }
+		});
+	  };
+	  OnePageNavigation();
 
   var siteScroll = function() {
 

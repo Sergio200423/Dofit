@@ -4,8 +4,6 @@ from django.contrib.auth.views import LogoutView
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.utils import timezone
-from datetime import timedelta
 from django.core.mail import send_mail
 from django.contrib.sessions.models import Session
 
@@ -14,12 +12,19 @@ from django.http import JsonResponse
 
 from main.utils import ValidarUsuarioContraseña as vuc
 from main.servicio import servicioClientes as sc
+from main.servicio import servicioProducto as sp
+from main.servicio import servicioPagos as spg
+from main.servicio import servicioPagoDescuento as spd
+
 from main.utils import GenerarCodigoAleatorio as gca
 
 from main.repositorio import repositorioMembresia as rm
+from main.repositorio import repositorioDescuento as rpd
 from main.repositorio import repositorioCliente as rc
+from main.repositorio.repositorioMembresiaCliente import RepositorioMembresiaCliente 
+from main.repositorio import repositorioProductos as rp
+from main.repositorio import repositorioPago as rpa
 
-from .models import Producto
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
@@ -74,114 +79,192 @@ def logout_view(request):
     messages.success(request, 'Nos vemos pronto', extra_tags='success|Cierre de sesion exitoso')
     return redirect('inicio.html')
 
+from django.db import transaction
+
+from main.servicio.servicioPagoDescuento import registrarPagoDescuentos  # Importar el servicio
+
 def clientes_view(request):
-
     if request.method == 'POST':
+        try:
+            # Procesar el formulario enviado desde el modal
+            nombre_cliente = request.POST.get('nombre')
+            sexo = request.POST.get('sexo')
+            fecha_nacimiento = request.POST.get('fecha_nacimiento')
+            nombre_membresia = request.POST.get('membresia')  # Nombre de la membresía enviado desde el formulario
+            fecha_registro = request.POST.get('fecha_registro')
+            carnet_estudiante = request.POST.get('carnet_estudiante')  # Nuevo campo para el carnet de estudiante
 
-        # Procesar el formulario enviado desde el modal
-        nombre_cliente = request.POST.get('nombre')
-        sexo = request.POST.get('sexo')
-        fecha_nacimiento = request.POST.get('fecha_nacimiento')
-        nombre_membresia = request.POST.get('membresia')  # Nombre de la membresía enviado desde el formulario
-        fecha_inicio = request.POST.get('fecha_inicio')
+            print(f"Datos recibidos: {nombre_cliente}, {sexo}, {fecha_nacimiento}, {nombre_membresia}, {fecha_registro}, {carnet_estudiante}")
 
-        valido, mensaje = sc.validarCamposVacios(
-            nombre_cliente, fecha_nacimiento, sexo, timezone.now()
-        )
-        if not valido:
+            # Busca la membresía en la base de datos por nombre
+            membresia = rm.obtenerMembresiaPorNombre(nombre_membresia)
+
+            if not membresia:
+                print(f"Error: No se encontró la membresía con el nombre '{nombre_membresia}'")
+                return JsonResponse({
+                    'InformacionAceptada': False,
+                    'message': f"No se encontró la membresía con el nombre '{nombre_membresia}'."
+                })
+
+            print(f"Membresía encontrada: {membresia}")
+
+            # Usar una transacción atómica para garantizar consistencia
+            with transaction.atomic():
+                # Registrar cliente utilizando las validaciones centralizadas
+                valido, mensaje = sc.registrarClientes(
+                    nombre=nombre_cliente,
+                    fecha_nacimiento=fecha_nacimiento,
+                    sexo=sexo,
+                    fecha_registro=fecha_registro,
+                    carnet_estudiante=carnet_estudiante  # Pasar el carnet de estudiante
+                )
+
+                if not valido:
+                    print(f"Error al registrar cliente: {mensaje}")
+                    return JsonResponse({
+                        'InformacionAceptada': False,
+                        'message': mensaje
+                    })
+
+                # Obtener el cliente recién creado
+                cliente = rc.obtenerClientePorNombre(nombre_cliente)
+
+                if not cliente:
+                    print("Error: No se pudo encontrar el cliente recién registrado.")
+                    return JsonResponse({
+                        'InformacionAceptada': False,
+                        'message': "No se pudo encontrar el cliente recién registrado."
+                    })
+
+                print(f"Cliente registrado: {cliente}")
+
+                # Crear la membresía del cliente
+                resultado_membresia = RepositorioMembresiaCliente.crear_membresia_cliente(
+                    id_cliente=cliente.id_cliente,
+                    id_membresia=membresia.id_membresia,
+                    fecha_inicio=fecha_registro  # Usar la fecha de registro como fecha de inicio
+                )
+
+                if not resultado_membresia["success"]:
+                    print(f"Error al crear la membresía: {resultado_membresia['error']}")
+                    raise Exception(resultado_membresia["error"])
+
+                print(f"Membresía creada: {resultado_membresia['membresia_cliente']}")
+
+                # Registrar el pago de la membresía
+                valido, mensaje_pago = spg.registrarPago(
+                    tipo="Membresia",
+                    fecha=fecha_registro,
+                    cliente=cliente,
+                    renovar_membresia=True
+                )
+
+                if not valido:
+                    print(f"Error al registrar el pago: {mensaje_pago}")
+                    raise Exception(mensaje_pago)
+
+                print(f"Pago registrado correctamente para el cliente {cliente.nombre_cliente}")
+
+                # Aplicar descuento si corresponde
+                if carnet_estudiante:  # Verificar si el cliente tiene carnet de estudiante
+                    descuento = rpd.obtenerDescuentoPorNombre("Estudiante")  # Obtener el descuento de estudiante
+                    if descuento:
+                        pago = rpa.obtenerUltimoPagoPorCliente(cliente)  # Obtener el último pago registrado
+                        valido_descuento, mensaje_descuento = spd.registrarPagoDescuentos(pago, descuento)
+                        if valido_descuento is True:
+                            print(f"Descuento aplicado correctamente al pago del cliente {cliente.nombre_cliente}")
+                        elif valido_descuento is None:
+                            print(f"Advertencia: {mensaje_descuento}")  # No se aplicó el descuento, pero no es un error crítico
+                        else:
+                            print(f"Error al aplicar el descuento: {mensaje_descuento}")
+                            raise Exception(mensaje_descuento)
+
+            # Respuesta de éxito
+            return JsonResponse({
+                'message': "Cliente, membresía, pago y descuento registrados correctamente.",
+                'InformacionAceptada': True
+            })
+
+        except Exception as e:
+            # Capturar cualquier error y devolver un mensaje de error
+            print(f"Error interno del servidor: {str(e)}")
             return JsonResponse({
                 'InformacionAceptada': False,
-                'message': mensaje
-            })
-        # Busca la membresía en la base de datos por nombre
-        membresia = rm.obtenerMembresiaPorNombre(nombre_membresia)
-
-        # Validar la fecha de nacimiento
-        valido, mensaje = sc.validarFechaNacimiento(fecha_nacimiento)
-        if not valido:
-            
-            return JsonResponse({
-                'message': mensaje,
-                'InformacionAceptada': False
+                'message': f"Error interno del servidor: {str(e)}"
             })
 
-        rc.crearCiente(
-            nombre=nombre_cliente,
-            fecha_nacimiento=fecha_nacimiento,
-            sexo=sexo,
-            fecha_inicio=fecha_inicio,  # Fecha de inicio de membresía actual
-            membresia=membresia
-        )
-
-        # Respuesta de éxito
-        return JsonResponse({
-            'message': 'Cliente registrado exitosamente.',
-            'InformacionAceptada': True
-        })
-    
     if request.method == 'GET' and request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        clientes = rc.UnirClienteMembresia()  # Obtener todos los clientes y sus membresías
-        clientes_data = [
-            {
-                'id': cliente.id_cliente,
-                'nombre': cliente.nombre_cliente,
-                'sexo': cliente.sexo,
-                'fecha_nacimiento': cliente.fecha_nacimiento,
-                'membresia': cliente.membresia.nombre,
-                'estado': cliente.estado,
-                'fecha_inicio': cliente.fecha_inicio,
-            }
-            for cliente in clientes
-        ]
-        return JsonResponse({'clientes': clientes_data})
+        clientes = rc.obtenerClientesConMembresiaActiva()  # Obtener todos los clientes y sus membresías
+        return JsonResponse({'clientes': clientes})
 
     # Si es una solicitud GET, renderizar la página con los datos necesarios
-    clientes = rc.UnirClienteMembresia()  # Obtener todos los clientes y sus membresías
-    membresias = rm.obtenerMembresias()  # Obtener todas las membresías de la base de datos
+    clientes = rc.obtenerClientesConMembresiaActiva()  # Obtener todos los clientes y sus membresías
+    tipoMembresias = rm.obtenerMembresias()  # Obtener todas las membresías de la base de datos
     opciones_sexo = rc.obtenerOpcionesSexo()  # Obtener las opciones de sexo definidas en el modelo Cliente
     return render(request, 'clientes.html', {
         'clientes': clientes,
-        'membresias': membresias,
+        'membresias': tipoMembresias,
         'opciones_sexo': opciones_sexo,
     })
 
-
 def productos_view(request):
     if request.method == 'POST':
-        nombre = request.POST.get('nombre').strip()
+        # Obtener los datos del formulario
+        nombre_producto = request.POST.get('nombre').strip()
         precio = request.POST.get('precio')
         cantidad = request.POST.get('cantidad').strip()
         descripcion = request.POST.get('descripcion')
         tipo = request.POST.get('tipo')
         fecha_ingreso = request.POST.get('fecha_ingreso')
+        estado = request.POST.get('estado')
 
-        if not nombre or not precio or not cantidad or not descripcion or not tipo or not fecha_ingreso:
-            # Si algún campo está vacío, muestra un mensaje de error
-            messages.error(request, 'Todos los campos son obligatorios.')
-            print("Algun campo esta vacio")
-            return redirect('productos')
-
+        # Convertir los valores numéricos
         try:
-            precio = float(precio)  # Validar que el precio sea un número
-            cantidad = int(cantidad)  # Validar que la cantidad sea un número entero
+            precio = float(precio) if precio else None
+            cantidad = int(cantidad) if cantidad else None
         except ValueError:
             messages.error(request, 'El precio debe ser un número y la cantidad debe ser un entero.')
             return redirect('productos')
 
-        print("Procesando el formulario")
-        Producto.objects.create(
-            nombre=nombre,
+        # Registrar el producto utilizando las validaciones centralizadas
+        valido, mensaje = sp.registrarProducto(
+            nombre_producto=nombre_producto,
             precio=precio,
-            cantidad=cantidad,
             descripcion=descripcion,
+            fecha_ingreso=fecha_ingreso,
+            existencia=cantidad,
             tipo=tipo,
-            fecha_ingreso=fecha_ingreso
+            estado=estado
         )
 
-        messages.success(request, 'Producto registrado exitosamente.')
+        if not valido:
+            messages.error(request, mensaje)
+            return redirect('productos')
 
-    productos = Producto.objects.all()
-    tipos = Producto.TIPOS
+        # Respuesta de éxito
+        messages.success(request, mensaje)
+
+    # Manejar solicitudes AJAX para obtener la lista de productos
+    if request.method == 'GET' and request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        productos = rp.obtenerProductos()  # Obtener todos los productos de la base de datos
+        productos_data = [
+            {
+                'id': producto.id,
+                'nombre_producto': producto.nombre_producto,
+                'precio': producto.precio,
+                'descripcion': producto.descripcion,
+                'fecha_ingreso': producto.fecha_ingreso,
+                'existencia': producto.existencia,
+                'tipo': producto.tipo,
+                'estado': producto.estado,
+            }
+            for producto in productos
+        ]
+        return JsonResponse({'productos': productos_data})
+
+    # Obtener los productos y tipos para renderizar la página
+    productos = rp.obtenerProductos()  # Obtener todos los productos de la base de datos
+    tipos = rp.obtenerTiposDeProductos()  # Obtener todos los tipos de productos de la base de datos
     return render(request, 'productos.html', {'productos': productos, 'tipos': tipos})
 
 def maquinas_view(request):

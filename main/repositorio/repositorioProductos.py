@@ -29,3 +29,10 @@ def obtenerProductos():
     :return: QuerySet de objetos Producto
     """
     return Producto.objects.all()
+
+def obtenerTiposDeProductos():
+    """
+    Obtiene los tipos de productos definidos en el modelo Producto.
+    :return: Lista de tipos de productos
+    """
+    return [tipo[1] for tipo in Producto.TIPOS]

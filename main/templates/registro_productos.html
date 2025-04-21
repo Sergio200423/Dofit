@@ -1,14 +1,14 @@
-<div class="modal fade" id="testModalProductos" tabindex="-1" aria-labelledby="testModalLabel" aria-hidden="true">
+<div class="modal fade" id="ModalRegistroProductos" tabindex="-1" aria-labelledby="ModalRegistroProductosLabel" inert>
   <div class="modal-dialog">
       <div class="modal-content">
           <div class="modal-header">
-              <h1 class="modal-title" id="testModalLabel">Añadir Producto</h1>
+              <h1 class="modal-title" id="ModalRegistroProductosLabel">Añadir Producto</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <form id="registroProductos" action="{% url 'productos' %}" method="POST">
               {% csrf_token %}
-              <div id="alert-message" style="display: none; color: red; margin-bottom: 10px;"></div>
+              <div id="alert-message-productos" style="display: none; color: red; margin-bottom: 10px;"></div>
     
               <!-- Nombre -->
               <div class="mb-3">
@@ -45,8 +45,8 @@
                 <label for="tipo" class="form-label">Tipo</label>
                 <select class="form-select" id="tipo" name="tipo">
                   {% if tipos %}
-                    {% for value, display in tipos %}
-                      <option value="{{ value }}">{{ display }}</option>
+                    {% for display in tipos %}
+                      <option value="">{{ display }}</option>
                     {% endfor %}
                   {% else %}
                     <option value="">No hay tipos disponibles</option>
@@ -55,7 +55,8 @@
               </div>
 
               <div class="modal-footer">
-                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">Registrar</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-primary">Registrar</button>
               </div>
             </form>
           </div>

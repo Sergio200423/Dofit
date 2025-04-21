@@ -1,34 +1,4 @@
 {% load static %}
-{% if messages %}
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            {% for message in messages %}
-                {% if message.level == 25 %}  <!-- Nivel de éxito -->
-                    Swal.fire({
-                        icon: "success",
-                        title: "Cierre de sesión exitoso",  <!-- Título personalizado -->
-                        text: "{{ message|escapejs }}",
-                        confirmButtonText: "OK"
-                    });
-                {% elif message.level == 40 %}  <!-- Nivel de error -->
-                    Swal.fire({
-                        icon: "error",
-                        title: "Ups...",  <!-- Título personalizado -->
-                        text: "{{ message|escapejs }}",
-                        confirmButtonText: "OK"
-                    });
-                {% else %}
-                    Swal.fire({
-                        icon: "info",
-                        title: "Información",
-                        text: "{{ message|escapejs }}",
-                        confirmButtonText: "OK"
-                    });
-                {% endif %}
-            {% endfor %}
-        });
-    </script>
-{% endif %}
 
 <!DOCTYPE html>
 <html lang="es">
@@ -166,7 +136,7 @@
         </style>
 
 <!-- Incluir librería de SweetAlert2 -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.min.js"></script>
 
 
 

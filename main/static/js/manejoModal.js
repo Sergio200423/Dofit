@@ -1,114 +1,241 @@
 document.addEventListener("DOMContentLoaded", function () {
-    var form = document.getElementById('registroClientes');
-    var alertMessage = document.getElementById('alert-message');
-    var modalElement = document.getElementById('modalRegistroClientes'); // Asegúrate de que el ID del modal sea correcto
-
-    if (modalElement) {
-        // Escuchar el evento 'show.bs.modal' para limpiar el mensaje de alerta al abrir el modal
-        modalElement.addEventListener('show.bs.modal', function () {
-            if (alertMessage) {
-                alertMessage.style.display = 'none'; // Ocultar el mensaje de alerta
-                alertMessage.textContent = ''; // Limpiar el contenido del mensaje
-            }
-        });
+    if (currentPage === "clientes") {
+        manejarClientes();
+    } else if (currentPage === "productos") {
+        manejarProductos();
     }
 
-    if (form) {
-        form.addEventListener('submit', function (e) {
-            e.preventDefault(); // Evitar el envío normal del formulario
+    function manejarClientes() {
+        var form = document.getElementById('registroClientes');
+        var alertMessage = document.getElementById('alert-message');
+        var modalElement = document.getElementById('modalRegistroClientes');
 
-            var formData = new FormData(form);
-            var submitButton = document.getElementById('submitCliente');
+        if (modalElement) {
+            modalElement.addEventListener('show.bs.modal', function () {
+                modalElement.removeAttribute('inert');
+            });
 
-            // Deshabilitar el botón para evitar múltiples envíos
-            submitButton.disabled = true;
+            modalElement.addEventListener('hide.bs.modal', function () {
+                modalElement.setAttribute('inert', '');
+            });
+        }
 
-            fetch(form.action, {
-                method: 'POST',
-                body: formData,
+        if (form) {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                var formData = new FormData(form);
+                var submitButton = document.querySelector('button[type="submit"]');
+
+                submitButton.disabled = true;
+
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    form.setAttribute('data-informacion-aceptada', data.InformacionAceptada);
+                    if (data.InformacionAceptada) {
+                        alertMessage.style.display = 'block';
+                        alertMessage.style.color = 'green';
+                        alertMessage.textContent = data.message;
+
+                        actualizarListaClientes();
+                        form.reset();
+                    } else {
+                        alertMessage.style.display = 'block';
+                        alertMessage.style.color = 'red';
+                        alertMessage.textContent = data.message;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alertMessage.style.display = 'block';
+                    alertMessage.style.color = 'red';
+                    alertMessage.textContent = "Ocurrió un problema al procesar la solicitud. Por favor, inténtalo de nuevo.";
+                })
+                .finally(() => {
+                    submitButton.disabled = false;
+                });
+            });
+        }
+
+        function actualizarListaClientes() {
+            fetch('/api/clientes/', {
+                method: 'GET',
                 headers: {
-                    'X-Requested-With': 'XMLHttpRequest' // Indicar que es una solicitud AJAX
+                    'X-Requested-With': 'XMLHttpRequest'
                 }
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
-                // Actualizar el atributo data-informacion-aceptada
-                form.setAttribute('data-informacion-aceptada', data.InformacionAceptada);
-                console.log("data.InformacionAceptada: " + data.InformacionAceptada); // Depuración
-                if (data.InformacionAceptada) {
-                    // Mostrar el mensaje de éxito dentro del modal
-                    alertMessage.style.display = 'block';
-                    alertMessage.style.color = 'green'; // Cambiar el color a verde
-                    alertMessage.textContent = data.message;
-
-                    actualizarListaClientes(); // Recargar la lista de clientes
-                    form.reset(); // Limpiar el formulario
+                console.log("Datos recibidos de la API:", data); // Agrega este log para depurar
+                if (data.clientes) {
+                    const listaClientes = document.getElementById('lista-clientes');
+                    listaClientes.innerHTML = '';
+        
+                    data.clientes.forEach(cliente => {
+                        const membresiaActiva = cliente.membresia_activa;
+                        const nombreMembresia = membresiaActiva && membresiaActiva.nombreMembresia
+                            ? membresiaActiva.nombreMembresia
+                            : 'Sin membresía activa';
+        
+                        const clienteRow = document.createElement('tr');
+                        clienteRow.innerHTML = `
+                            <td>${cliente.id_cliente}</td>
+                            <td>
+                              <div class="d-flex align-items-center">
+                                <div class="ms-3">
+                                  <p class="fw-bold mb-1">${cliente.nombre_cliente}</p>
+                                </div>
+                              </div>
+                            </td>
+                            <td>${cliente.sexo}</td>
+                            <td>${cliente.fecha_nacimiento}</td>
+                            <td>${nombreMembresia}</td>
+                            <td>
+                              <span class="badge ${membresiaActiva ? 'badge-success' : 'badge-danger'} rounded-pill d-inline">
+                                ${membresiaActiva ? 'Activo' : 'Inactivo'}
+                              </span>
+                            </td>
+                            <td>
+                              <button type="button" class="btn btn-link btn-rounded btn-sm fw-bold">
+                                Editar
+                              </button>
+                            </td>
+                        `;
+                        listaClientes.appendChild(clienteRow);
+                    });
                 } else {
-                    // Mostrar el mensaje de error dentro del modal
-                    alertMessage.style.display = 'block';
-                    alertMessage.style.color = 'red'; // Cambiar el color a rojo
-                    alertMessage.textContent = data.message;
-
-                    console.log("Error en la validación: " + data.message); // Depuración
+                    console.error('No se encontraron clientes.');
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
-                alertMessage.style.display = 'block';
-                alertMessage.style.color = 'red'; // Cambiar el color a rojo
-                alertMessage.textContent = "Ocurrió un problema al procesar la solicitud. Por favor, inténtalo de nuevo.";
-            })
-            .finally(() => {
-                submitButton.disabled = false; // Rehabilitar el botón
+                console.error('Error al obtener la lista de clientes:', error);
             });
-        });
-    } else {
-        console.error("Formulario no encontrado"); // Depuración
+        }
     }
 
-    // Función para actualizar la lista de clientes
-    function actualizarListaClientes() {
-        fetch('/api/clientes/', {
-            method: 'GET',
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest' // Indicar que es una solicitud AJAX
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.clientes) {
-                const listaClientes = document.getElementById('lista-clientes'); // Contenedor de la lista
-                listaClientes.innerHTML = ''; // Limpiar la lista actual
-    
-                data.clientes.forEach(cliente => {
-                    const clienteRow = document.createElement('tr');
-                    clienteRow.innerHTML = `
-                        <td>${cliente.id}</td>
-                        <td>
-                          <div class="d-flex align-items-center">
-                            <div class="ms-3">
-                              <p class="fw-bold mb-1">${cliente.nombre}</p>
-                            </div>
-                          </div>
-                        </td>
-                        <td>${cliente.sexo}</td>
-                        <td>${cliente.fecha_nacimiento}</td>
-                        <td>${cliente.membresia}</td>
-                        <td>${cliente.estado || 'Activo'}</td>
-                        <td>
-                          <button type="button" class="btn btn-link btn-rounded btn-sm fw-bold">
-                            Editar
-                          </button>
-                        </td>
-                    `;
-                    listaClientes.appendChild(clienteRow);
+    function manejarProductos() {
+        var form = document.getElementById('registroProductos');
+        var alertMessage = document.getElementById('alert-message-productos');
+        var modalElement = document.getElementById('ModalRegistroProductos');
+
+        if (modalElement) {
+            modalElement.addEventListener('show.bs.modal', function () {
+                modalElement.removeAttribute('inert');
+            });
+
+            modalElement.addEventListener('hide.bs.modal', function () {
+                modalElement.setAttribute('inert', '');
+            });
+        }
+
+        if (form) {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                var formData = new FormData(form);
+                var submitButton = document.querySelector('button[type="submit"]');
+
+                submitButton.disabled = true;
+
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    form.setAttribute('data-informacion-aceptada', data.InformacionValida);
+                    if (data.InformacionValida) {
+                        alertMessage.style.display = 'block';
+                        alertMessage.style.color = 'green';
+                        alertMessage.textContent = data.message;
+
+                        actualizarListaProductos();
+                        form.reset();
+                    } else {
+                        alertMessage.style.display = 'block';
+                        alertMessage.style.color = 'red';
+                        alertMessage.textContent = data.message;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alertMessage.style.display = 'block';
+                    alertMessage.style.color = 'red';
+                    alertMessage.textContent = "Ocurrió un problema al procesar la solicitud. Por favor, inténtalo de nuevo.";
+                })
+                .finally(() => {
+                    submitButton.disabled = false;
                 });
-            } else {
-                console.error('No se encontraron clientes.');
-            }
-        })
-        .catch(error => {
-            console.error('Error al obtener la lista de clientes:', error);
-        });
+            });
+        }
+
+        function actualizarListaProductos() {
+            fetch('/api/productos/', {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.productos) {
+                    const listaProductos = document.getElementById('lista-productos');
+                    listaProductos.innerHTML = '';
+
+                    data.productos.forEach(producto => {
+                        const productoRow = document.createElement('tr');
+                        productoRow.innerHTML = `
+                            <td>${producto.id}</td>
+                            <td>${producto.nombre_producto}</td>
+                            <td>${producto.precio}</td>
+                            <td>${producto.existencia}</td>
+                            <td>${producto.tipo}</td>
+                            <td>${producto.estado}</td>
+                            <td>
+                              <button type="button" class="btn btn-link btn-rounded btn-sm fw-bold">
+                                Editar
+                              </button>
+                            </td>
+                        `;
+                        listaProductos.appendChild(productoRow);
+                    });
+                } else {
+                    console.error('No se encontraron productos.');
+                }
+            })
+            .catch(error => {
+                console.error('Error al obtener la lista de productos:', error);
+            });
+        }
     }
 });

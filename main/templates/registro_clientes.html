@@ -1,4 +1,4 @@
-<div class="modal fade" id="modalRegistroClientes" tabindex="-1" aria-labelledby="modalRegistroClientesLabel" aria-hidden="true">
+<div class="modal fade" id="modalRegistroClientes" tabindex="-1" aria-labelledby="modalRegistroClientesLabel" inert>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -37,15 +37,22 @@
             <label for="membresia" class="form-label">Membresía</label>
             <select class="form-select" id="membresia" name="membresia" required>
               {% for membresia in membresias %}
-              <option value="{{ membresia.id }}">{{ membresia.nombre }} - ${{ membresia.precio }}</option>
+              <option value="{{ membresia.nombreMembresia }}">
+                {{ membresia.nombreMembresia }} - C${{ membresia.precio }}</option>
               {% endfor %}
             </select>
           </div>
 
           <!-- Fecha de Inicio -->
           <div class="mb-3">
-            <label for="fecha_inicio" class="form-label">Fecha de Inicio</label>
-            <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" required>
+            <label for="fecha_inicio" class="form-label">Fecha de registro</label>
+            <input type="date" class="form-control" id="fecha_inicio" name="fecha_registro" required>
+          </div>
+
+          <!-- Carnet de Estudiante -->
+          <div class="mb-3">
+            <label for="carnet_estudiante" class="form-label">Carnet de Estudiante (Opcional)</label>
+            <input type="text" class="form-control" id="carnet_estudiante" name="carnet_estudiante" placeholder="Ingresa el carnet de estudiante">
           </div>
 
           <div class="modal-footer">
