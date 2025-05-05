@@ -11,22 +11,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        # Renombra el modelo Membresia a TipoMembresia primero
-        migrations.RenameModel(
-            old_name='Membresia',
-            new_name='TipoMembresia',
-        ),
-        # Renombra los campos en el modelo TipoMembresia
-        migrations.RenameField(
-            model_name='tipomembresia',
-            old_name='duracion',
-            new_name='duracionDias',
-        ),
-        migrations.RenameField(
-            model_name='tipomembresia',
-            old_name='nombre',
-            new_name='nombreMembresia',
-        ),
         # Elimina campos del modelo Cliente
         migrations.RemoveField(
             model_name='cliente',

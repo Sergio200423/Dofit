@@ -10,6 +10,11 @@ def add_estudiante_discount(apps, schema_editor):
         descripcion="Descuento para estudiantes con carnet válido"
     )
 
+def remove_estudiante_discount(apps, schema_editor):
+    # Código para revertir el descuento
+    Descuento = apps.get_model('main', 'Descuento')
+    Descuento.objects.filter(nombre="Estudiante").delete()
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -17,5 +22,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(add_estudiante_discount),
+        migrations.RunPython(add_estudiante_discount, remove_estudiante_discount),
     ]

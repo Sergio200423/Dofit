@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function manejarClientes() {
+
         var form = document.getElementById('registroClientes');
         var alertMessage = document.getElementById('alert-message');
         var modalElement = document.getElementById('modalRegistroClientes');
@@ -93,24 +94,36 @@ document.addEventListener("DOMContentLoaded", function () {
                         const nombreMembresia = membresiaActiva && membresiaActiva.nombreMembresia
                             ? membresiaActiva.nombreMembresia
                             : 'Sin membresía activa';
-        
+
+                        const estadoMembresia = membresiaActiva
+                            ? (membresiaActiva.estado === 'activo' ? 'Activo' : 'Inactivo')
+                            : 'Inactivo';
+                        
+
+                        const badgeClass = membresiaActiva
+                            ? (membresiaActiva.estado === 'activo' ? 'badge-success' : 'badge-trashed')
+                            : 'badge-trashed';
+
+
+                        console.log(`Cliente: ${cliente.nombre_cliente}, Estado: ${estadoMembresia}, Clase: ${badgeClass}`); // Depuración
+
                         const clienteRow = document.createElement('tr');
                         clienteRow.innerHTML = `
                             <td>${cliente.id_cliente}</td>
                             <td>
-                              <div class="d-flex align-items-center">
-                                <div class="ms-3">
-                                  <p class="fw-bold mb-1">${cliente.nombre_cliente}</p>
+                                <div class="d-flex align-items-center">
+                                    <div class="ms-3">
+                                    <p class="fw-bold mb-1">${cliente.nombre_cliente}</p>
+                                    </div>
                                 </div>
-                              </div>
                             </td>
                             <td>${cliente.sexo}</td>
                             <td>${cliente.fecha_nacimiento}</td>
                             <td>${nombreMembresia}</td>
                             <td>
-                              <span class="badge ${membresiaActiva ? 'badge-success' : 'badge-danger'} rounded-pill d-inline">
-                                ${membresiaActiva ? 'Activo' : 'Inactivo'}
-                              </span>
+                                <span class="badge ${badgeClass} rounded-pill d-inline">
+                                    ${estadoMembresia}
+                                </span>
                             </td>
                             <td>
                               <button type="button" class="btn btn-link btn-rounded btn-sm fw-bold">

@@ -1,5 +1,6 @@
 from datetime import datetime
 from main.repositorio import repositorioCliente as rc
+from django.utils.timezone import now
 
 def validarFechaNacimiento(fecha_nacimiento):
     """
@@ -81,3 +82,241 @@ def registrarClientes(nombre, fecha_nacimiento, sexo, fecha_registro, carnet_est
         return True, f"Cliente '{cliente.nombre_cliente}' registrado exitosamente."
     except Exception as e:
         return False, f"Error al registrar el cliente: {str(e)}"
+    
+def prepararVistaClientesConMembresiaActiva():
+    """
+    Prepara los datos de clientes con membresías activas para la vista.
+    """
+    clientes = rc.obtenerClientesConMembresiaActiva()
+    clientes_vista = []
+
+    for cliente in clientes:
+        membresia_activa = cliente.membresias_cliente.filter(fecha_fin__gte=now().date()).first()
+
+        clientes_vista.append({
+            'id_cliente': cliente.id_cliente,
+            'nombre_cliente': cliente.nombre_cliente,
+            'sexo': cliente.sexo,
+            'fecha_nacimiento': cliente.fecha_nacimiento,
+            'carnet_estudiante': cliente.estudiante,
+            'membresia': {
+                'nombreMembresia': membresia_activa.membresia.nombreMembresia if membresia_activa else None,
+                'estado': 'activo' if membresia_activa else 'sin membresía',
+                'fecha_inicio': membresia_activa.fecha_inicio if membresia_activa else None,
+                'fecha_fin': membresia_activa.fecha_fin if membresia_activa else None
+            }
+        })
+
+    return clientes_vista
+
+def prepararVistaClientesConMembresiaInactiva():
+    """
+    Prepara los datos de clientes con membresías inactivas para la vista.
+    """
+    clientes = rc.obtenerClientesConMembresiaInactiva()
+    clientes_vista = []
+
+    for cliente in clientes:
+        # Obtener la primera membresía inactiva del cliente
+        membresia_inactiva = cliente.membresias_cliente.filter(fecha_fin__lt=now().date()).first()
+
+        # Agregar los datos del cliente a la lista
+        clientes_vista.append({
+            'id_cliente': cliente.id_cliente,
+            'nombre_cliente': cliente.nombre_cliente,
+            'sexo': cliente.sexo,
+            'fecha_nacimiento': cliente.fecha_nacimiento,
+            'carnet_estudiante': cliente.estudiante,
+            'membresia': {
+                'nombreMembresia': membresia_inactiva.membresia.nombreMembresia if membresia_inactiva else None,
+                'estado': 'inactivo' if membresia_inactiva else 'sin membresía',
+                'fecha_inicio': membresia_inactiva.fecha_inicio if membresia_inactiva else None,
+                'fecha_fin': membresia_inactiva.fecha_fin if membresia_inactiva else None
+            }
+        })
+
+    return clientes_vista
+
+def prepararVistaTodosLosClientes():
+    """
+    Prepara los datos de todos los clientes, sin importar si tienen membresías activas o inactivas.
+    """
+    clientes = rc.obtenerTodosLosClientes()
+    clientes_vista = []
+
+    for cliente in clientes:
+        membresias = cliente.membresias_cliente.all()
+
+        membresia_activa = next(
+            (m for m in membresias if m.fecha_fin and m.fecha_fin >= now().date()), None
+        )
+
+        membresia_inactiva = next(
+            (m for m in membresias if m.fecha_fin and m.fecha_fin < now().date()), None
+        )
+
+        if membresia_activa:
+            estado = 'activo'
+            membresia = membresia_activa
+        elif membresia_inactiva:
+            estado = 'inactivo'
+            membresia = membresia_inactiva
+        else:
+            estado = 'sin membresía'
+            membresia = None
+
+        clientes_vista.append({
+            'id_cliente': cliente.id_cliente,
+            'nombre_cliente': cliente.nombre_cliente,
+            'sexo': cliente.sexo,
+            'fecha_nacimiento': cliente.fecha_nacimiento,
+            'carnet_estudiante': cliente.estudiante,
+            'membresia': {
+                'nombreMembresia': membresia.membresia.nombreMembresia if membresia else None,
+                'estado': estado,
+                'fecha_inicio': membresia.fecha_inicio if membresia else None,
+                'fecha_fin': membresia.fecha_fin if membresia else None
+            }
+        })
+
+    return clientes_vista
+
+def prepararVistaClientesConMembresiaDiaria():
+    """
+    Prepara los datos de clientes con membresías diarias para la vista.
+    """
+    clientes = rc.obtenerClientesConMembresiaDiaria()
+    clientes_vista = []
+
+    for cliente in clientes:
+        membresia = cliente.membresias_cliente.filter(membresia__nombreMembresia='Diaria').first()
+
+        if membresia and membresia.fecha_fin >= now().date():
+            estado = 'activo'
+        elif membresia:
+            estado = 'inactivo'
+        else:
+            estado = 'sin membresía'
+
+        clientes_vista.append({
+            'id_cliente': cliente.id_cliente,
+            'nombre_cliente': cliente.nombre_cliente,
+            'sexo': cliente.sexo,
+            'fecha_nacimiento': cliente.fecha_nacimiento,
+            'carnet_estudiante': cliente.estudiante,
+            'membresia': {
+                'nombreMembresia': membresia.membresia.nombreMembresia if membresia else None,
+                'estado': estado,
+                'fecha_inicio': membresia.fecha_inicio if membresia else None,
+                'fecha_fin': membresia.fecha_fin if membresia else None
+            }
+        })
+
+    return clientes_vista
+
+def prepararVistaClientesConMembresiaSemanal():
+    """
+    Prepara los datos de clientes con membresías semanales para la vista.
+    """
+    clientes = rc.obtenerClientesConMembresiaSemanal()
+    clientes_vista = []
+
+    for cliente in clientes:
+        # Obtener la membresía semanal del cliente
+        membresia = cliente.membresias_cliente.filter(membresia__nombreMembresia='Semanal').first()
+
+        # Determinar el estado de la membresía
+        if membresia and membresia.fecha_fin >= now().date():
+            estado = 'activo'
+        elif membresia:
+            estado = 'inactivo'
+        else:
+            estado = 'sin membresía'
+
+        # Agregar los datos del cliente a la lista
+        clientes_vista.append({
+            'id_cliente': cliente.id_cliente,
+            'nombre_cliente': cliente.nombre_cliente,
+            'sexo': cliente.sexo,
+            'fecha_nacimiento': cliente.fecha_nacimiento,
+            'carnet_estudiante': cliente.estudiante,
+            'membresia': {
+                'nombreMembresia': membresia.membresia.nombreMembresia if membresia else None,
+                'estado': estado,
+                'fecha_inicio': membresia.fecha_inicio if membresia else None,
+                'fecha_fin': membresia.fecha_fin if membresia else None
+            } if membresia else None
+        })
+
+    return clientes_vista
+    return clientes_vista
+
+def prepararVistaClientesConMembresiaQuincenal():
+    """
+    Prepara los datos de clientes con membresías quincenales para la vista.
+    """
+    clientes = rc.obtenerClientesConMembresiaQuincenal()
+    clientes_vista = []
+
+    for cliente in clientes:
+        # Asegúrate de que el filtro coincida con el valor exacto en la base de datos
+        membresia = cliente.membresias_cliente.filter(membresia__nombreMembresia='Quincenal').first()
+
+        # Determinar el estado de la membresía
+        if membresia and membresia.fecha_fin >= now().date():
+            estado = 'activo'
+        elif membresia:
+            estado = 'inactivo'
+        else:
+            estado = 'sin membresía'
+
+        # Agregar los datos del cliente a la lista
+        clientes_vista.append({
+            'id_cliente': cliente.id_cliente,
+            'nombre_cliente': cliente.nombre_cliente,
+            'sexo': cliente.sexo,
+            'fecha_nacimiento': cliente.fecha_nacimiento,
+            'carnet_estudiante': cliente.estudiante,
+            'membresia': {
+                'nombreMembresia': membresia.membresia.nombreMembresia if membresia else None,
+                'estado': estado,
+                'fecha_inicio': membresia.fecha_inicio if membresia else None,
+                'fecha_fin': membresia.fecha_fin if membresia else None
+            } if membresia else None
+        })
+
+    return clientes_vista
+
+def prepararVistaClientesConMembresiaMensual():
+    """
+    Prepara los datos de clientes con membresías mensuales para la vista.
+    """
+    clientes = rc.obtenerClientesConMembresiaMensual()
+    clientes_vista = []
+
+    for cliente in clientes:
+        membresia = cliente.membresias_cliente.filter(membresia__nombreMembresia='Mensual').first()
+
+        # Determinar el estado de la membresía
+        if membresia and membresia.fecha_fin >= now().date():
+            estado = 'activo'
+        elif membresia:
+            estado = 'inactivo'
+        else:
+            estado = 'sin membresía'
+
+        clientes_vista.append({
+            'id_cliente': cliente.id_cliente,
+            'nombre_cliente': cliente.nombre_cliente,
+            'sexo': cliente.sexo,
+            'fecha_nacimiento': cliente.fecha_nacimiento,
+            'carnet_estudiante': cliente.estudiante,
+            'membresia': {
+                'nombreMembresia': membresia.membresia.nombreMembresia if membresia else None,
+                'estado': estado,
+                'fecha_inicio': membresia.fecha_inicio if membresia else None,
+                'fecha_fin': membresia.fecha_fin if membresia else None
+            } if membresia else None
+        })
+
+    return clientes_vista

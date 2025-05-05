@@ -133,6 +133,22 @@
             .login-form button:hover {
                 background: #6a11cb;
             }
+
+            @media (max-width: 500px) {
+        .login-container {
+            flex-direction: column; /* Cambiar la dirección a columna */
+        }
+        .login-image {
+            order: -1; /* Mover la imagen arriba del formulario */
+        }
+        .login-image img {
+            max-width: 100%; /* Asegurarse de que la imagen ocupe todo el ancho */
+            height: auto; /* Mantener la proporción de la imagen */
+        }
+        .card {
+            padding: 1.5rem; /* Reducir el padding para pantallas pequeñas */
+        }
+    }
         </style>
 
 <!-- Incluir librería de SweetAlert2 -->

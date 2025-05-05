@@ -1,5 +1,6 @@
 from django.utils.timezone import now
 from main.models import Cliente, MembresiaCliente  # Importa MembresiaCliente
+from django.db.models.functions import Lower
 
 def crearCliente(nombre, fecha_nacimiento, sexo, fecha_registro, carnet_estudiante=None):
     """
@@ -42,33 +43,92 @@ def obtenerClientePorNombre(nombre_cliente):
     """
     return Cliente.objects.filter(nombre_cliente=nombre_cliente).first()
 
+from django.db.models.functions import Lower
+
+
 def obtenerClientesConMembresiaActiva():
     """
-    Obtiene todos los clientes con membresías activas.
-    :return: Lista de clientes con información de membresías activas
+    Obtiene todos los clientes con membresías activas, ordenados por nombre de la A a la Z.
+    Una membresía activa es aquella cuya fecha_fin es mayor o igual a la fecha actual.
     """
-    clientes = Cliente.objects.prefetch_related(
-        'membresias_cliente__membresia'  # Prefetch la relación entre MembresiaCliente y TipoMembresia
-    ).all()
-    clientes_con_membresia = []
+    return Cliente.objects.prefetch_related(
+        'membresias_cliente__membresia'  # Relación con MembresiaCliente y Membresia
+    ).filter(
+        membresias_cliente__fecha_fin__gte=now().date()  # Filtrar solo membresías activas
+    ).annotate(
+        nombre_cliente_lower=Lower('nombre_cliente')  # Ordenar por nombre en minúsculas
+    ).order_by('nombre_cliente_lower')
 
-    for cliente in clientes:
-        # Filtrar membresías activas (fecha_fin >= hoy)
-        membresia_activa = cliente.membresias_cliente.filter(fecha_fin__gte=now().date()).first()
-        print(f"Cliente: {cliente.nombre_cliente}, Membresía Activa: {membresia_activa}")  # Depuración
+def obtenerClientesConMembresiaInactiva():
+    """
+    Obtiene todos los clientes con membresías inactivas, ordenados por nombre de la A a la Z.
+    Una membresía inactiva es aquella cuya fecha_fin es menor a la fecha actual.
+    """
+    return Cliente.objects.prefetch_related(
+        'membresias_cliente__membresia'  # Relación con MembresiaCliente y Membresia
+    ).filter(
+        membresias_cliente__fecha_fin__lt=now().date()  # Filtrar solo membresías inactivas
+    ).annotate(
+        nombre_cliente_lower=Lower('nombre_cliente')  # Ordenar por nombre en minúsculas
+    ).order_by('nombre_cliente_lower')
 
-        clientes_con_membresia.append({
-            'id_cliente': cliente.id_cliente,
-            'nombre_cliente': cliente.nombre_cliente,
-            'sexo': cliente.sexo,
-            'fecha_nacimiento': cliente.fecha_nacimiento,
-            'carnet_estudiante': cliente.estudiante,  # Agregar el carnet de estudiante
-            'membresia_activa': {
-                'nombreMembresia': membresia_activa.membresia.nombreMembresia if membresia_activa else None,
-                'fecha_inicio': membresia_activa.fecha_inicio if membresia_activa else None,
-                'fecha_fin': membresia_activa.fecha_fin if membresia_activa else None,
-                'estado': 'activo' if membresia_activa and membresia_activa.fecha_fin >= now().date() else 'inactivo'
-            } if membresia_activa else None
-        })
+def obtenerTodosLosClientes():
+    """
+    Obtiene todos los clientes, sin importar si tienen membresías activas o inactivas.
+    """
+    return Cliente.objects.prefetch_related(
+        'membresias_cliente__membresia'  # Relación con MembresiaCliente y Membresia
+    ).annotate(
+        nombre_cliente_lower=Lower('nombre_cliente')  # Ordenar por nombre en minúsculas
+    ).order_by('nombre_cliente_lower')
 
-    return clientes_con_membresia
+def obtenerClientesConMembresiaDiaria():
+    """
+    Obtiene todos los clientes con membresías diarias.
+    """
+    return Cliente.objects.prefetch_related(
+        'membresias_cliente__membresia'  # Relación con MembresiaCliente y TipoMembresia
+    ).filter(
+        membresias_cliente__membresia__nombreMembresia='Diaria'  # Filtrar por nombre de membresía
+    ).annotate(
+        nombre_cliente_lower=Lower('nombre_cliente')  # Ordenar por nombre en minúsculas
+    ).order_by('nombre_cliente_lower')
+
+
+def obtenerClientesConMembresiaSemanal():
+    """
+    Obtiene todos los clientes con membresías semanales.
+    """
+    return Cliente.objects.prefetch_related(
+        'membresias_cliente__membresia'  # Relación con MembresiaCliente y TipoMembresia
+    ).filter(
+        membresias_cliente__membresia__nombreMembresia='Semanal'  # Filtrar por nombre de membresía
+    ).annotate(
+        nombre_cliente_lower=Lower('nombre_cliente')  # Ordenar por nombre en minúsculas
+    ).order_by('nombre_cliente_lower')
+
+
+def obtenerClientesConMembresiaQuincenal():
+    """
+    Obtiene todos los clientes con membresías quincenales.
+    """
+    return Cliente.objects.prefetch_related(
+        'membresias_cliente__membresia'
+    ).filter(
+        membresias_cliente__membresia__nombreMembresia='Quincenal'  # Filtrar por nombre de membresía
+    ).annotate(
+        nombre_cliente_lower=Lower('nombre_cliente')
+    ).order_by('nombre_cliente_lower')
+
+
+def obtenerClientesConMembresiaMensual():
+    """
+    Obtiene todos los clientes con membresías mensuales.
+    """
+    return Cliente.objects.prefetch_related(
+        'membresias_cliente__membresia'
+    ).filter(
+        membresias_cliente__membresia__nombreMembresia='Mensual'  # Filtrar por nombre de membresía
+    ).annotate(
+        nombre_cliente_lower=Lower('nombre_cliente')
+    ).order_by('nombre_cliente_lower')
