@@ -20,5 +20,20 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(crear_membresias, eliminar_membresias),  # Llama a la función para crear las membresías
+        migrations.RenameModel(
+            old_name='Membresia',
+            new_name='TipoMembresia',
+        ),
+        # Renombra los campos en el modelo TipoMembresia
+        migrations.RenameField(
+            model_name='tipomembresia',
+            old_name='duracion',
+            new_name='duracionDias',
+        ),
+        migrations.RenameField(
+            model_name='tipomembresia',
+            old_name='nombre',
+            new_name='nombreMembresia',
+        ),
+        migrations.RunPython(crear_membresias, eliminar_membresias),
     ]
