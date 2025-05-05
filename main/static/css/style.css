@@ -1061,7 +1061,7 @@ body {
 .logo {
   width: 49px;
   height: 49px;
-  background-image: url(../img/svg/gym.svg);
+  background-image: url(../img/dofit.jpg);
   background-size: contain;
   background-repeat: no-repeat;
   background-color: transparent;
@@ -1757,6 +1757,7 @@ button.disabled:focus {
 .badge-active,
 .badge-trashed,
 .badge-success,
+.badge-danger,
 .badge-disabled {
   padding: 1px;
   width: 85px;
@@ -1800,6 +1801,11 @@ button.disabled:focus {
 
 .badge-success {
   color: #4bde97;
+  background-color: rgba(75, 222, 151, 0.1);
+}
+
+.badge-danger {
+  color: #dc3545;
   background-color: rgba(75, 222, 151, 0.1);
 }
 

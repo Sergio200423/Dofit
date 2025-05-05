@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.contrib.sessions.models import Session
+import json
 
 from django.contrib.messages import get_messages
 from django.http import JsonResponse
@@ -27,6 +28,8 @@ from main.repositorio import repositorioPago as rpa
 
 from django.shortcuts import render, redirect
 from django.contrib import messages
+
+from django.db import transaction
 
 #Las vistas de todo el sistema
 
@@ -79,128 +82,72 @@ def logout_view(request):
     messages.success(request, 'Nos vemos pronto', extra_tags='success|Cierre de sesion exitoso')
     return redirect('inicio.html')
 
-from django.db import transaction
-
-from main.servicio.servicioPagoDescuento import registrarPagoDescuentos  # Importar el servicio
-
 def clientes_view(request):
     if request.method == 'POST':
-        try:
-            # Procesar el formulario enviado desde el modal
-            nombre_cliente = request.POST.get('nombre')
-            sexo = request.POST.get('sexo')
-            fecha_nacimiento = request.POST.get('fecha_nacimiento')
-            nombre_membresia = request.POST.get('membresia')  # Nombre de la membresía enviado desde el formulario
-            fecha_registro = request.POST.get('fecha_registro')
-            carnet_estudiante = request.POST.get('carnet_estudiante')  # Nuevo campo para el carnet de estudiante
+        action = request.POST.get('action') or json.loads(request.body).get('action')
 
-            print(f"Datos recibidos: {nombre_cliente}, {sexo}, {fecha_nacimiento}, {nombre_membresia}, {fecha_registro}, {carnet_estudiante}")
+        if action == "filtrar_clientes":
+            try:
+                print("Recibiendo filtros desde el frontend")
+                filtros = json.loads(request.body)
 
-            # Busca la membresía en la base de datos por nombre
-            membresia = rm.obtenerMembresiaPorNombre(nombre_membresia)
-
-            if not membresia:
-                print(f"Error: No se encontró la membresía con el nombre '{nombre_membresia}'")
-                return JsonResponse({
-                    'InformacionAceptada': False,
-                    'message': f"No se encontró la membresía con el nombre '{nombre_membresia}'."
-                })
-
-            print(f"Membresía encontrada: {membresia}")
-
-            # Usar una transacción atómica para garantizar consistencia
-            with transaction.atomic():
-                # Registrar cliente utilizando las validaciones centralizadas
-                valido, mensaje = sc.registrarClientes(
-                    nombre=nombre_cliente,
-                    fecha_nacimiento=fecha_nacimiento,
-                    sexo=sexo,
-                    fecha_registro=fecha_registro,
-                    carnet_estudiante=carnet_estudiante  # Pasar el carnet de estudiante
+                # Verificar si no hay filtros seleccionados
+                noFiltrosSeleccionados = (
+                    not filtros.get("nombre") and
+                    not filtros.get("sexo") and
+                    not filtros.get("estado") and
+                    not filtros.get("membresias")
                 )
 
-                if not valido:
-                    print(f"Error al registrar cliente: {mensaje}")
-                    return JsonResponse({
-                        'InformacionAceptada': False,
-                        'message': mensaje
-                    })
+                if noFiltrosSeleccionados:
+                    print("No se seleccionaron filtros, devolviendo todos los clientes")
+                    clientes = sc.prepararVistaTodosLosClientes()
+                    return JsonResponse({"clientes": clientes})
 
-                # Obtener el cliente recién creado
-                cliente = rc.obtenerClientePorNombre(nombre_cliente)
+                # Aplicar filtros si hay alguno seleccionado
+                clientes = []
 
-                if not cliente:
-                    print("Error: No se pudo encontrar el cliente recién registrado.")
-                    return JsonResponse({
-                        'InformacionAceptada': False,
-                        'message': "No se pudo encontrar el cliente recién registrado."
-                    })
+                if "membresias" in filtros and filtros["membresias"]:
+                    if "Diaria" in filtros["membresias"]:
+                        clientes.extend(sc.prepararVistaClientesConMembresiaDiaria())
+                    if "Semanal" in filtros["membresias"]:
+                        clientes.extend(sc.prepararVistaClientesConMembresiaSemanal())
+                    if "Quincenal" in filtros["membresias"]:
+                        clientes.extend(sc.prepararVistaClientesConMembresiaQuincenal())
+                    if "Mensual" in filtros["membresias"]:
+                        clientes.extend(sc.prepararVistaClientesConMembresiaMensual())
 
-                print(f"Cliente registrado: {cliente}")
+                if filtros.get("estado"):
+                    clientes = [c for c in clientes if c["membresia"] and c["membresia"]["estado"] in filtros["estado"]]
 
-                # Crear la membresía del cliente
-                resultado_membresia = RepositorioMembresiaCliente.crear_membresia_cliente(
-                    id_cliente=cliente.id_cliente,
-                    id_membresia=membresia.id_membresia,
-                    fecha_inicio=fecha_registro  # Usar la fecha de registro como fecha de inicio
-                )
+                if filtros.get("sexo"):
+                    clientes = [c for c in clientes if c["sexo"] in filtros["sexo"]]
 
-                if not resultado_membresia["success"]:
-                    print(f"Error al crear la membresía: {resultado_membresia['error']}")
-                    raise Exception(resultado_membresia["error"])
+                if filtros.get("nombre"):
+                    clientes = [c for c in clientes if filtros["nombre"].lower() in c["nombre_cliente"].lower()]
 
-                print(f"Membresía creada: {resultado_membresia['membresia_cliente']}")
+                return JsonResponse({"clientes": clientes})
 
-                # Registrar el pago de la membresía
-                valido, mensaje_pago = spg.registrarPago(
-                    tipo="Membresia",
-                    fecha=fecha_registro,
-                    cliente=cliente,
-                    renovar_membresia=True
-                )
+            except Exception as e:
+                print(f"Error al procesar los filtros: {str(e)}")
+                return JsonResponse({"error": f"Error al procesar los filtros: {str(e)}"}, status=500)
 
-                if not valido:
-                    print(f"Error al registrar el pago: {mensaje_pago}")
-                    raise Exception(mensaje_pago)
-
-                print(f"Pago registrado correctamente para el cliente {cliente.nombre_cliente}")
-
-                # Aplicar descuento si corresponde
-                if carnet_estudiante:  # Verificar si el cliente tiene carnet de estudiante
-                    descuento = rpd.obtenerDescuentoPorNombre("Estudiante")  # Obtener el descuento de estudiante
-                    if descuento:
-                        pago = rpa.obtenerUltimoPagoPorCliente(cliente)  # Obtener el último pago registrado
-                        valido_descuento, mensaje_descuento = spd.registrarPagoDescuentos(pago, descuento)
-                        if valido_descuento is True:
-                            print(f"Descuento aplicado correctamente al pago del cliente {cliente.nombre_cliente}")
-                        elif valido_descuento is None:
-                            print(f"Advertencia: {mensaje_descuento}")  # No se aplicó el descuento, pero no es un error crítico
-                        else:
-                            print(f"Error al aplicar el descuento: {mensaje_descuento}")
-                            raise Exception(mensaje_descuento)
-
-            # Respuesta de éxito
-            return JsonResponse({
-                'message': "Cliente, membresía, pago y descuento registrados correctamente.",
-                'InformacionAceptada': True
-            })
-
-        except Exception as e:
-            # Capturar cualquier error y devolver un mensaje de error
-            print(f"Error interno del servidor: {str(e)}")
-            return JsonResponse({
-                'InformacionAceptada': False,
-                'message': f"Error interno del servidor: {str(e)}"
-            })
+        elif action == "todos_los_clientes":
+            try:
+                print("Preparando vista de todos los clientes")
+                clientes = sc.prepararVistaTodosLosClientes()
+                return JsonResponse({"clientes": clientes})
+            except Exception as e:
+                print(f"Error al obtener todos los clientes: {str(e)}")
+                return JsonResponse({"error": f"Error al obtener todos los clientes: {str(e)}"}, status=500)
 
     if request.method == 'GET' and request.headers.get('x-requested-with') == 'XMLHttpRequest':
-        clientes = rc.obtenerClientesConMembresiaActiva()  # Obtener todos los clientes y sus membresías
+        clientes = rc.obtenerClientesConMembresiaActiva()
         return JsonResponse({'clientes': clientes})
 
-    # Si es una solicitud GET, renderizar la página con los datos necesarios
-    clientes = rc.obtenerClientesConMembresiaActiva()  # Obtener todos los clientes y sus membresías
-    tipoMembresias = rm.obtenerMembresias()  # Obtener todas las membresías de la base de datos
-    opciones_sexo = rc.obtenerOpcionesSexo()  # Obtener las opciones de sexo definidas en el modelo Cliente
+    clientes = sc.prepararVistaTodosLosClientes()
+    tipoMembresias = rm.obtenerMembresias()
+    opciones_sexo = rc.obtenerOpcionesSexo()
     return render(request, 'clientes.html', {
         'clientes': clientes,
         'membresias': tipoMembresias,

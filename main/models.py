@@ -48,7 +48,7 @@ class MembresiaCliente(models.Model):
         Calcula si la membresía está activa o inactiva.
         """
         if self.fecha_fin and self.fecha_inicio:
-            return 'activo' if self.fecha_fin >= timezone.now().date() else 'inactivo'
+            return 'activo' if self.fecha_fin > timezone.now().date() else 'inactivo'
         return 'inactivo'
 
     def __str__(self):
