@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard - Gimnasio Dofit{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>Estadísticas de ventas</h1>
+        <div class="date-filter">
+            <select id="period-selector">
+                <option value="7">Últimos 7 días</option>
+                <option value="30" selected>Últimos 30 días</option>
+                <option value="90">Últimos 3 meses</option>
+                <option value="365">Último año</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Tarjetas de resumen -->
+    <div class="summary-cards">
+        <div class="card">
+            <div class="card-icon">
+                <i class="fas fa-shopping-cart"></i>
+            </div>
+            <div class="card-content">
+                <h3 id="total-ventas">C$0</h3>
+                <p>Ventas totales</p>
+                <span class="trend up"><i class="fas fa-arrow-up"></i> 4.7%</span>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-icon">
+                <i class="fas fa-receipt"></i>
+            </div>
+            <div class="card-content">
+                <h3 id="total-transacciones">0</h3>
+                <p>Transacciones</p>
+                <span class="trend up"><i class="fas fa-arrow-up"></i> 2.1%</span>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="card-content">
+                <h3 id="nuevos-clientes">0</h3>
+                <p>Nuevos clientes</p>
+                <span class="trend down"><i class="fas fa-arrow-down"></i> 1.3%</span>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-icon">
+                <i class="fas fa-id-card"></i>
+            </div>
+            <div class="card-content">
+                <h3 id="nuevas-membresias">0</h3>
+                <p>Nuevas membresías</p>
+                <span class="trend up"><i class="fas fa-arrow-up"></i> 5.2%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráficos y tablas -->
+    <div class="dashboard-content">
+        <!-- Gráfico de ventas -->
+        <div class="chart-container">
+            <div class="chart-header">
+                <h2>Ventas recientes</h2>
+                <div class="chart-actions">
+                    <button class="btn-chart-type active" data-type="line">
+                        <i class="fas fa-chart-line"></i>
+                    </button>
+                    <button class="btn-chart-type" data-type="bar">
+                        <i class="fas fa-chart-bar"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="chart-body">
+                <canvas id="sales-chart"></canvas>
+            </div>
+        </div>
+
+        <!-- Productos más vendidos -->
+        <div class="top-products">
+            <div class="section-header">
+                <h2>Productos más vendidos</h2>
+                <button class="btn-refresh">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+            </div>
+            <div class="products-list">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Categoría</th>
+                            <th>Ventas</th>
+                            <th>Ingresos</th>
+                        </tr>
+                    </thead>
+                    <tbody id="top-products-body">
+                        <!-- Los productos se cargarán dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Últimas ventas y distribución -->
+    <div class="dashboard-bottom">
+        <!-- Últimas ventas -->
+        <div class="recent-sales">
+            <div class="section-header">
+                <h2>Últimas ventas</h2>
+                <a href="{% url 'pagos' %}" class="view-all">Ver todas <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="sales-list">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Cliente</th>
+                            <th>Fecha</th>
+                            <th>Productos</th>
+                            <th>Total</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recent-sales-body">
+                        <!-- Las ventas se cargarán dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Distribución de ventas -->
+        <div class="sales-distribution">
+            <div class="section-header">
+                <h2>Distribución de ventas</h2>
+            </div>
+            <div class="chart-container">
+                <canvas id="distribution-chart"></canvas>
+            </div>
+            <div class="distribution-legend" id="distribution-legend">
+                <!-- La leyenda se generará dinámicamente -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+<script src="{% static 'js/dashboard.js' %}"></script>
+<script>
+    localStorage.setItem('loginAttempts', '0');
+</script>
+{% endblock %}

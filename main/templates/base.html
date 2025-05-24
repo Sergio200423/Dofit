@@ -1,5 +1,6 @@
 {% load static %}
-
+{% block extra_css %}{% endblock %}
+{% block extra_js %}{% endblock %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,12 +11,13 @@
     <title>Gimnasio Dofit</title>
     <!-- Favicon -->
     <link rel="icon" href="data:,">
-    <link rel="shortcut icon" href="{% static 'img/dofit.jpg' %}" type="image/x-icon">
+    <link rel="shortcut icon" href="{% static 'img/IconoDofit.svg' %}" type="image/x-icon">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     
     <!-- Custom styles -->
     <link rel="stylesheet" href="{% static '/css/style.min.css'%}">
+    
     
 
     <!-- Icon Font Stylesheet -->
@@ -53,86 +55,58 @@
         <div class="sidebar-body">
             <ul class="sidebar-body-menu">
                 <li>
-                    <a class="active" href="{% url 'inicio' %}"><span class="icon home" aria-hidden="true"></span>Inicio</a>
+                    <a href="{% url 'dashboard_empleado' %}">
+                  <img src="/static/img/casa.png" alt="in" width="24">
+                  <span class="" aria-hidden="true"></span>&nbsp;&nbsp;  Inicio</span>
+                </a>
                 </li>
                 <li>
-                    <a class="show-cat-btn" href="./clientes.html">
-                        <span class="icon document" aria-hidden="true"></span>Clientes
-                        <span class="category__btn transparent-btn" title="Open list">
-                            <span class="sr-only">Open list</span>
-                            <span class="icon arrow-down" aria-hidden="true"></span>
-                        </span>
-                    </a>
-                    <ul class="cat-sub-menu">
-                        <li>
-                            <a href="{% url 'clientes' %}">Registro de Clientes</a>
-                        </li>
-
-                    </ul>
-                </li>
-                <li>
-                    <a class="show-cat-btn" href="./productos.html">
-                      <img src="/static/img/inventario-disponible.png" alt="in" width="28">
-                        <span class="" aria-hidden="true"></span>&nbsp;&nbsp;Productos
-                        <span class="category__btn transparent-btn" title="Open list">
-                            <span class="sr-only">Open list</span>
-                            <span class="icon arrow-down" aria-hidden="true"></span>
-                        </span>
-                    </a>
-                    <ul class="cat-sub-menu">
-                        <li>
-                            <a href="{% url 'productos' %}">Registro de productos</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a class="show-cat-btn" href="./pagos.html">
-                      <img src="/static/img/billetes-de-banco.png" alt="in" width="28">
-                        <span aria-hidden="true"></span>&nbsp;&nbsp;Pagos
-                        <span class="category__btn transparent-btn" title="Open list">
-                            <span class="sr-only">Open list</span>
-                            <span class="icon arrow-down" aria-hidden="true"></span>
-                        </span>
-                    </a>
-                    <ul class="cat-sub-menu">
-                        <li>
-                            <a href="{% url 'pagos' %}">Registro de pagos</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                    <a class="show-cat-btn" href="##">
-                      <img src="/static/img/tarjeta-de-miembro.png" alt="in" width="28  ">
-                        <span aria-hidden="true"></span>&nbsp;&nbsp;Membresías
-                        <span class="category__btn transparent-btn" title="Open list">
-                            <span class="sr-only">Open list</span>
-                            <span class="icon arrow-down" aria-hidden="true"></span>
-                        </span>
-                    </a>
-                    <ul class="cat-sub-menu">
-                        <li>
-                            <a href="pages.html">All pages</a>
-                        </li>
-                        <li>
-                            <a href="new-page.html">Add new page</a>
-                        </li>
-                    </ul>
-                </li>
-                <li>
-                  <a class="show-cat-btn" href="{% url 'maquinas'%}">
+                  <a href="{% url 'clientes' %}">
+                  <img src="/static/img/agregar-contacto.png" alt="in" width="28">
+                  <span class="" aria-hidden="true"></span>&nbsp;&nbsp;Clientes</span>
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'productos' %}">
+                  <img src="/static/img/inventario-disponible.png" alt="in" width="28">
+                  <span class="" aria-hidden="true"></span>&nbsp;&nbsp;Productos</span>
+                </a>
+            </li>          
+            <li>
+              <a href="{% url 'pagos' %}">
+                <img src="/static/img/billetes-de-banco.png" alt="in" width="28">
+                <span aria-hidden="true"></span>&nbsp;&nbsp;Pagos</span>
+              </a>
+            </li> 
+            <li>
+              <a href="{% url 'reportePago' %}">
+                <img src="/static/img/informes.png" alt="in" width="28">
+                <span aria-hidden="true"></span>&nbsp;&nbsp;Reporte Pagos</span>
+              </a>
+            </li>            
+            <li>
+              <a href="{% url 'membresias' %}">
+                <img src="/static/img/tarjeta-de-miembro.png" alt="in" width="28  ">
+                <span aria-hidden="true"></span>&nbsp;&nbsp;Membresías</span>
+              </a>
+          </li>
+              <li>
+                  <a href="{% url 'maquinas'%}">
                     <img src="/static/img/gym-equipment.png" alt="in" width="28  ">
-                      <span aria-hidden="true"></span>&nbsp;&nbsp;Máquinas
-                      <span class="category__btn transparent-btn" title="Open list">
-                          <span class="sr-only">Open list</span>
-                          <span class="icon arrow-down" aria-hidden="true"></span>
-                      </span>
+                    <span aria-hidden="true"></span>&nbsp;&nbsp;Máquinas</span>
                   </a>
-                  <ul class="cat-sub-menu">
-                      <li>
-                          <a href="{% url 'maquinas'%}">Nuestras máquinas</a>
-                      </li>
-
-                  </ul>
+              </li>
+              <li>
+                <a href="{% url 'empleados'%}" class="">
+                  <img src="/static/img/agregar-contacto.png" alt="in" width="28  ">
+                  <span aria-hidden="true"></span>&nbsp;&nbsp;Empleados</span>
+                </a>
+              </li>
+              <li>
+                  <a href="{% url 'asistencia'%}">
+                    <img src="/static/img/asistencia.png" alt="in" width="28  ">
+                    <span aria-hidden="true"></span>&nbsp;&nbsp;Asistencia</span>
+                  </a>
               </li>
             </ul>
             <span class="system-menu__title">system</span>
@@ -178,8 +152,6 @@
   <div class="container main-nav">
     <div class="main-nav-start">
       <div class="search-wrapper">
-        <i data-feather="search" aria-hidden="true"></i>
-        <input type="text" id="busqueda" name="busqueda" placeholder="Buscar ..." required>
       </div>
     </div>
     <div class="main-nav-end">

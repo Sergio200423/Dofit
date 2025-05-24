@@ -1,6 +1,7 @@
 from django.utils.timezone import now
 from main.models import Cliente, MembresiaCliente  # Importa MembresiaCliente
 from django.db.models.functions import Lower
+from datetime import datetime
 
 def crearCliente(nombre, fecha_nacimiento, sexo, fecha_registro, carnet_estudiante=None):
     """
@@ -44,6 +45,45 @@ def obtenerClientePorNombre(nombre_cliente):
     return Cliente.objects.filter(nombre_cliente=nombre_cliente).first()
 
 from django.db.models.functions import Lower
+
+def obtenerClientePorId(cliente_id):
+    """
+    Obtiene un cliente por su ID.
+    """
+    try:
+        return Cliente.objects.get(id_cliente=cliente_id)
+    except Cliente.DoesNotExist:
+        return None
+
+def actualizarCliente(cliente_id, nombre, sexo, fecha_nacimiento):
+    """
+    Actualiza los datos de un cliente.
+    """
+    cliente = obtenerClientePorId(cliente_id)
+    if not cliente:
+        return False, "No se encontró el cliente."
+
+    # Validar datos
+    if not nombre or not isinstance(nombre, str):
+        return False, "El nombre proporcionado no es válido."
+    if sexo not in [opcion[0] for opcion in Cliente._meta.get_field('sexo').choices]:
+        return False, "El sexo proporcionado no es válido."
+    try:
+        fecha_nacimiento = datetime.strptime(fecha_nacimiento, '%Y-%m-%d').date()
+    except ValueError:
+        return False, "La fecha de nacimiento no tiene un formato válido (YYYY-MM-DD)."
+
+    # Actualizar campos
+    cliente.nombre_cliente = nombre
+    cliente.sexo = sexo
+    cliente.fecha_nacimiento = fecha_nacimiento
+
+    # Guardar cambios
+    try:
+        cliente.save()
+        return True, "Cliente actualizado correctamente."
+    except Exception as e:
+        return False, f"Error al guardar los cambios: {str(e)}"
 
 
 def obtenerClientesConMembresiaActiva():

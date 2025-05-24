@@ -11,47 +11,51 @@
     <link rel="shortcut icon" href="{% static 'img/svg/gym2' %}" type="image/x-icon">
     <!-- Custom styles -->
     <link rel="stylesheet" href="{% static 'css/style.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/recuperarContra.css' %}">
 </head>
-<body>
+<body style="background: #fff;">
     <div class="layer"></div>
-    <main class="page-center">
-        <a href="{% url 'email_enviado' %}" style="display: flex; align-items: center; gap: 8px; text-decoration: none; color: inherit;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
-                <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
-            </svg>
-            <span>Volver atrás</span>
-        </a>
-        
-        
-        <article class="sign-up">
-            <h1 class="sign-up__title"><br>Nueva contraseña</h1>
-            <p class="sign-up__subtitle">Tu nueva contraseña debe ser diferente a todas tus antiguas contraseñas registradas</p>
-            <form class="sign-up-form form" action="{% url 'nueva_contraseña' %}" method="POST">
-            {% csrf_token %}
-                <label class="form-label-wrapper">
-                    <p class="form-label">Nueva contraseña</p>
-                    <input class="form-input" type="password" placeholder="Ingresa tu nueva contraseña" required name="contraseña">
-                    <p class="sign-up__subtitle" style="text-align: left; font-size: small;">Tiene que tener al menos 8 caracteres</p>
-                    <p class="form-label">Confirma tu contraseña</p>
-                    <input class="form-input" type="password" placeholder="Ingresa de nuevo tu contraseña" required name="confirmar_contraseña"> 
-                    <p class="sign-up__subtitle" style="text-align: left; font-size: small;">Ambas contraseñas deben de ser iguales</p>
-                </label>
-
-                <!--
-                <label class="form-label-wrapper">
-                    <p class="form-label">Password</p>
-                    <input class="form-input" type="password" placeholder="Enter your password" required>
-                </label>
-            -->
-                <button type="submit" class="form-btn primary-default-btn transparent-btn">Cambiar contraseña</button>
-            </form>
-        </article>
-    </main>
+    <div class="page-wrapper">
+        <main class="page-content">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="card-title">Nueva contraseña</h1>
+                </div>
+                <div class="card-body">
+                    {% if error_contra_igual %}
+                        <div id="alert-message" style="display:block; background-color:rgba(239,68,68,0.1); color:var(--danger-color); border:1px solid var(--danger-color); border-radius:0.375rem; padding:0.75rem 1rem; margin-bottom:1rem; font-weight:500;">
+                            <i class="fas fa-exclamation-triangle" style="margin-right:8px;"></i>
+                            La nueva contraseña no puede ser igual a la actual.
+                        </div>
+                    {% endif %}
+                    <form class="sign-up-form form" action="{% url 'nueva_contraseña' %}" method="POST">
+                    {% csrf_token %}
+                        <label class="form-label-wrapper">
+                            <p class="form-label">Nueva contraseña</p>
+                            <input class="form-input" type="password" placeholder="Ingresa tu nueva contraseña" required name="contraseña">
+                            <p class="sign-up__subtitle" style="text-align: left; font-size: small;">Tiene que tener al menos 8 caracteres</p>
+                            <p class="form-label">Confirma tu contraseña</p>
+                            <input class="form-input" type="password" placeholder="Ingresa de nuevo tu contraseña" required name="confirmar_contraseña"> 
+                            <p class="sign-up__subtitle" style="text-align: left; font-size: small;">Ambas contraseñas deben de ser iguales</p>
+                        </label>
+                        <button type="submit" class="form-btn primary-default-btn transparent-btn">Cambiar contraseña</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
     <!-- Chart library -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
     <!-- Icons library -->
     <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.29.0/dist/feather.min.js"></script>
     <!-- Custom scripts -->
     <script src="{% static 'js/script.js' %}"></script>
+    <script>
+    // Al cambiar la contraseña, resetea los intentos de login
+    document.addEventListener('DOMContentLoaded', function() {
+        localStorage.setItem('loginAttempts', '0');
+    });
+    </script>
 </body>
 </html>

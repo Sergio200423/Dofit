@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+
+# Cargar variables de entorno desde .env
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -78,8 +82,15 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 # filepath: c:\Users\sergi\DOFIT\elegant\myproject\myproject\settings.py
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT', '5432'),
+        'OPTIONS': {
+            'sslmode': 'require',
+        },
     }
 }
 
@@ -136,3 +147,11 @@ EMAIL_PORT = 587  # Puerto para conexiones TLS
 EMAIL_USE_TLS = True  # Habilitar TLS
 EMAIL_HOST_USER = 'sergiodanielxd2004@gmail.com'  # Tu correo electrónico
 EMAIL_HOST_PASSWORD = 'gptbzdykhrsqjnci'  # Contraseña de tu correo
+
+# Configuración para archivos estáticos y multimedia
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

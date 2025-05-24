@@ -1,0 +1,329 @@
+{% extends 'base.html' %}
+{% block title %}Máquinas en Reparación{% endblock %}
+{% load static %}
+
+{% block content %}
+<style>
+  .card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+  }     
+
+  .card-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .badge-reparacion {
+    background-color: #ffc107;
+    color: #212529;
+  }
+  
+  .badge-mal_estado {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .badge-mantenimiento {
+    background-color: #17a2b8;
+    color: white;
+  }
+  
+  .badge-otra {
+    background-color: #6c757d;
+    color: white;
+  }
+  
+  .inactividad-info {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    margin-top: 15px;
+    border-left: 4px solid #dc3545;
+  }
+  
+  .progress {
+    height: 10px;
+    margin-top: 5px;
+  }
+  
+  .days-remaining {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-top: 5px;
+  }
+  
+  .filter-section {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+</style>
+
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Máquinas en Reparación y Mantenimiento</h2>
+    <a href="{% url 'maquinas' %}" class="btn btn-primary">Volver a Todas las Máquinas</a>
+  </div>
+  
+  <!-- Sección de filtros -->
+  <div class="filter-section">
+    <h5>Filtrar por:</h5>
+    <div class="row">
+      <div class="col-md-4 mb-2">
+        <select id="filter-reason" class="form-select">
+          <option value="all">Todas las razones</option>
+          <option value="reparacion">En Reparación</option>
+          <option value="mal_estado">Mal Estado</option>
+          <option value="mantenimiento">Mantenimiento Preventivo</option>
+          <option value="otra">Otra Razón</option>
+        </select>
+      </div>
+      <div class="col-md-4 mb-2">
+        <select id="filter-date" class="form-select">
+          <option value="all">Todas las fechas</option>
+          <option value="this-week">Esta semana</option>
+          <option value="this-month">Este mes</option>
+          <option value="overdue">Vencidas</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <button id="apply-filters" class="btn btn-primary w-100">Aplicar Filtros</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Resumen de máquinas inactivas -->
+  <div class="row mb-4">
+    <div class="col-md-3">
+      <div class="card text-white bg-warning">
+        <div class="card-body">
+          <h5 class="card-title">En Reparación</h5>
+          <p class="card-text display-4">{{ maquinas_inactivas|dictsort:"razon_inactividad"|dictsortreversed:"razon_inactividad"|first }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-white bg-danger">
+        <div class="card-body">
+          <h5 class="card-title">Mal Estado</h5>
+          <p class="card-text display-4">{{ maquinas_inactivas|dictsort:"razon_inactividad"|dictsortreversed:"razon_inactividad"|last }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-white bg-info">
+        <div class="card-body">
+          <h5 class="card-title">Mantenimiento</h5>
+          <p class="card-text display-4">{{ maquinas_inactivas|dictsort:"razon_inactividad"|first }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-white bg-secondary">
+        <div class="card-body">
+          <h5 class="card-title">Total Inactivas</h5>
+          <p class="card-text display-4">{{ maquinas_inactivas|length }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row" id="maquinas-container">
+    {% for maquina in maquinas_inactivas %}
+    <div class="col-md-4 mb-4 maquina-card" 
+         data-razon="{{ maquina.razon_inactividad }}" 
+         data-fecha="{{ maquina.fecha_inactividad|date:'Y-m-d' }}">
+      <div class="card">
+        <div class="bg-image hover-overlay">
+          {% if maquina.imagen %}
+            <img src="{{ maquina.imagen.url }}" alt="{{ maquina.nombre }}">
+          {% else %}
+            <img src="{% static 'img/default-machine.jpg' %}" alt="{{ maquina.nombre }}">
+          {% endif %}
+          <div class="mask" style="background-color: rgba(0, 0, 0, 0.3)">
+            <div class="d-flex justify-content-center align-items-center h-100">
+              <span class="badge badge-{{ maquina.razon_inactividad }} p-2">{{ maquina.get_razon_inactividad_display }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{ maquina.nombre }}</h5>
+          <p class="card-text"><strong>Cantidad:</strong> {{ maquina.cantidad }}</p>
+          
+          <div class="inactividad-info">
+            <p><strong>Razón:</strong> {{ maquina.get_razon_inactividad_display }}</p>
+            {% if maquina.fecha_inactividad %}
+            <p><strong>Inactiva desde:</strong> {{ maquina.fecha_inactividad|date:"d/m/Y" }}</p>
+            {% endif %}
+            
+            {% if maquina.fecha_estimada_reparacion %}
+            <p>
+              <strong>Fecha estimada de reparación:</strong> {{ maquina.fecha_estimada_reparacion|date:"d/m/Y" }}
+              
+              {% with dias_restantes=maquina.fecha_estimada_reparacion|timeuntil:now %}
+              <div class="progress">
+                {% if dias_restantes < 0 %}
+                <div class="progress-bar bg-danger" role="progressbar" style="width: 100%"></div>
+                {% else %}
+                <div class="progress-bar bg-success" role="progressbar" style="width: 50%"></div>
+                {% endif %}
+              </div>
+              <div class="days-remaining">
+                {% if dias_restantes < 0 %}
+                <span class="text-danger">Vencida hace {{ dias_restantes|abs }} días</span>
+                {% else %}
+                <span class="text-success">Faltan {{ dias_restantes }} días</span>
+                {% endif %}
+              </div>
+              {% endwith %}
+            </p>
+            {% endif %}
+            
+            {% if maquina.notas_inactividad %}
+            <p><strong>Notas:</strong> {{ maquina.notas_inactividad }}</p>
+            {% endif %}
+          </div>
+          
+          <div class="mt-3">
+            <a href="#" class="btn btn-primary edit-btn" data-bs-toggle="modal" data-bs-target="#editModal" data-id="{{ maquina.id_maquina }}">Editar</a>
+            <a href="#" class="btn btn-success mark-active-btn" data-id="{{ maquina.id_maquina }}">Marcar como Activa</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+      <div class="alert alert-info">
+        No hay máquinas inactivas registradas.
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Modal para marcar como activa -->
+<div class="modal fade" id="markActiveModal" tabindex="-1" aria-labelledby="markActiveModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="markActiveModalLabel">Confirmar Activación</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>¿Estás seguro de que deseas marcar esta máquina como activa? Esto indicará que la máquina está nuevamente disponible para su uso.</p>
+        <form id="markActiveForm" method="post" action="{% url 'editar_maquina' %}">
+          {% csrf_token %}
+          <input type="hidden" id="maquina_id_active" name="maquina_id" value="">
+          <input type="hidden" name="estado" value="activa">
+          <!-- Campos ocultos que se llenarán con JavaScript -->
+          <input type="hidden" id="nombre_active" name="nombre" value="">
+          <input type="hidden" id="cantidad_active" name="cantidad" value="">
+          <input type="hidden" id="descripcion_active" name="descripcion" value="">
+          
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="confirm_repair" required>
+            <label class="form-check-label" for="confirm_repair">
+              Confirmo que la máquina ha sido reparada y está en condiciones de uso
+            </label>
+          </div>
+          
+          <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-success">Confirmar Activación</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Manejar botones para marcar como activa
+    document.querySelectorAll('.mark-active-btn').forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const maquinaId = this.getAttribute('data-id');
+        
+        // Obtener datos de la máquina desde la tarjeta
+        const card = this.closest('.maquina-card');
+        const nombre = card.querySelector('.card-title').textContent;
+        const cantidad = card.querySelector('.card-text:nth-child(2)').textContent.split(':')[1].trim();
+        const descripcion = card.querySelector('.inactividad-info').textContent;
+        
+        // Llenar el formulario
+        document.getElementById('maquina_id_active').value = maquinaId;
+        document.getElementById('nombre_active').value = nombre;
+        document.getElementById('cantidad_active').value = cantidad;
+        document.getElementById('descripcion_active').value = descripcion;
+        
+        // Mostrar el modal
+        const modal = new bootstrap.Modal(document.getElementById('markActiveModal'));
+        modal.show();
+      });
+    });
+    
+    // Filtrado de máquinas
+    document.getElementById('apply-filters').addEventListener('click', function() {
+      const reasonFilter = document.getElementById('filter-reason').value;
+      const dateFilter = document.getElementById('filter-date').value;
+      
+      document.querySelectorAll('.maquina-card').forEach(card => {
+        let showByReason = true;
+        let showByDate = true;
+        
+        // Filtrar por razón
+        if (reasonFilter !== 'all') {
+          showByReason = card.getAttribute('data-razon') === reasonFilter;
+        }
+        
+        // Filtrar por fecha
+        if (dateFilter !== 'all') {
+          const fechaStr = card.getAttribute('data-fecha');
+          const fecha = new Date(fechaStr);
+          const hoy = new Date();
+          
+          if (dateFilter === 'this-week') {
+            // Esta semana
+            const inicioSemana = new Date(hoy);
+            inicioSemana.setDate(hoy.getDate() - hoy.getDay());
+            showByDate = fecha >= inicioSemana;
+          } else if (dateFilter === 'this-month') {
+            // Este mes
+            showByDate = fecha.getMonth() === hoy.getMonth() && fecha.getFullYear() === hoy.getFullYear();
+          } else if (dateFilter === 'overdue') {
+            // Vencidas (fecha estimada de reparación pasada)
+            const fechaEstimada = card.querySelector('.fecha-estimada');
+            if (fechaEstimada) {
+              const fechaEstimadaStr = fechaEstimada.getAttribute('data-fecha');
+              const fechaEstimadaObj = new Date(fechaEstimadaStr);
+              showByDate = fechaEstimadaObj < hoy;
+            } else {
+              showByDate = false;
+            }
+          }
+        }
+        
+        // Mostrar u ocultar la tarjeta
+        if (showByReason && showByDate) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
+
+{% endblock %}

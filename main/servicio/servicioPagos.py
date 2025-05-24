@@ -39,8 +39,8 @@ def calcularTotalProductos(productos):
     for item in productos:
         producto = item.get('producto')
         cantidad = item.get('cantidad', 0)
-        # Validar existencia del producto
-        valido, mensaje = validarExistencia(producto, cantidad)
+        # Validar existencia del producto (usar id_producto, no el objeto)
+        valido, mensaje = validarExistencia(producto.id_producto, cantidad)
         if not valido:
             raise ValueError(mensaje)
         total += producto.precio * cantidad
@@ -125,3 +125,37 @@ def registrarPago(tipo, fecha, cliente, productos=None, renovar_membresia=False)
     except Exception as e:
         print(f"Error al registrar el pago: {str(e)}")
         return False, f"Error al registrar el pago: {str(e)}"
+
+def registrarPagoMembresia(fecha, cliente, membresia_id, cantidad=1):
+    """
+    Registra un pago de membresía para un cliente.
+    :param fecha: Fecha del pago (datetime.date o str)
+    :param cliente: Objeto Cliente
+    :param membresia_id: ID de la membresía a registrar
+    :param cantidad: Cantidad de membresías (por defecto 1, normalmente siempre 1)
+    :return: (bool, str) -> True si el pago y la membresía se registraron correctamente, False y mensaje de error en caso contrario
+    """
+    from main.repositorio import repositorioMembresia as rm
+    try:
+        # Validar y convertir fecha si es string
+        if isinstance(fecha, str):
+            fecha = datetime.strptime(fecha, "%Y-%m-%d").date()
+        # Validar existencia de la membresía
+        membresia = rm.obtenerMembresias().filter(id_membresia=membresia_id).first()
+        if not membresia:
+            return False, f"No se encontró la membresía con ID {membresia_id}."
+        # Calcular el total a pagar
+        total_a_pagar = membresia.precio * cantidad
+        # Crear el pago
+        pago = crearPago(tipo="Membresia", fecha=fecha, cliente=cliente, total_a_pagar=total_a_pagar)
+        # Registrar la membresía para el cliente
+        resultado_membresia = RepositorioMembresiaCliente.crear_membresia_cliente(
+            id_cliente=cliente.id_cliente,
+            id_membresia=membresia_id,
+            fecha_inicio=fecha
+        )
+        if not resultado_membresia["success"]:
+            return False, resultado_membresia["error"]
+        return True, f"Pago de membresía registrado exitosamente. Total a pagar: ${total_a_pagar:.2f}"
+    except Exception as e:
+        return False, f"Error al registrar el pago de membresía: {str(e)}"

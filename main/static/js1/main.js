@@ -1,4 +1,4 @@
- AOS.init({
+AOS.init({
  	duration: 800,
  	easing: 'slide',
  	once: false
@@ -280,30 +280,35 @@ jQuery(document).ready(function($) {
 
 	// navigation
 	var OnePageNavigation = function() {
-		var navToggler = $('.site-menu-toggle');
-		$("body").on("click", ".main-menu li a[href^='#'], .smoothscroll[href^='#'], .site-mobile-menu .site-nav-wrap li a", function(e) {
-		  var hash = this.hash;
-	  
-		  // Excluir enlaces que no sean hashes válidos
-		  if (!hash || hash === '#' || $(this).attr('href').startsWith("{% url")) {
-			return; // Permite que el navegador maneje el enlace normalmente
-		  }
-	  
-		  e.preventDefault();
-	  
-		  // Verifica si el hash es válido y si el elemento existe
-		  if ($(hash).length) {
-			$('html, body').animate({
-			  'scrollTop': $(hash).offset().top
-			}, 600, 'easeInOutExpo', function() {
-			  window.location.hash = hash;
-			});
-		  } else {
-			console.warn("Elemento objetivo no encontrado o hash inválido:", hash);
-		  }
-		});
-	  };
-	  OnePageNavigation();
+    var navToggler = $('.site-menu-toggle, .js-menu-toggle');
+    $("body").on("click", ".main-menu li a[href^='#'], .smoothscroll[href^='#'], .site-mobile-menu .site-nav-wrap li a", function(e) {
+      var hash = this.hash;
+  
+      // Excluir enlaces que no sean hashes válidos
+      if (!hash || hash === '#' || $(this).attr('href').startsWith("{% url")) {
+        return; // Permite que el navegador maneje el enlace normalmente
+      }
+  
+      e.preventDefault();
+  
+      // Verifica si el hash es válido y si el elemento existe
+      if ($(hash).length) {
+        $('html, body').animate({
+          'scrollTop': $(hash).offset().top
+        }, 600, 'easeInOutExpo', function() {
+          window.location.hash = hash;
+        });
+      } else {
+        console.warn("Elemento objetivo no encontrado o hash inválido:", hash);
+      }
+      // Cierra el menú móvil si está abierto
+      if ($('body').hasClass('offcanvas-menu')) {
+        $('body').removeClass('offcanvas-menu');
+        navToggler.removeClass('active');
+      }
+    });
+  };
+  OnePageNavigation();
 
   var siteScroll = function() {
 

@@ -2,15 +2,63 @@ from django.db import models
 from datetime import timedelta, date
 from django.utils import timezone
 
+class Rol(models.Model):
+    id_rol = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=50, unique=True)
+    descripcion = models.TextField(null=True, blank=True)
+    # Relación con Permiso ahora será a través de RolPermiso
+
+    def __str__(self):
+        return self.nombre
+
+class Permiso(models.Model):
+    id_permiso = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=50, unique=True)
+    descripcion = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.nombre
+
+class RolPermiso(models.Model):
+    rol = models.ForeignKey(Rol, on_delete=models.CASCADE, related_name='rol_permisos')
+    permiso = models.ForeignKey(Permiso, on_delete=models.CASCADE, related_name='permiso_roles')
+
+    class Meta:
+        unique_together = ('rol', 'permiso')
+        verbose_name = 'Rol-Permiso'
+        verbose_name_plural = 'Roles-Permisos'
+
+    def __str__(self):
+        return f"{self.rol.nombre} - {self.permiso.nombre}"
+
+class Usuario(models.Model):
+    id_usuario = models.AutoField(primary_key=True)
+    nombre_usuario = models.CharField(max_length=50, unique=True)
+    correo = models.EmailField(max_length=100, unique=True, null=True, blank=True)  # Nuevo campo correo electrónico
+    contra = models.CharField(max_length=128)  # Hasheada
+    n_intentos = models.IntegerField(default=0) #Intentos de inicio de sesion
+    rol = models.ForeignKey('Rol', on_delete=models.SET_NULL, null=True, related_name='usuarios')
+
+    def __str__(self):
+        return self.nombre_usuario
+
 class Empleado(models.Model):
     id_empleado = models.AutoField(primary_key=True)
+    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, related_name='empleado', null=True, blank=True, unique=True)
     nombre_empleado = models.CharField(max_length=50, null=True, blank=True)
     turno = models.CharField(max_length=10, null=True, blank=True)
     salario = models.FloatField(null=True, blank=True)
-
+    # Nota: Controla en la lógica de negocio que cada usuario tenga solo un perfil (Empleado o Administrador)
     def __str__(self):
         return self.nombre_empleado
 
+class Administrador(models.Model):
+    id_administrador = models.AutoField(primary_key=True)
+    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, related_name='administrador', null=True, blank=True, unique=True)
+    nombre_administrador = models.CharField(max_length=50, null=True, blank=True)
+    # Nota: Controla en la lógica de negocio que cada usuario tenga solo un perfil (Empleado o Administrador)
+    def __str__(self):
+        return self.nombre_administrador or self.usuario.nombre_usuario
 
 class TipoMembresia(models.Model):
     id_membresia = models.AutoField(primary_key=True)
@@ -73,11 +121,11 @@ class Producto(models.Model):
 
     TIPOS = [
         ('Barra energetica', 'Barra energética'),
-        ('proteina', 'Proteína'),
-        ('vitaminas', 'Vitaminas'),
-        ('suplementos', 'Suplementos'),
-        ('bebidas', 'Bebidas'),
-        ('caramelos', 'Caramelos'),
+        ('Proteina', 'Proteína'),
+        ('Vitaminas', 'Vitaminas'),
+        ('Suplementos', 'Suplementos'),
+        ('Bebidas', 'Bebidas'),
+        ('Caramelos', 'Caramelos'),
     ]
 
     id_producto = models.AutoField(primary_key=True)
@@ -88,6 +136,7 @@ class Producto(models.Model):
     existencia = models.IntegerField(null=True, blank=True)
     tipo = models.CharField(max_length=20, choices=TIPOS, default="suplementos")
     estado = models.CharField(max_length=30, choices=ESTADOS, default='Disponible')
+    imagen = models.ImageField(upload_to='productos/', null=True, blank=True)
 
     def __str__(self):
         return self.nombre_producto
@@ -171,11 +220,18 @@ class PagoProducto(models.Model):
     def __str__(self):
         return f"PagoProducto {self.id_pago_producto} - {self.cantidad} x {self.producto.nombre_producto}"
 
-
 class Maquina(models.Model):
     ESTADOS = [
         ('activa', 'Activa'),
         ('inactiva', 'Inactiva'),
+    ]
+    
+    RAZON_INACTIVIDAD = [
+        ('reparacion', 'En Reparación'),
+        ('mal_estado', 'Mal Estado'),
+        ('mantenimiento', 'Mantenimiento Preventivo'),
+        ('otra', 'Otra Razón'),
+        ('no_aplica', 'No Aplica'),
     ]
 
     id_maquina = models.AutoField(primary_key=True)
@@ -183,6 +239,14 @@ class Maquina(models.Model):
     cantidad = models.IntegerField(null=True, blank=True)
     estado = models.CharField(max_length=10, choices=ESTADOS, default='activa')
     descripcion = models.TextField(null=True, blank=True)
+    imagen = models.ImageField(upload_to='maquinas/', null=True, blank=True)
+    
+    # Nuevos campos para máquinas inactivas
+    razon_inactividad = models.CharField(max_length=20, choices=RAZON_INACTIVIDAD, default='no_aplica')
+    fecha_inactividad = models.DateField(null=True, blank=True)
+    notas_inactividad = models.TextField(null=True, blank=True)
+    fecha_estimada_reparacion = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.nombre} - {self.estado}"
+

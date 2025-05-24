@@ -1,0 +1,23 @@
+.back-button-container {
+    margin-bottom: 2rem;
+    margin-left: 2.5rem;
+}
+.back-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: #222;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: color 0.2s;
+}
+.back-button:hover {
+    color: #0077cc;
+}
+.back-button svg {
+    margin-right: 6px;
+    background: none;
+    border-radius: 50%;
+    display: inline-block;
+}

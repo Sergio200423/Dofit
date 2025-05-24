@@ -1,6 +1,6 @@
 from main.models import Producto
 
-def crearProducto(nombre_producto, precio, descripcion, fecha_ingreso, existencia, tipo, estado):
+def crearProducto(nombre_producto, precio, descripcion, fecha_ingreso, tipo, existencia, imagen=None):
     """
     Crea un nuevo producto en la base de datos.
     :param nombre_producto: Nombre del producto
@@ -19,7 +19,8 @@ def crearProducto(nombre_producto, precio, descripcion, fecha_ingreso, existenci
         fecha_ingreso=fecha_ingreso,
         existencia=existencia,
         tipo=tipo,
-        estado=estado
+        estado='disponible',
+        imagen=imagen,  # Guardar la imagen directamente en el create
     )
     return producto
 
@@ -36,3 +37,64 @@ def obtenerTiposDeProductos():
     :return: Lista de tipos de productos
     """
     return [tipo[1] for tipo in Producto.TIPOS]
+
+def obtenerProductosPorTipo(tipo_producto):
+    """
+    Obtiene todos los productos de un tipo específico.
+    :param tipo_producto: Tipo de producto (por ejemplo, 'Barra energética', 'Proteína', etc.)
+    :return: QuerySet de objetos Producto filtrados por tipo
+    """
+    return Producto.objects.filter(tipo=tipo_producto)
+
+def obtenerProductosBarraEnergetica():
+    """
+    Obtiene todos los productos del tipo 'Barra energética'.
+    :return: QuerySet de objetos Producto
+    """
+    return obtenerProductosPorTipo('Barra energética')
+
+def obtenerProductosProteina():
+    """
+    Obtiene todos los productos del tipo 'Proteína'.
+    :return: QuerySet de objetos Producto
+    """
+    return obtenerProductosPorTipo('Proteína')
+
+def obtenerProductosVitaminas():
+    """
+    Obtiene todos los productos del tipo 'Vitaminas'.
+    :return: QuerySet de objetos Producto
+    """
+    return obtenerProductosPorTipo('Vitaminas')
+
+def obtenerProductosSuplementos():
+    """
+    Obtiene todos los productos del tipo 'Suplementos'.
+    :return: QuerySet de objetos Producto
+    """
+    return obtenerProductosPorTipo('Suplementos')
+
+def obtenerProductosBebidas():
+    """
+    Obtiene todos los productos del tipo 'Bebidas'.
+    :return: QuerySet de objetos Producto
+    """
+    return obtenerProductosPorTipo('Bebidas')
+
+def obtenerProductosCaramelos():
+    """
+    Obtiene todos los productos del tipo 'Caramelos'.
+    :return: QuerySet de objetos Producto
+    """
+    return obtenerProductosPorTipo('Caramelos')
+
+def obtenerProductoPorId(id_producto):
+    """
+    Obtiene un producto específico por su ID.
+    :param id_producto: ID del producto
+    :return: Objeto Producto o None si no se encuentra
+    """
+    try:
+        return Producto.objects.get(id_producto=id_producto)
+    except Producto.DoesNotExist:
+        return None

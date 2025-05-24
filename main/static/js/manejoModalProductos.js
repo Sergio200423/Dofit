@@ -1,0 +1,1 @@
+// Archivo eliminado: Este archivo ya no debe usarse. Toda la lógica de modales de productos está en registrarProducto.js

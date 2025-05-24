@@ -1,7 +1,6 @@
-{%load static%}
-<!-- filepath: c:\Users\sergi\DOFIT\elegant\myproject\main\templates\signup.html -->
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,37 +9,76 @@
     <!-- Favicon -->
     <link rel="shortcut icon" href="{% static 'img/svg/gym2.svg' %}" type="image/x-icon">
     <!-- Custom styles -->
-    <link rel="stylesheet" href="{% static 'css/style.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/recuperarContra.css' %}">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="layer"></div>
-    <main class="page-center">
-        <a href="{% url 'signin' %}" style="display: flex; align-items: center; gap: 8px; text-decoration: none; color: inherit;">
-            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-left-circle-fill" viewBox="0 0 16 16">
-                <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0m3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
-            </svg>
-            <span>Volver atrás</span>
-        </a>
-        
-        
-        <article class="sign-up">
-            <h1 class="sign-up__title"><br>Cambio de contraseña</h1>
-            <p class="sign-up__subtitle">Ingresa tu correo electrónico y te enviaremos un mensaje con instrucciones para cambiar tu contraseña</p>
-            <form class="sign-up-form form" action="{% url 'recuperar_contraseña' %}" method="POST">
-            {% csrf_token %}
-                <label class="form-label-wrapper">
-                    <p class="form-label">Correo electrónico</p>
-                    <input class="form-input" type="email" placeholder="Enter your email" required name="correo">
-                </label>
-                <button class="form-btn primary-default-btn transparent-btn">Enviar</button>
-            </form>
-        </article>
-    </main>
-    <!-- Chart library -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0"></script>
-    <!-- Icons library -->
-    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.29.0/dist/feather.min.js"></script>
-    <!-- Custom scripts -->
-    <script src="{% static 'js/script.js' %}"></script>
+    <div class="page-wrapper">
+        <main class="page-content">
+            <div class="back-button-container">
+                <a href="{% url 'login' %}" class="back-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5z"/>
+                    </svg>
+                    <span>Volver atrás</span>
+                </a>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="card-title">Cambio de contraseña</h1>
+                    <p class="card-subtitle">Usuarios y sus correos electrónicos registrados:</p>
+                </div>
+                
+                <div class="card-body">
+                    <form id="form-correos" method="post" action="{% url 'recuperar_contraseña' %}">
+                        {% csrf_token %}
+                        <div class="user-list">
+                            {% for usuario in usuarios %}
+                                <div class="user-item {% if not usuario.correo %}disabled{% endif %}">
+                                    <label class="user-checkbox">
+                                        <input type="checkbox" name="correo" value="{{ usuario.correo }}" {% if not usuario.correo %}disabled{% endif %} required>
+                                        <div class="user-info">
+                                            <span class="user-name">{{ usuario.nombre_usuario }}</span>
+                                            {% if usuario.correo %}
+                                                <span class="user-email">{{ usuario.correo }}</span>
+                                            {% else %}
+                                                <span class="user-email no-email">(sin correo)</span>
+                                            {% endif %}
+                                        </div>
+                                    </label>
+                                </div>
+                            {% empty %}
+                                <div class="empty-state">No hay usuarios registrados.</div>
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="form-actions">
+                            <button id="btn-enviar" class="btn-submit email-button" type="submit">
+                                <div class="email-icon-container">
+                                    <div class="email-icon-circle">
+                                        <div class="email-icon">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <rect x="2" y="4" width="20" height="16" rx="2" />
+                                                <path d="M22 7l-10 7L2 7" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                    <div class="email-circle-outer"></div>
+                                </div>
+                                <span>Enviar</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{% static 'js/recuperarContra.js' %}"></script>
 </body>
 </html>

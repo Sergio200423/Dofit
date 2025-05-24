@@ -72,9 +72,7 @@
 .icon-th-list:before {
   content: "\f00b";
 }
-.icon-check:before {
-  content: "\f00c";
-}
+
 .icon-close:before {
   content: "\f00d";
 }

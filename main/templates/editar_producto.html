@@ -1,0 +1,95 @@
+<!-- Modal para editar un producto existente -->
+<div class="modal fade" id="editarProductoModal" tabindex="-1" aria-labelledby="editarProductoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editarProductoModalLabel">Editar Producto</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editarProductoForm" method="POST"  enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="hidden" id="editar_producto_id" name="producto_id" value="">
+          
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="editar_nombre_producto" class="form-label">Nombre del Producto</label>
+              <input type="text" class="form-control" id="editar_nombre_producto" name="nombre_producto" required>
+            </div>
+            <div class="col-md-6">
+              <label for="editar_precio" class="form-label">Precio ($)</label>
+              <input type="number" class="form-control" id="editar_precio" name="precio" step="0.01" min="0" required>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="editar_descripcion" class="form-label">Descripción</label>
+            <textarea class="form-control" id="editar_descripcion" name="descripcion" rows="3" required></textarea>
+          </div>
+          
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label for="editar_tipo" class="form-label">Tipo</label>
+              <select class="form-select" id="editar_tipo" name="tipo" required>
+                <option value="" disabled>Seleccionar tipo</option>
+                <option value="Suplemento">Suplemento</option>
+                <option value="Equipamiento">Equipamiento</option>
+                <option value="Ropa">Ropa</option>
+                <option value="Accesorios">Accesorios</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="editar_existencia" class="form-label">Existencia</label>
+              <input type="number" class="form-control" id="editar_existencia" name="existencia" min="0" required>
+            </div>
+            <div class="col-md-4">
+              <label for="editar_estado" class="form-label">Estado</label>
+              <select class="form-select" id="editar_estado" name="estado" required>
+                <option value="En Stock">En Stock</option>
+                <option value="Pocas Unidades">Pocas Unidades</option>
+                <option value="Agotado">Agotado</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="mb-4">
+            <label class="form-label">Imagen del Producto</label>
+            <div class="imagen-actual mb-2" id="imagenActualContainer">
+              <p class="mb-1">Imagen actual:</p>
+              <img id="imagenActual" src="#" alt="Imagen actual" class="img-thumbnail" style="max-height: 150px;">
+            </div>
+            
+            <div class="form-check mb-2">
+              <input class="form-check-input" type="checkbox" id="cambiarImagen" name="cambiar_imagen">
+              <label class="form-check-label" for="cambiarImagen">
+                Cambiar imagen
+              </label>
+            </div>
+            
+            <div class="imagen-upload-container" id="editarImagenContainer" style="display: none;">
+              <div class="imagen-preview-container mb-2" id="editarImagenPreviewContainer" style="display: none;">
+                <img id="editarImagenPreview" src="#" alt="Vista previa" class="img-thumbnail" style="max-height: 200px;">
+                <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1" id="editarEliminarImagen">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+              <div class="imagen-upload-area" id="editarImagenUploadArea">
+                <input type="file" class="form-control" id="editar_imagen" name="imagen" accept="image/*" style="display: none;">
+                <div class="text-center p-4 border border-dashed rounded">
+                  <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-2"></i>
+                  <p class="mb-1">Arrastra una imagen aquí o haz clic para seleccionar</p>
+                  <p class="small text-muted">Formatos aceptados: JPG, PNG, GIF (Max: 5MB)</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

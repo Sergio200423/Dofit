@@ -1,0 +1,447 @@
+{% extends 'base.html' %}
+{% block title %}Gestión de Empleados - Gimnasio Dofit{% endblock %}
+{% load static %}
+
+{% block content %}
+<style>
+  .empleados-container {
+    padding: 20px;
+    background-color: #f5f5f5;
+    min-height: 100vh;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+
+  .header h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+  }
+
+  .btn-agregar {
+    background-color: #0066ff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-agregar:hover {
+    background-color: #0052cc;
+  }
+
+  .filtros {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .filtros-titulo {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: #333;
+  }
+
+  .filtros-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .filtro-grupo {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .filtro-label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555;
+  }
+
+  .filtro-select, .filtro-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  .filtro-acciones {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+  }
+
+  .btn-filtrar {
+    background-color: #0066ff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-filtrar:hover {
+    background-color: #0052cc;
+  }
+
+  .btn-limpiar {
+    background-color: #f5f5f5;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-limpiar:hover {
+    background-color: #e0e0e0;
+  }
+
+  .tabla-empleados {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .tabla-empleados th {
+    background-color: #f0f0f0;
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    color: #333;
+    border-bottom: 2px solid #ddd;
+  }
+
+  .tabla-empleados td {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+  }
+
+  .tabla-empleados tr:last-child td {
+    border-bottom: none;
+  }
+
+  .tabla-empleados tr:hover {
+    background-color: #f9f9f9;
+  }
+
+  .empleado-foto {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+  }
+
+  .empleado-nombre {
+    display: flex;
+    align-items: center;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .badge-activo {
+    background-color: #d4edda;
+    color: #155724;
+  }
+
+  .badge-inactivo {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+
+  .badge-admin {
+    background-color: #cce5ff;
+    color: #004085;
+  }
+
+  .badge-recepcion {
+    background-color: #d1ecf1;
+    color: #0c5460;
+  }
+
+  .badge-entrenador {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+
+  .badge-mantenimiento {
+    background-color: #e2e3e5;
+    color: #383d41;
+  }
+
+  .badge-limpieza {
+    background-color: #f8f9fa;
+    color: #212529;
+    border: 1px solid #dee2e6;
+  }
+
+  .acciones {
+    display: flex;
+    gap: 5px;
+  }
+
+  .btn-accion {
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .btn-ver {
+    background-color: #e2e3e5;
+    color: #383d41;
+    border: 1px solid #d6d8db;
+  }
+
+  .btn-ver:hover {
+    background-color: #d6d8db;
+  }
+
+  .btn-editar {
+    background-color: #cce5ff;
+    color: #004085;
+    border: 1px solid #b8daff;
+  }
+
+  .btn-editar:hover {
+    background-color: #b8daff;
+  }
+
+  .btn-activar {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+
+  .btn-activar:hover {
+    background-color: #c3e6cb;
+  }
+
+  .btn-desactivar {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+
+  .btn-desactivar:hover {
+    background-color: #f5c6cb;
+  }
+
+  .btn-password {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+  }
+
+  .btn-password:hover {
+    background-color: #ffeeba;
+  }
+
+  .sin-resultados {
+    text-align: center;
+    padding: 30px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    color: #666;
+    font-size: 16px;
+  }
+
+  /* Mensajes de alerta */
+  .alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+  }
+
+  .alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+
+  .alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .filtros-form {
+      flex-direction: column;
+    }
+    
+    .filtro-grupo {
+      width: 100%;
+    }
+    
+    .tabla-empleados {
+      display: block;
+      overflow-x: auto;
+    }
+  }
+</style>
+
+<!-- Mensaje de éxito -->
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  {% endfor %}
+{% endif %}
+
+<div class="empleados-container">
+  <div class="header">
+    <h1>Gestión de Empleados</h1>
+    <a href="" class="btn-agregar">Agregar Empleado</a>
+  </div>
+  
+  <div class="filtros">
+    <h2 class="filtros-titulo">Filtros</h2>
+    <form class="filtros-form" method="get">
+      <div class="filtro-grupo">
+        <label class="filtro-label" for="busqueda">Buscar por nombre:</label>
+        <input type="text" id="busqueda" name="busqueda" class="filtro-input" value="{{ busqueda }}">
+      </div>
+      
+      <div class="filtro-grupo">
+        <label class="filtro-label" for="rol">Rol:</label>
+        <select id="rol" name="rol" class="filtro-select">
+          <option value="">Todos los roles</option>
+          {% for rol_id, rol_nombre in roles %}
+            <option value="{{ rol_id }}" {% if rol_id == rol_filtro %}selected{% endif %}>{{ rol_nombre }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      
+      <div class="filtro-grupo">
+        <label class="filtro-label" for="estado">Estado:</label>
+        <select id="estado" name="estado" class="filtro-select">
+          <option value="">Todos los estados</option>
+          <option value="activo" {% if estado_filtro == 'activo' %}selected{% endif %}>Activo</option>
+          <option value="inactivo" {% if estado_filtro == 'inactivo' %}selected{% endif %}>Inactivo</option>
+        </select>
+      </div>
+      
+      <div class="filtro-acciones">
+        <button type="submit" class="btn-filtrar">Filtrar</button>
+        <a href="{% url 'empleados' %}" class="btn-limpiar">Limpiar</a>
+      </div>
+    </form>
+  </div>
+  
+  {% if empleados %}
+    <table class="tabla-empleados">
+      <thead>
+        <tr>
+          <th>Empleado</th>
+          <th>Rol</th>
+          <th>Turno</th>
+          <th>Usuario</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for empleado in empleados %}
+          <tr>
+            <td>
+              <div class="empleado-nombre">
+                {% if empleado.foto %}
+                  <img src="{{ empleado.foto.url }}" alt="{{ empleado.nombre_empleado }}" class="empleado-foto">
+                {% else %}
+                  <img src="{% static 'img/default-user.png' %}" alt="{{ empleado.nombre_empleado }}" class="empleado-foto">
+                {% endif %}
+                {{ empleado.nombre_empleado }}
+              </div>
+            </td>
+            <td>
+              <span class="badge badge-{{ empleado.rol }}">
+                {{ empleado.get_rol_display }}
+              </span>
+            </td>
+            <td>{{ empleado.get_turno_display }}</td>
+            <td>{{ empleado.nombre_usuario }}</td>
+            <td>
+              {% if empleado.activo %}
+                <span class="badge badge-activo">Activo</span>
+              {% else %}
+                <span class="badge badge-inactivo">Inactivo</span>
+              {% endif %}
+            </td>
+            <td>
+              <div class="acciones">
+                <a href="{% url 'ver_empleado' empleado.id_empleado %}" class="btn-accion btn-ver">Ver</a>
+                <a href="{% url 'editar_empleado' empleado.id_empleado %}" class="btn-accion btn-editar">Editar</a>
+                
+                {% if empleado.activo %}
+                  <a href="{% url 'cambiar_estado_empleado' empleado.id_empleado %}" class="btn-accion btn-desactivar">Desactivar</a>
+                {% else %}
+                  <a href="{% url 'cambiar_estado_empleado' empleado.id_empleado %}" class="btn-accion btn-activar">Activar</a>
+                {% endif %}
+                
+                {% if empleado.usuario %}
+                  <a href="{% url 'resetear_password' empleado.id_empleado %}" class="btn-accion btn-password">Contraseña</a>
+                {% endif %}
+              </div>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="sin-resultados">
+      <p>No se encontraron empleados con los filtros seleccionados.</p>
+    </div>
+  {% endif %}
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Cerrar automáticamente las alertas después de 5 segundos
+    setTimeout(function() {
+      document.querySelectorAll('.alert').forEach(alert => {
+        if (alert.querySelector('.btn-close')) {
+          alert.querySelector('.btn-close').click();
+        }
+      });
+    }, 5000);
+  });
+</script>
+{% endblock %}

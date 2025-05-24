@@ -145,26 +145,24 @@ def prepararVistaTodosLosClientes():
     clientes_vista = []
 
     for cliente in clientes:
+        # Obtener todas las membresías del cliente
         membresias = cliente.membresias_cliente.all()
 
+        # Determinar la membresía activa e inactiva
         membresia_activa = next(
             (m for m in membresias if m.fecha_fin and m.fecha_fin >= now().date()), None
         )
 
-        membresia_inactiva = next(
-            (m for m in membresias if m.fecha_fin and m.fecha_fin < now().date()), None
-        )
 
+        # Asignar estado y membresía
         if membresia_activa:
             estado = 'activo'
             membresia = membresia_activa
-        elif membresia_inactiva:
-            estado = 'inactivo'
-            membresia = membresia_inactiva
         else:
-            estado = 'sin membresía'
+            estado = 'inactivo'
             membresia = None
 
+        # Agregar cliente a la lista de vista
         clientes_vista.append({
             'id_cliente': cliente.id_cliente,
             'nombre_cliente': cliente.nombre_cliente,
@@ -172,10 +170,10 @@ def prepararVistaTodosLosClientes():
             'fecha_nacimiento': cliente.fecha_nacimiento,
             'carnet_estudiante': cliente.estudiante,
             'membresia': {
-                'nombreMembresia': membresia.membresia.nombreMembresia if membresia else None,
+                'nombreMembresia': membresia.membresia.nombreMembresia if membresia else 'Inactiva',
                 'estado': estado,
-                'fecha_inicio': membresia.fecha_inicio if membresia else None,
-                'fecha_fin': membresia.fecha_fin if membresia else None
+                'fecha_inicio': membresia.fecha_inicio.strftime('%Y-%m-%d') if membresia and membresia.fecha_inicio else None,
+                'fecha_fin': membresia.fecha_fin.strftime('%Y-%m-%d') if membresia and membresia.fecha_fin else None
             }
         })
 

@@ -5,3 +5,18 @@ __pycache__/
 
 # Ignore database file
 db.sqlite3
+
+#Ignore enviroment variables
+.env
+
+# Ignore virtual environments
+venv/
+.venv/
+
+# Ignore editor/project files
+.vscode/
+.idea/
+
+# Ignore system files
+.DS_Store
+Thumbs.db

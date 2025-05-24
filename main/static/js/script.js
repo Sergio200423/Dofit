@@ -25,23 +25,34 @@ document.addEventListener('DOMContentLoaded', function () {
   console.log("Chart.js disponible:", typeof Chart !== 'undefined');
   feather.replace();
 
+  // Sidebar persistente
+  var sidebar = document.querySelector('.sidebar');
+  var sidebarBtns = document.querySelectorAll('.sidebar-toggle');
+  // Leer estado guardado SOLO si el sidebar existe
+  if (sidebar) {
+    var sidebarState = localStorage.getItem('sidebarState');
+    if (sidebarState === 'collapsed') {
+      sidebar.classList.add('hidden');
+      sidebarBtns.forEach(function(btn) { btn.classList.add('rotated'); });
+    } else {
+      sidebar.classList.remove('hidden');
+      sidebarBtns.forEach(function(btn) { btn.classList.remove('rotated'); });
+    }
+  }
+
   (function () {
     var sidebar = document.querySelector('.sidebar'),
         catSubMenu = document.querySelector('.cat-sub-menu'),
         sidebarBtns = document.querySelectorAll('.sidebar-toggle');
-
     var _iterator = _createForOfIteratorHelper(sidebarBtns),
         _step;
-
     try {
       for (_iterator.s(); !(_step = _iterator.n()).done;) {
         var sidebarBtn = _step.value;
-
         if (sidebarBtn && catSubMenu && sidebarBtn) {
           sidebarBtn.addEventListener('click', function () {
             var _iterator2 = _createForOfIteratorHelper(sidebarBtns),
                 _step2;
-
             try {
               for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
                 var sdbrBtn = _step2.value;
@@ -52,8 +63,13 @@ document.addEventListener('DOMContentLoaded', function () {
             } finally {
               _iterator2.f();
             }
-
             sidebar.classList.toggle('hidden');
+            // Guardar estado en localStorage
+            if (sidebar.classList.contains('hidden')) {
+              localStorage.setItem('sidebarState', 'collapsed');
+            } else {
+              localStorage.setItem('sidebarState', 'expanded');
+            }
             catSubMenu.classList.remove('visible');
           });
         }
@@ -523,4 +539,5 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   addData();
+
 });
