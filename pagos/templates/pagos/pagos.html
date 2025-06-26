@@ -1,0 +1,200 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+{% block title %}Carrito de Compras - Gimnasio Dofit{% endblock %}
+
+{% block content %}
+<div class="content">
+    {% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="header">
+        <h1>Registro de Pagos</h1>
+    </div>
+
+    <div class="cart-container">
+        <div class="cart-left">
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="products">
+                    <i class="fas fa-box"></i> Productos
+                </button>
+                <button class="tab-btn" data-tab="memberships">
+                    <i class="fas fa-id-card"></i> Membresías
+                </button>
+            </div>
+
+            <div class="tab-content" id="products-tab">
+                <div class="product-search">
+                    <h3>Añadir Productos</h3>
+                    <div class="search-box">
+                        <input type="text" id="product-search" placeholder="Buscar producto...">
+                        <button id="search-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+
+                <div class="product-list">
+                    <h3>Productos Disponibles</h3>
+                    <div class="product-grid" id="product-grid">
+                        <!-- Los productos se cargarán dinámicamente con JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="memberships-tab" style="display: none;">
+                <div class="product-search">
+                    <h3>Añadir Membresías</h3>
+                    <div class="search-box">
+                        <input type="text" id="membership-search" placeholder="Buscar membresía...">
+                        <button id="membership-search-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+
+                <div class="product-list">
+                    <h3>Membresías Disponibles</h3>
+                    <div class="membership-grid" id="membership-grid">
+                        <!-- Las membresías se cargarán dinámicamente con JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="cart-right">
+            <div class="cart-header">
+                <h3>Carrito</h3>
+                <div class="client-selector">
+                    <label for="client-select">Cliente:</label>
+                    <select id="client-select">
+                        <option value="">Seleccionar cliente</option>
+                        <option value="1">Juan Pérez</option>
+                        <option value="2">María García</option>
+                        <option value="3">Carlos López</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="cart-items" id="cart-items">
+                <!-- Los items del carrito se cargarán dinámicamente con JavaScript -->
+                <div class="empty-cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <p>El carrito está vacío</p>
+                </div>
+            </div>
+
+            <div class="cart-categories" id="cart-categories" style="display: none;">
+                <div class="category-summary">
+                    <span>Productos:</span>
+                    <span id="products-total">$0.00</span>
+                </div>
+                <div class="category-summary">
+                    <span>Membresías:</span>
+                    <span id="memberships-total">$0.00</span>
+                </div>
+            </div>
+
+            <div class="cart-summary">
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">$0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Descuento:</span>
+                    <div class="discount-input">
+                        <input type="number" id="discount" min="0" max="100" value="0">
+                        <span>%</span>
+                    </div>
+                </div>
+                <div class="summary-row total">
+                    <span>Total:</span>
+                    <span id="total">$0.00</span>
+                </div>
+                <button class="checkout-btn" id="checkout-btn" disabled>
+                    <i class="fas fa-check"></i> Finalizar Compra
+                </button>
+                <button class="clear-cart-btn" id="clear-cart-btn" disabled>
+                    <i class="fas fa-trash"></i> Vaciar Carrito
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para finalizar compra -->
+<div class="modal" id="checkout-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Finalizar Pago</h2>
+            <span class="close-modal">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div class="checkout-summary">
+                <h3>Resumen del pago</h3>
+                <div class="summary-items" id="modal-items">
+                    <!-- Items del resumen se cargarán dinámicamente -->
+                </div>
+                <div class="summary-totals">
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span id="modal-subtotal">C$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Descuento:</span>
+                        <span id="modal-discount">C$0.00</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total:</span>
+                        <span id="modal-total">C$0.00</span>
+                    </div>
+                </div>
+            </div>
+            <div class="payment-method">
+                <h3>Método de Pago</h3>
+                <div class="payment-options">
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="cash" checked>
+                        <span class="radio-custom"></span>
+                        <i class="fas fa-money-bill-wave"></i> Efectivo
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="card">
+                        <span class="radio-custom"></span>
+                        <i class="fas fa-credit-card"></i> Tarjeta
+                    </label>
+                    <label class="payment-option">
+                        <input type="radio" name="payment" value="transfer">
+                        <span class="radio-custom"></span>
+                        <i class="fas fa-exchange-alt"></i> Transferencia
+                    </label>
+                </div>
+            </div>
+            <div class="checkout-actions">
+                <button class="secondary-btn" id="cancel-checkout">Cancelar</button>
+                <button class="primary-btn" id="confirm-checkout">Confirmar Compra</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'pagos/css/cart.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'pagos/js/cart.js' %}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof cargarProductosPagos === 'function') {
+        cargarProductosPagos();
+    }
+});
+</script>
+{% endblock %}

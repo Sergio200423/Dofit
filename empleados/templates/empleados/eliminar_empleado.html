@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% block title %}Eliminar Empleado - Gimnasio Dofit{% endblock %}
+{% load static %}
+
+{% block content %}
+<style>
+  .eliminar-container {
+    padding: 20px;
+    background-color: #f5f5f5;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .eliminar-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    width: 100%;
+  }
+
+  .eliminar-titulo {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .eliminar-mensaje {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
+  .empleado-info {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+  }
+
+  .info-item {
+    display: flex;
+    margin-bottom: 10px;
+  }
+
+  .info-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .info-label {
+    font-weight: 500;
+    color: #555;
+    width: 150px;
+  }
+
+  .info-value {
+    color: #333;
+  }
+
+  .eliminar-acciones {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .btn-cancelar {
+    background-color: #f5f5f5;
+    color: #555;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-cancelar:hover {
+    background-color: #e0e0e0;
+  }
+
+  .btn-eliminar {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-eliminar:hover {
+    background-color: #c82333;
+  }
+
+  .alerta {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 20px;
+    font-size: 14px;
+  }
+
+  .alerta-titulo {
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+</style>
+
+<div class="eliminar-container">
+  <div class="eliminar-card">
+    <h1 class="eliminar-titulo">Eliminar Empleado</h1>
+    
+    <div class="alerta">
+      <div class="alerta-titulo">¡Atención!</div>
+      <p>Esta acción no se puede deshacer. Se eliminará el empleado y su usuario asociado.</p>
+    </div>
+    
+    <p class="eliminar-mensaje">¿Estás seguro de que deseas eliminar al siguiente empleado?</p>
+    
+    <div class="empleado-info">
+      <div class="info-item">
+        <span class="info-label">Nombre:</span>
+        <span class="info-value">{{ empleado.nombre_empleado }}</span>
+      </div>
+      
+      <div class="info-item">
+        <span class="info-label">Usuario:</span>
+        <span class="info-value">{{ empleado.usuario.nombre_usuario }}</span>
+      </div>
+      
+      <div class="info-item">
+        <span class="info-label">Rol:</span>
+        <span class="info-value">{{ empleado.usuario.rol.nombre|default:"Sin rol" }}</span>
+      </div>
+    </div>
+    
+    <form method="post">
+      {% csrf_token %}
+      <div class="eliminar-acciones">
+        <a href="{% url 'empleados' %}" class="btn-cancelar">Cancelar</a>
+        <button type="submit" class="btn-eliminar">Eliminar</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

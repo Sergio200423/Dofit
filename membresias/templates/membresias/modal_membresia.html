@@ -1,0 +1,28 @@
+<!-- Modal para agregar/editar membresía -->
+<div id="modal-membresia" class="modal">
+    <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <h2 class="modal-title" id="modal-title">Agregar Membresía</h2>
+        <form id="form-membresia" method="post" action="{% url 'guardar_membresia' %}">
+            {% csrf_token %}
+            <input type="hidden" id="membresia_id" name="membresia_id" value="">
+            <input type="hidden" id="modo_edicion" name="modo_edicion" value="0">
+            <div class="form-group">
+                <label for="nombreMembresia">Nombre de la Membresía:</label>
+                <input type="text" id="nombreMembresia" name="nombreMembresia" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="duracionDias">Duración (días):</label>
+                <input type="number" id="duracionDias" name="duracionDias" class="form-control" min="1" required>
+            </div>
+            <div class="form-group">
+                <label for="precio">Precio (C$):</label>
+                <input type="number" id="precio" name="precio" class="form-control" min="0" step="0.01" required>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn-cancelar" id="btn-cancelar">Cancelar</button>
+                <button type="submit" class="btn-guardar">Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>

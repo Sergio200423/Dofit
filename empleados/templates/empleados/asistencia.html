@@ -1,0 +1,946 @@
+{% extends 'common/base.html' %}
+{% block title %}Registro de Asistencia - Gimnasio Dofit{% endblock %}
+{% block page_name %}asistencia{% endblock %}
+{% block content %}
+
+{% load static %}
+
+<meta name="csrf-token" content="{{ csrf_token }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<main class="main users chart-page" id="skip-target">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 d-flex justify-content-between align-items-center mb-4">
+        <h2 class="main-title">Registro de Asistencia</h2>
+        <button id="registrarAsistenciaBtn" class="btn-primary">
+          <i class="fas fa-user-clock"></i> Registrar Asistencia
+        </button>
+      </div>
+
+      <!-- Información del Empleado (Simulación para Jose Luis) -->
+      <div class="col-lg-12 mb-4">
+        <div class="employee-card">
+          <div class="employee-info">
+            <div class="employee-avatar">
+              <img src="{% static 'img/avatar.png' %}" alt="Employee Avatar">
+            </div>
+            <div class="employee-details">
+              <h3>Jose Luis</h3>
+              <p>Mañana</p>
+            </div>
+          </div>
+          <div class="employee-id">
+            <div class="icon">
+              <i class="fas fa-id-card"></i>
+            </div>
+            <div class="info">
+              <h4>ID Empleado</h4>
+              <p>101</p>
+            </div>
+          </div>
+          <div class="joining-date">
+            <div class="icon">
+              <i class="fas fa-calendar"></i>
+            </div>
+            <div class="info">
+              <h4>Fecha de Ingreso</h4>
+              <p>06 Junio 2025</p>
+            </div>
+          </div>
+          <div class="department">
+            <div class="icon">
+              <i class="fas fa-building"></i>
+            </div>
+            <div class="info">
+              <h4>Departamento</h4>
+              <p>Mañana</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estadísticas de Tiempo (Simuladas) -->
+      <div class="col-lg-12 mb-4">
+        <div class="row">
+          <div class="col-md-3 col-sm-6 mb-3">
+            <div class="stat-card">
+              <div class="icon">
+                <i class="fas fa-clock"></i>
+              </div>
+              <div class="stat-info">
+                <h3>08:15</h3>
+                <p>Promedio Horas Trabajo</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 mb-3">
+            <div class="stat-card">
+              <div class="icon">
+                <i class="fas fa-hourglass-half"></i>
+              </div>
+              <div class="stat-info">
+                <h3>06:55 AM</h3>
+                <p>Promedio Hora Entrada</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 mb-3">
+            <div class="stat-card">
+              <div class="icon">
+                <i class="fas fa-sign-out-alt"></i>
+              </div>
+              <div class="stat-info">
+                <h3>03:10 PM</h3>
+                <p>Promedio Hora Salida</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-6 mb-3">
+            <div class="stat-card">
+              <div class="icon">
+                <i class="fas fa-stopwatch"></i>
+              </div>
+              <div class="stat-info">
+                <h3>00:45</h3>
+                <p>Promedio Tiempo Descanso</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filtros Horizontales Estilo Pill -->
+      <div class="col-lg-12 mb-4">
+        <div class="filtros-horizontales">
+          <div class="filtros-header">
+            <div class="filtros-titulo">
+              <i class="fas fa-filter"></i> Filtros
+            </div>
+          </div>
+          
+          <form id="filtro-asistencia-form" method="POST" action="#">
+            {% csrf_token %}
+            <!-- Búsqueda -->
+            <div class="busqueda-container">
+              <div class="input-search">
+                <input type="text" id="busqueda" name="busqueda" placeholder="Buscar por fecha">
+                <button type="submit" class="btn-search">
+                  <i class="fas fa-search"></i>
+                </button>
+              </div>
+            </div>
+            
+            <!-- Pills de filtros -->
+            <div class="filtros-pills">
+              <!-- Estado -->
+              <label class="filtro-pill" for="estadoPresente">
+                <input type="checkbox" id="estadoPresente" name="estado" value="PRESENTE" style="display: none;">
+                Presente
+                <span class="contador">{{ estado_counts.PRESENTE|default:"0" }}</span>
+              </label>
+              
+              <label class="filtro-pill" for="estadoAusente">
+                <input type="checkbox" id="estadoAusente" name="estado" value="AUSENTE" style="display: none;">
+                Ausente
+                <span class="contador">{{ estado_counts.AUSENTE|default:"0" }}</span>
+              </label>
+              
+              <!-- Período -->
+              <label class="filtro-pill" for="periodoHoy">
+                <input type="checkbox" id="periodoHoy" name="periodo" value="hoy" style="display: none;">
+                Hoy
+              </label>
+              
+              <label class="filtro-pill" for="periodoSemana">
+                <input type="checkbox" id="periodoSemana" name="periodo" value="semana" style="display: none;">
+                Esta semana
+              </label>
+              
+              <label class="filtro-pill" for="periodoMes">
+                <input type="checkbox" id="periodoMes" name="periodo" value="mes" style="display: none;">
+                Este mes
+              </label>
+              
+              <!-- Dropdown para más filtros -->
+              <div class="filtro-dropdown">
+                <button type="button" class="filtro-dropdown-btn" data-bs-toggle="dropdown">
+                  Más filtros <i class="fas fa-chevron-down"></i>
+                </button>
+                <!-- Aquí iría el dropdown con más opciones de filtro -->
+              </div>
+            </div>
+            
+            <!-- Filtros aplicados -->
+            <div class="filtros-aplicados" id="filtros-aplicados-container" style="display: none;">
+              <span class="filtros-aplicadas-label">Filtros aplicados:</span>
+              <!-- Los filtros seleccionados se mostrarán aquí dinámicamente -->
+            </div>
+            
+            <!-- Botones de acción (ocultos, se manejan con JavaScript) -->
+            <div style="display: none;">
+              <button type="submit" id="aplicar-filtros-btn">Aplicar Filtros</button>
+              <button type="button" id="limpiar-filtros">Limpiar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Tabla de Asistencia -->
+      <div class="col-lg-12">
+        <div class="table-responsive">
+          <table class="table align-middle mb-0 bg-white">
+            <thead class="bg-light">
+              <tr>
+                <th>FECHA</th>
+                <th>CHECK-IN</th>
+                <th>CHECK-OUT</th>
+                <th>ESTADO</th>
+                <th>ACCIÓN</th>
+              </tr>
+            </thead>
+            <tbody id="lista-asistencias">
+              {% for asistencia in asistencias %}
+              <tr data-asistencia-id="{{ asistencia.id_asistencia }}">
+                <td>{{ asistencia.fecha|date:"d M, Y" }}</td>
+                <td>09:00 am</td>
+                <td>05:00 pm</td>
+                <td>
+                  <span class="badge {% if asistencia.estado == 'PRESENTE' %}badge-success{% else %}badge-trashed{% endif %} rounded-pill d-inline">
+                    {{ asistencia.estado|default:"PRESENTE" }}
+                  </span>
+                </td>
+                <td>
+                  <button class="btn btn-link btn-rounded btn-sm fw-bold edit-btn">
+                    <i class="fas fa-edit"></i> Editar
+                  </button>
+                  <button class="btn btn-link btn-rounded btn-sm fw-bold more-btn">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                </td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="5" class="text-center">No hay registros de asistencia</td>
+              </tr>
+              {% endfor %}
+              
+              <!-- Tabla de Asistencia con datos simulados para Jose Luis -->
+              <tr data-asistencia-id="1">
+                <td>06 Jun, 2025</td>
+                <td>07:00 am</td>
+                <td>03:10 pm</td>
+                <td>
+                  <span class="badge badge-success rounded-pill d-inline">
+                    PRESENTE
+                  </span>
+                </td>
+                <td>
+                  <button class="btn btn-link btn-rounded btn-sm fw-bold edit-btn">
+                    <i class="fas fa-edit"></i> Editar
+                  </button>
+                  <button class="btn btn-link btn-rounded btn-sm fw-bold more-btn">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                </td>
+              </tr>
+              <tr data-asistencia-id="2">
+                <td>05 Jun, 2025</td>
+                <td>07:05 am</td>
+                <td>03:00 pm</td>
+                <td>
+                  <span class="badge badge-success rounded-pill d-inline">
+                    PRESENTE
+                  </span>
+                </td>
+                <td>
+                  <button class="btn btn-link btn-rounded btn-sm fw-bold edit-btn">
+                    <i class="fas fa-edit"></i> Editar
+                  </button>
+                  <button class="btn btn-link btn-rounded btn-sm fw-bold more-btn">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                </td>
+              </tr>
+              <tr data-asistencia-id="3">
+                <td>04 Jun, 2025</td>
+                <td>07:10 am</td>
+                <td>03:15 pm</td>
+                <td>
+                  <span class="badge badge-success rounded-pill d-inline">
+                    PRESENTE
+                  </span>
+                </td>
+                <td>
+                  <button class="btn btn-link btn-rounded btn-sm fw-bold edit-btn">
+                    <i class="fas fa-edit"></i> Editar
+                  </button>
+                  <button class="btn btn-link btn-rounded btn-sm fw-bold more-btn">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                </td>
+              </tr>
+              <tr data-asistencia-id="4">
+                <td>03 Jun, 2025</td>
+                <td>07:00 am</td>
+                <td>03:00 pm</td>
+                <td>
+                  <span class="badge badge-success rounded-pill d-inline">
+                    PRESENTE
+                  </span>
+                </td>
+                <td>
+                  <button class="btn btn-link btn-rounded btn-sm fw-bold edit-btn">
+                    <i class="fas fa-edit"></i> Editar
+                  </button>
+                  <button class="btn btn-link btn-rounded btn-sm fw-bold more-btn">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                </td>
+              </tr>
+              <tr data-asistencia-id="5">
+                <td>02 Jun, 2025</td>
+                <td>07:20 am</td>
+                <td>02:55 pm</td>
+                <td>
+                  <span class="badge badge-success rounded-pill d-inline">
+                    PRESENTE
+                  </span>
+                </td>
+                <td>
+                  <button class="btn btn-link btn-rounded btn-sm fw-bold edit-btn">
+                    <i class="fas fa-edit"></i> Editar
+                  </button>
+                  <button class="btn btn-link btn-rounded btn-sm fw-bold more-btn">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
+                </td>
+              </tr>
+              <!-- ...puedes agregar más filas simuladas si lo deseas... -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Paginación -->
+      <div class="col-lg-12 mt-4">
+        <div class="pagination">
+          <span>Mostrando 1 a {{ asistencias.count|default:"0" }} de {{ asistencias.count|default:"0" }} entradas</span>
+          <div class="pagination-controls">
+            <button class="page-btn active">01</button>
+            <button class="page-btn">02</button>
+            <button class="page-btn">...</button>
+            <button class="page-btn">09</button>
+            <button class="page-btn">10</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<style>
+:root {
+  --primary-color: #1a56db;
+  --primary-hover: #1e429f;
+  --primary-light: #e6f0ff;
+  --secondary-color: #6b7280;
+  --secondary-hover: #4b5563;
+  --success-color: #10b981;
+  --success-light: #ecfdf5;
+  --danger-color: #ef4444;
+  --danger-light: #fef2f2;
+  --light-bg: #f9fafb;
+  --white: #ffffff;
+  --dark-text: #111827;
+  --gray-text: #6b7280;
+  --border-color: #e5e7eb;
+  --border-radius: 0.375rem;
+  --box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --box-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --transition: all 0.2s ease;
+}
+
+/* Estilos Generales */
+.main-title {
+  color: var(--dark-text);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Botón Registrar Asistencia */
+.btn-primary {
+  background-color: var(--primary-color);
+  color: var(--white);
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 0.625rem 1.25rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: var(--transition);
+  box-shadow: var(--box-shadow);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--box-shadow-md);
+}
+
+.btn-primary i {
+  font-size: 0.875rem;
+}
+
+/* Tarjeta de Empleado */
+.employee-card {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--box-shadow);
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.employee-info {
+  display: flex;
+  align-items: center;
+}
+
+.employee-avatar img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  margin-right: 1rem;
+  object-fit: cover;
+}
+
+.employee-details h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: var(--dark-text);
+}
+
+.employee-details p {
+  font-size: 0.875rem;
+  color: var(--gray-text);
+  margin: 0;
+}
+
+.employee-id, .joining-date, .department {
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.75rem;
+  font-size: 1rem;
+}
+
+.employee-id .icon {
+  background-color: rgba(26, 86, 219, 0.1);
+  color: var(--primary-color);
+}
+
+.joining-date .icon {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: var(--success-color);
+}
+
+.department .icon {
+  background-color: rgba(111, 66, 193, 0.1);
+  color: #6f42c1;
+}
+
+.info h4 {
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  color: var(--gray-text);
+}
+
+.info p {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--dark-text);
+}
+
+/* Tarjetas de Estadísticas */
+.stat-card {
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  box-shadow: var(--box-shadow);
+  height: 100%;
+}
+
+.stat-card .icon {
+  background-color: rgba(26, 86, 219, 0.1);
+  color: var(--primary-color);
+}
+
+.stat-info h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: var(--dark-text);
+}
+
+.stat-info p {
+  font-size: 0.75rem;
+  color: var(--gray-text);
+  margin: 0;
+}
+
+/* Estilos para los filtros horizontales */
+.filtros-horizontales {
+  background-color: var(--white);
+  border-radius: var(--border-radius);
+  padding: 1.25rem;
+  box-shadow: var(--box-shadow);
+  margin-bottom: 1.5rem;
+}
+
+.filtros-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.filtros-titulo {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--dark-text);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filtros-titulo i {
+  color: var(--primary-color);
+}
+
+.filtros-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.filtro-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background-color: #f3f4f6;
+  color: #4b5563;
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-bottom: 0;
+}
+
+.filtro-pill:hover {
+  border-color: #d1d5db;
+}
+
+.filtro-pill.active {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.filtro-pill .contador {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.filtro-pill:not(.active) .contador {
+  background-color: #e5e7eb;
+  color: #4b5563;
+}
+
+.filtro-dropdown {
+  position: relative;
+}
+
+.filtro-dropdown-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  background-color: #f3f4f6;
+  color: #4b5563;
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.filtro-dropdown-btn:hover {
+  border-color: #d1d5db;
+}
+
+.filtro-dropdown-btn i {
+  font-size: 0.75rem;
+}
+
+.filtros-aplicados {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.filtros-aplicadas-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--gray-text);
+}
+
+.filtro-aplicado {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background-color: var(--primary-light);
+  color: var(--primary-color);
+  border: 1px solid #c7d2fe;
+}
+
+.filtro-aplicado i {
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.filtro-aplicado i:hover {
+  color: var(--primary-hover);
+}
+
+.busqueda-container {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.input-search {
+  display: flex;
+  max-width: 400px;
+  border: 1px solid var(--border-color);
+  border-radius: 9999px;
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.input-search:focus-within {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(26, 86, 219, 0.1);
+}
+
+.input-search input {
+  flex: 1;
+  border: none;
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  outline: none;
+  background-color: transparent;
+}
+
+.btn-search {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0 1rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-search:hover {
+  background-color: var(--primary-hover);
+}
+
+/* Tabla de Asistencia */
+.table {
+  width: 100%;
+  margin-bottom: 1rem;
+  color: var(--dark-text);
+  vertical-align: top;
+  border-color: var(--border-color);
+}
+
+.table > :not(caption) > * > * {
+  padding: 0.75rem;
+  border-bottom-width: 1px;
+}
+
+.table > thead {
+  vertical-align: bottom;
+}
+
+.bg-light {
+  background-color: var(--light-bg) !important;
+}
+
+.bg-white {
+  background-color: var(--white) !important;
+}
+
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+}
+
+/* Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.badge-success {
+  background-color: var(--success-light);
+  color: var(--success-color);
+}
+
+.badge-trashed {
+  background-color: var(--danger-light);
+  color: var(--danger-color);
+}
+
+.badge-secondary {
+  background-color: var(--light-bg);
+  color: var(--secondary-color);
+}
+
+/* Botones de acción */
+.btn-link {
+  font-weight: 400;
+  color: var(--primary-color);
+  text-decoration: none;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+.btn-link:hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+}
+
+.btn-rounded {
+  border-radius: 9999px;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+.fw-bold {
+  font-weight: 700 !important;
+}
+
+/* Paginación */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  color: var(--gray-text);
+}
+
+.pagination-controls {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.page-btn {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.25rem;
+  border: 1px solid var(--border-color);
+  background-color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.75rem;
+  transition: var(--transition);
+}
+
+.page-btn:hover {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.page-btn.active {
+  background-color: var(--primary-color);
+  color: var,--white;
+  border-color: var(--primary-color);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .employee-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .employee-id, .joining-date, .department {
+    margin-top: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .filtros-pills {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+  }
+  
+  .filtros-pills::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
+}
+
+@media (max-width: 576px) {
+  .pagination {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+}
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Activar/desactivar filtros pill
+  const filtroPills = document.querySelectorAll('.filtro-pill');
+  
+  filtroPills.forEach(pill => {
+    pill.addEventListener('click', function() {
+      const checkbox = this.querySelector('input[type="checkbox"]');
+      checkbox.checked = !checkbox.checked;
+      this.classList.toggle('active', checkbox.checked);
+      
+      // Mostrar filtros aplicados si hay alguno seleccionado
+      const hayFiltrosAplicados = document.querySelectorAll('.filtro-pill input:checked').length > 0;
+      document.getElementById('filtros-aplicados-container').style.display = hayFiltrosAplicados ? 'flex' : 'none';
+      
+      // Actualizar contenedor de filtros aplicados
+      actualizarFiltrosAplicados();
+    });
+  });
+  
+  // Función para actualizar el contenedor de filtros aplicados
+  function actualizarFiltrosAplicados() {
+    const contenedor = document.getElementById('filtros-aplicados-container');
+    // Limpiar filtros anteriores
+    while (contenedor.childNodes.length > 1) {
+      contenedor.removeChild(contenedor.lastChild);
+    }
+    
+    // Añadir nuevos filtros
+    document.querySelectorAll('.filtro-pill input:checked').forEach(input => {
+      const filtroTexto = input.closest('.filtro-pill').textContent.trim().split('\n')[0];
+      const filtroElement = document.createElement('div');
+      filtroElement.className = 'filtro-aplicado';
+      filtroElement.innerHTML = `${filtroTexto} <i class="fas fa-times" data-filter-id="${input.id}"></i>`;
+      contenedor.appendChild(filtroElement);
+      
+      // Añadir evento para eliminar filtro
+      filtroElement.querySelector('i').addEventListener('click', function() {
+        const filterId = this.getAttribute('data-filter-id');
+        const filterInput = document.getElementById(filterId);
+        filterInput.checked = false;
+        filterInput.closest('.filtro-pill').classList.remove('active');
+        actualizarFiltrosAplicados();
+      });
+    });
+  }
+  
+  // Botones de edición
+  const editButtons = document.querySelectorAll('.edit-btn');
+  
+  editButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const row = this.closest('tr');
+      const asistenciaId = row.getAttribute('data-asistencia-id');
+      alert(`Editando asistencia ID: ${asistenciaId}`);
+    });
+  });
+  
+  // Botones de más opciones
+  const moreButtons = document.querySelectorAll('.more-btn');
+  
+  moreButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      alert('Más opciones de asistencia');
+    });
+  });
+  
+  // Botón de registrar asistencia
+  const registrarBtn = document.getElementById('registrarAsistenciaBtn');
+  
+  if (registrarBtn) {
+    registrarBtn.addEventListener('click', function() {
+      alert('Registrar nueva asistencia');
+    });
+  }
+  
+  // Paginación
+  const pageButtons = document.querySelectorAll('.page-btn');
+  
+  pageButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      pageButtons.forEach(btn => btn.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+});
+</script>
+
+{% endblock %}

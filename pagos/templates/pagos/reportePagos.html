@@ -1,0 +1,198 @@
+{% extends 'common/base.html' %}
+{% load static %}
+{% block title %}Reporte de Pago - Gimnasio Dofit{% endblock %}
+{% block page_name %}reporte_pagos{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'pagos/css/reportePagos.css' %}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<div class="container">
+    <main class="main-content">
+        <div class="payment-summary">
+            <div class="summary-card">
+                <div class="icon-circle membership">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-credit-card"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+                </div>
+                <div class="summary-info">
+                    <h3>Total Pagos</h3>
+                    <p id="total-payments">C$ {{ total_pagos|floatformat:2 }}</p>
+                </div>
+            </div>
+            
+            <div class="summary-card">
+                <div class="icon-circle discount">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-badge-percent"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m15 9-6 6"/><path d="M9 9h.01"/><path d="M15 15h.01"/></svg>
+                </div>
+                <div class="summary-info">
+                    <h3>Descuentos</h3>
+                    <p id="total-discounts">C$ {{ total_descuentos|floatformat:2 }}</p>
+                </div>
+            </div>
+            
+            <div class="summary-card">
+                <div class="icon-circle products">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shopping-bag"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                </div>
+                <div class="summary-info">
+                    <h3>Productos</h3>
+                    <p id="total-products">{{ total_productos }}</p>
+                </div>
+            </div>
+            
+            <div class="summary-card">
+                <div class="icon-circle total">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-receipt"><path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 17.5v-11"/></svg>
+                </div>
+                <div class="summary-info">
+                    <h3>Total Final</h3>
+                    <p id="final-total">C$ {{ total_final|floatformat:2 }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-section">
+            <div class="chart-header">
+                <h2>Historial de Pagos</h2>
+                <div class="chart-filters">
+                    <button class="filter-btn" data-period="weekly">Semanal</button>
+                    <button class="filter-btn" data-period="monthly">Mensual</button>
+                    <button class="filter-btn active" data-period="yearly">Anual</button>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="payments-chart"></canvas>
+            </div>
+        </div>
+
+        <div class="payment-details">
+            <h2>Detalles de Pagos</h2>
+            {% if pagos %}
+                {% for pago in pagos %}
+                <div class="payment-info dynamic-payment">
+                    <div class="info-group">
+                        <div class="info-item">
+                            <span class="label">ID de Pago:</span>
+                            <span class="value">{{ pago.id }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Fecha:</span>
+                            <span class="value">{{ pago.fecha }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Tipo:</span>
+                            <span class="value">{{ pago.tipo }}</span>
+                        </div>
+                    </div>
+                    <div class="info-group">
+                        <div class="info-item">
+                            <span class="label">Cliente:</span>
+                            <span class="value">{{ pago.cliente }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Total Original:</span>
+                            <span class="value">C$ {{ pago.total_original }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Total Final:</span>
+                            <span class="value">C$ {{ pago.total_final }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="tables-container">
+                    <div class="table-section">
+                        <h3>Descuentos Aplicados</h3>
+                        <div class="table-responsive-scroll">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Monto</th>
+                                        <th>Descripción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if pago.descuentos %}
+                                        {% for descuento in pago.descuentos %}
+                                        <tr>
+                                            <td>{{ descuento.nombre }}</td>
+                                            <td>C$ {{ descuento.monto }}</td>
+                                            <td>{{ descuento.descripcion }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr><td colspan="3">No hay descuentos aplicados.</td></tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="table-section">
+                        <h3>Productos Comprados</h3>
+                        <div class="table-responsive-scroll">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Cantidad</th>
+                                        <th>Precio</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if pago.productos %}
+                                        {% for producto in pago.productos %}
+                                        <tr>
+                                            <td>{{ producto.nombre }}</td>
+                                            <td>{{ producto.cantidad }}</td>
+                                            <td>C$ {{ producto.precio }}</td>
+                                            <td>C$ {{ producto.total }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr><td colspan="4">No hay productos comprados.</td></tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <hr class="payment-divider">
+                {% endfor %}
+            {% else %}
+                <p>No hay pagos registrados.</p>
+            {% endif %}
+        </div>
+    </main>
+
+    <div class="actions">
+        <a href="{% url 'reporte_pagos' %}" class="action-btn primary" id="download-pdf">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+            Descargar PDF
+        </a>
+        <a href="{% url 'reporte_pagos' %}" class="action-btn secondary" id="print-report">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-printer"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+            Imprimir
+        </a>
+    </div>
+</div>
+<!-- Incluir jsPDF y html2canvas para la generación de PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'pagos/js/reportePago.js' %}"></script>
+<script>
+    // Pasar datos de historial de pagos a JS para el gráfico
+    const historialFechas = JSON.parse('{{ historial_fechas|safe|escapejs }}');
+    const historialTotales = JSON.parse('{{ historial_totales|safe|escapejs }}');
+    const historialSemanalLabels = JSON.parse('{{ historial_semanal_labels|safe|escapejs }}');
+    const historialSemanalData = JSON.parse('{{ historial_semanal_data|safe|escapejs }}');
+    const historialMensualLabels = JSON.parse('{{ historial_mensual_labels|safe|escapejs }}');
+    const historialMensualData = JSON.parse('{{ historial_mensual_data|safe|escapejs }}');
+    const historialAnualLabels = JSON.parse('{{ historial_anual_labels|safe|escapejs }}');
+    const historialAnualData = JSON.parse('{{ historial_anual_data|safe|escapejs }}');
+    // Si necesitas los totales en JS, usa JSON.parse para mantener el tipo correcto
+    const totalPagos = JSON.parse('{{ total_pagos|safe|escapejs }}');
+    const totalDescuentos = JSON.parse('{{ total_descuentos|safe|escapejs }}');
+    const totalProductos = JSON.parse('{{ total_productos|safe|escapejs }}');
+    const totalFinal = JSON.parse('{{ total_final|safe|escapejs }}');
+</script>
+{% endblock %}

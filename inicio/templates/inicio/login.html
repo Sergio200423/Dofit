@@ -1,0 +1,367 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOFIT GYM - Inicio de Sesión</title>
+        <link rel="stylesheet" href="{% static 'inicio/css/login.css' %}">
+        <link rel="shortcut icon" href="{% static 'img/IconoDofit.svg' %}" type="image/x-icon">
+</head>
+<body data-n-intentos="{{ n_intentos|default:0 }}">
+    <div class="login-container" style="position: relative;">
+        <div class="logo-container">
+            <div class="logo-wrapper">
+                <img src="{% static 'img/dofit2.svg' %}" alt="DOFIT GYM Logo" class="logo">
+            </div>
+        </div>
+        <div class="form-container">
+            <h1>¡Bienvenido!</h1>
+            <p class="subtitle">Inicia sesión para continuar</p>
+            
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            <div id="attempts-message" class="hidden">
+                <p class="error-message">Has excedido el número máximo de intentos. Por favor, intenta más tarde o contacta a soporte.</p>
+            </div>
+            
+            <form id="login-form" method="post" action="{% url 'inicio_sesion' %}">
+                {% csrf_token %}
+                <input type="hidden" id="n_intentos" name="n_intentos" value="{{ n_intentos|default:0 }}">
+                <div class="form-group">
+                    <label for="username">Usuario</label>
+                    <input type="text" id="username" name="username" class="form-control" required>
+                    <span class="error-text" id="username-error"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" class="form-control" required>
+                    <span class="error-text" id="password-error"></span>
+                </div>
+                
+                <div class="forgot-password">
+                    <a href="{% url 'recuperar_contrasena' %}">¿Olvidaste tu contraseña?</a>
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit" class="btn-login">Ingresar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+
+    <style>
+        :root {
+    --primary-color: #0077cc;
+    --primary-dark: #005fa3;
+    --secondary-color: #333333;
+    --error-color: #e74c3c;
+    --success-color: #2ecc71;
+    --background-color: #f5f5f5;
+    --white: #ffffff;
+    --gray-light: #e0e0e0;
+    --gray: #888888;
+    --box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: var(--background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.login-container {
+    display: flex;
+    width: 900px;
+    max-width: 95%;
+    background-color: var(--white);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+}
+
+.logo-container {
+    flex: 1;
+    background-color: #F2F3F2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.logo-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.form-container {
+    flex: 1;
+    padding: 3rem 2rem;
+}
+
+h1 {
+    color: var(--secondary-color);
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+}
+
+.subtitle {
+    color: var(--gray);
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--secondary-color);
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--gray-light);
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 119, 204, 0.2);
+}
+
+.form-control.error {
+    border-color: var(--error-color);
+    background-color: rgba(231, 76, 60, 0.05);
+}
+
+.error-text {
+    display: block;
+    color: var(--error-color);
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+}
+
+.forgot-password {
+    text-align: right;
+    margin-bottom: 1.5rem;
+}
+
+.forgot-password a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}
+
+.btn-login {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-login:hover {
+    background-color: var(--primary-dark);
+}
+
+.messages {
+    margin-bottom: 1.5rem;
+}
+
+.message {
+    padding: 0.75rem 1rem;
+    border-radius: 5px;
+    margin-bottom: 1rem;
+}
+
+.message.error {
+    background-color: rgba(231, 76, 60, 0.1);
+    color: var(--error-color);
+    border-left: 4px solid var(--error-color);
+}
+
+.message.success {
+    background-color: rgba(46, 204, 113, 0.1);
+    color: var(--success-color);
+    border-left: 4px solid var(--success-color);
+}
+
+.error-message {
+    color: var(--error-color);
+    font-weight: 500;
+    padding: 0.75rem;
+    background-color: rgba(231, 76, 60, 0.1);
+    border-radius: 5px;
+    margin-bottom: 1.5rem;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .login-container {
+        flex-direction: column;
+        width: 95%;
+    }
+    
+    .logo-container {
+        padding: 2rem;
+    }
+    
+    .form-container {
+        padding: 2rem 1.5rem;
+    }
+}
+    </style>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const loginForm = document.getElementById('login-form');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const usernameError = document.getElementById('username-error');
+        const passwordError = document.getElementById('password-error');
+        const attemptsMessage = document.getElementById('attempts-message');
+        const nIntentosInput = document.getElementById('n_intentos');
+        const MAX_ATTEMPTS = 3;
+
+        // Obtener intentos almacenados en localStorage o inicializar a 0
+        let loginAttempts = parseInt(localStorage.getItem('loginAttempts') || '0');
+        // Obtener n_intentos del backend si está disponible
+        let backendAttempts = parseInt(document.body.getAttribute('data-n-intentos') || '0');
+        // Usar el mayor valor entre localStorage y backend
+        loginAttempts = Math.max(loginAttempts, backendAttempts);
+        localStorage.setItem('loginAttempts', loginAttempts.toString());
+        // Actualizar el input oculto con el valor actual de loginAttempts
+        if (nIntentosInput) nIntentosInput.value = loginAttempts;
+
+        // DEBUG: Mostrar los valores de loginAttempts y backendAttempts en consola
+        console.log('DEBUG loginAttempts (localStorage):', localStorage.getItem('loginAttempts'));
+        console.log('DEBUG backendAttempts (data-n-intentos):', backendAttempts);
+        console.log('DEBUG loginAttempts (usado):', loginAttempts);
+
+        // Si ya se excedió el número máximo de intentos, deshabilitar el formulario
+        if (loginAttempts >= MAX_ATTEMPTS) {
+            disableForm();
+        }
+
+        loginForm.addEventListener('submit', function(event) {
+            resetErrors();
+            let hasErrors = false;
+            // Validar campos vacíos
+            if (!usernameInput.value.trim()) {
+                showError(usernameInput, usernameError, 'Por favor, ingresa tu nombre de usuario');
+                hasErrors = true;
+            }
+            if (!passwordInput.value.trim()) {
+                showError(passwordInput, passwordError, 'Por favor, ingresa tu contraseña');
+                hasErrors = true;
+            }
+            if (hasErrors) {
+                event.preventDefault();
+                return;
+            }
+            // Antes de enviar, actualizar el input oculto con el valor actual de loginAttempts
+            if (nIntentosInput) nIntentosInput.value = loginAttempts;
+            // Si los campos están llenos, se permite el envío y la validación real la hace el backend
+        });
+
+        // Si hay mensaje de error del backend, contar intento fallido y mostrar intentos personalizados
+        const backendError = document.querySelector('.message.error');
+        if (backendError) {
+            localStorage.setItem('loginAttempts', loginAttempts.toString());
+            const errorText = '' + backendError.textContent;
+            const remaining = MAX_ATTEMPTS - loginAttempts;
+            let intentosMsg = ` Te quedan ${remaining} intento${remaining === 1 ? '' : 's'}.`;
+            if (loginAttempts >= MAX_ATTEMPTS) {
+                disableForm();
+            } else if (errorText.includes('Usuario o contraseña incorrecta')) {
+                // Usuario no existe: solo usuario en rojo y mensaje personalizado
+                showError(usernameInput, usernameError, 'Usuario o contraseña incorrecta');
+                showError(passwordInput, passwordError, 'Usuario o contraseña incorrecta');
+                backendError.textContent = 'Usuario o contraseña incorrecta.' + intentosMsg;
+            } else if (errorText.includes('contraseña incorrecta')) {
+                // Contraseña incorrecta: solo contraseña en rojo y mensaje personalizado
+                showError(passwordInput, passwordError, 'Usuario o contraseña incorrecta');
+                showError(usernameInput, usernameError, 'Usuario o contraseña incorrecta');
+                backendError.textContent = 'Usuario o contraseña incorrecta.' + intentosMsg;
+            }
+        }
+
+        // Mostrar errores visuales al enfocar
+        usernameInput.addEventListener('focus', function() {
+            this.classList.remove('error');
+            usernameError.textContent = '';
+        });
+        passwordInput.addEventListener('focus', function() {
+            this.classList.remove('error');
+            passwordError.textContent = '';
+        });
+
+        function showError(input, errorElement, message) {
+            input.classList.add('error');
+            errorElement.textContent = message;
+        }
+        function resetErrors() {
+            usernameInput.classList.remove('error');
+            passwordInput.classList.remove('error');
+            usernameError.textContent = '';
+            passwordError.textContent = '';
+        }
+        function disableForm() {
+            usernameInput.disabled = true;
+            passwordInput.disabled = true;
+            document.querySelector('.btn-login').disabled = true;
+            attemptsMessage.classList.remove('hidden');
+        }
+    });
+    </script>
+</body>
+
+</html>

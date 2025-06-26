@@ -1,0 +1,257 @@
+{% extends 'common/base.html' %} {% load static %} {% block title %}Dashboard Cliente
+- Gimnasio Dofit{% endblock %} {% block extra_css %}
+<link rel="stylesheet" href="{% static 'clientes/css/dashboard.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+{% endblock %} {% block content %}
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <h1>Control de Membresías</h1>
+    <!-- 
+        <div class="date-filter">
+            <select id="period-selector">
+                <option value="7" selected>Próximos 7 días</option>
+                <option value="15">Próximos 15 días</option>
+                <option value="30">Próximos 30 días</option>
+                <option value="all">Todas</option>
+            </select>
+        </div>
+        -->
+  </div>
+
+  <!-- Tarjetas de resumen -->
+  <div class="summary-cards">
+    <div class="card">
+      <div class="card-icon">
+        <i class="fas fa-users" style="color: #0061f7"></i>
+      </div>
+      <div class="card-content">
+        <h3 id="total-clientes">{{ total_clients }}</h3>
+        <p>Total Clientes</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">
+        <i class="fas fa-check-circle" style="color: green"></i>
+      </div>
+      <div class="card-content">
+        <h3 id="membresias-activas">{{ active_memberships }}</h3>
+        <p>Membresías Activas</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">
+        <i class="fas fa-exclamation-triangle" style="color: orange"></i>
+      </div>
+      <div class="card-content">
+        <h3 id="membresias-por-vencer">{{ memberships_expiring_count }}</h3>
+        <p>Por Vencer</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-icon">
+        <i class="fas fa-times-circle" style="color: red"></i>
+      </div>
+      <div class="card-content">
+        <h3 id="membresias-vencidas">{{ expired_memberships }}</h3>
+        <p>Vencidas</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Membresías por vencer -->
+  <div class="dashboard-content">
+    <div class="table-container">
+      <div class="section-header">
+        <h2>Membresías por Vencer</h2>
+        <button class="btn-refresh" id="refresh-expiring">
+          <i class="fas fa-sync-alt"></i>
+        </button>
+      </div>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Tipo</th>
+              <th>Fecha Inicio</th>
+              <th>Fecha Fin</th>
+              <th>Días Restantes</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="expiring-memberships-body">
+            {% for membership in memberships_expiring %}
+            <tr>
+              <td>{{ membership.cliente.nombre_cliente }}</td>
+              <td>{{ membership.membresia.nombreMembresia }}</td>
+              <td>{{ membership.fecha_inicio|date:"d/m/Y" }}</td>
+              <td>{{ membership.fecha_fin|date:"d/m/Y" }}</td>
+              <td class="days-left">{{ membership.days_left }}</td>
+              <td>
+                <a
+                  class="btn-action btn-renew"
+                  href="#">
+                  <i class="fas fa-sync-alt"></i> Renovar
+                </a>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="6" class="no-data">
+                No hay membresías por vencer próximamente
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Membresías vencidas y distribución -->
+  <div class="dashboard-bottom">
+    <!-- Membresías vencidas -->
+    <div class="expired-memberships">
+      <div class="section-header">
+        <h2>Membresías Vencidas</h2>
+        <button class="btn-refresh" id="refresh-expired">
+          <i class="fas fa-sync-alt"></i>
+        </button>
+      </div>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Tipo</th>
+              <th>Fecha Fin</th>
+              <th>Días Vencida</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="expired-memberships-body">
+            {% for membership in expired_memberships_list %}
+            <tr>
+              <td>{{ membership.cliente.nombre_cliente }}</td>
+              <td>{{ membership.membresia.nombreMembresia }}</td>
+              <td>{{ membership.fecha_fin|date:"d/m/Y" }}</td>
+              <td class="days-expired">{{ membership.days_expired }}</td>
+              <td>
+                <button
+                  class="btn-action btn-renew"
+                  data-id="{{ membership.id_membresia_cliente }}"
+                >
+                  <i class="fas fa-sync-alt"></i> Renovar
+                </button>
+                <button
+                  class="btn-action btn-contact"
+                  data-id="{{ membership.cliente.id_cliente }}"
+                >
+                  <i class="fas fa-phone"></i> Contactar
+                </button>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="5" class="no-data">No hay membresías vencidas</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Distribución de membresías -->
+    <div class="membership-distribution">
+      <div class="section-header">
+        <h2>Distribución de Membresías</h2>
+      </div>
+      <div class="chart-container">
+        <canvas id="distribution-chart"></canvas>
+      </div>
+      <div class="distribution-stats">
+        <div
+          class="stat-item"
+          id="diaria-count"
+          data-count="{{ diaria_count }}"
+        >
+          <div class="stat-color" style="background-color: #0066ff"></div>
+          <div class="stat-info">
+            <span class="stat-label">Diaria</span>
+            <span class="stat-value">{{ diaria_count }}</span>
+          </div>
+        </div>
+        <div
+          class="stat-item"
+          id="semanal-count"
+          data-count="{{ semanal_count }}"
+        >
+          <div class="stat-color" style="background-color: #4d94ff"></div>
+          <div class="stat-info">
+            <span class="stat-label">Semanal</span>
+            <span class="stat-value">{{ semanal_count }}</span>
+          </div>
+        </div>
+        <div
+          class="stat-item"
+          id="quincenal-count"
+          data-count="{{ quincenal_count }}"
+        >
+          <div class="stat-color" style="background-color: #80b5ff"></div>
+          <div class="stat-info">
+            <span class="stat-label">Quincenal</span>
+            <span class="stat-value">{{ quincenal_count }}</span>
+          </div>
+        </div>
+        <div
+          class="stat-item"
+          id="mensual-count"
+          data-count="{{ mensual_count }}"
+        >
+          <div class="stat-color" style="background-color: #b3d1ff"></div>
+          <div class="stat-info">
+            <span class="stat-label">Mensual</span>
+            <span class="stat-value">{{ mensual_count }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para renovación de membresía -->
+<div class="modal" id="renewModal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Renovar Membresía</h2>
+    <form id="renewForm">
+      <input type="hidden" id="membership-id" name="membership_id" />
+      <div class="form-group">
+        <label for="membership-type">Tipo de Membresía</label>
+        <select id="membership-type" name="membership_type">
+          {% for tipo in tipos_membresia %}
+          <option value="{{ tipo.id_membresia }}">
+            {{ tipo.nombreMembresia }} - C${{ tipo.precio }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="start-date">Fecha de Inicio</label>
+        <input type="date" id="start-date" name="start_date" />
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn-cancel">Cancelar</button>
+        <button type="submit" class="btn-save">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %} {% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+<script src="{% static 'clientes/js/dashboard.js' %}"></script>
+<script>
+  localStorage.setItem("loginAttempts", "0");
+</script>
+{% endblock %}

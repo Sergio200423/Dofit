@@ -1,0 +1,41 @@
+# Ignore Python bytecode files
+*.pyc
+# Ignore __pycache__ directories
+__pycache__/
+
+# Ignore database file
+db.sqlite3
+*.sqlite3
+*.db
+
+# Ignore environment variables
+.env
+.env.*
+
+# Ignore virtual environments
+venv/
+.venv/
+
+# Ignore editor/project files
+.vscode/
+.idea/
+.history/
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore static and media (if generated or uploaded)
+media/
+staticfiles/
+
+# Ignore log and backup files
+*.log
+*~
+
+# Ignore node_modules (if any)
+node_modules/
+
+# Ignore migration cache (optional, keep migrations/*.py if you want to share them)
+# */migrations/*.pyc
+# */migrations/__pycache__/

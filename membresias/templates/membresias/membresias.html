@@ -1,0 +1,560 @@
+{% extends 'common/base.html' %}
+{% block title %}Administración de Membresías - Gimnasio Dofit{% endblock %}
+{% load static %}
+
+{% block content %}
+<style>
+  .membresias-container {
+    padding: 20px;
+    background-color: #f5f5f5;
+    min-height: 100vh;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+
+  .header h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+  }
+
+  .btn-agregar {
+    background-color: #0066ff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-agregar:hover {
+    background-color: #0052cc;
+  }
+
+  .membresias-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+
+  .membresia-card {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .membresia-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .membresia-header {
+    background-color: #0066ff;
+    color: white;
+    padding: 20px;
+    text-align: center;
+  }
+
+  .membresia-header h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+
+  .membresia-precio {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+
+  .membresia-periodo {
+    font-size: 16px;
+    opacity: 0.9;
+  }
+
+  .membresia-body {
+    padding: 20px;
+  }
+
+  .membresia-info {
+    margin-bottom: 20px;
+  }
+
+  .membresia-info p {
+    margin: 5px 0;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .membresia-info .label {
+    font-weight: 600;
+    color: #555;
+  }
+
+  .membresia-info .value {
+    color: #333;
+  }
+
+  .membresia-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .btn-editar {
+    background-color: white;
+    color: #0066ff;
+    border: 2px solid #0066ff;
+    border-radius: 4px;
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1;
+    text-align: center;
+  }
+
+  .btn-editar:hover {
+    background-color: #0066ff;
+    color: white;
+  }
+
+  .btn-eliminar {
+    background-color: white;
+    color: #ff4d4d;
+    border: 2px solid #ff4d4d;
+    border-radius: 4px;
+    padding: 8px 15px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1;
+    text-align: center;
+  }
+
+  .btn-eliminar:hover {
+    background-color: #ff4d4d;
+    color: white;
+  }
+
+  /* Estilos para el modal */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .modal.show {
+    display: block;
+    opacity: 1;
+  }
+
+  .modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    max-width: 500px;
+    width: 90%;
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+    position: relative;
+  }
+
+  .modal.show .modal-content {
+    transform: translateY(0);
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #aaa;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+
+  .modal-close:hover {
+    color: #333;
+  }
+
+  .modal-title {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+    font-weight: 600;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .form-control:focus {
+    border-color: #0066ff;
+    box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.2);
+    outline: none;
+  }
+
+  .form-control.readonly {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+    color: #666;
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 30px;
+  }
+
+  .btn-cancelar {
+    background-color: #f5f5f5;
+    color: #555;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-cancelar:hover {
+    background-color: #e0e0e0;
+  }
+
+  .btn-guardar {
+    background-color: #0066ff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-guardar:hover {
+    background-color: #0052cc;
+  }
+
+  /* Mensajes de alerta */
+  .alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+  }
+
+  .alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+
+  .alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .membresias-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .membresia-card {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    
+    .modal-content {
+      width: 95%;
+      margin: 5% auto;
+      padding: 20px;
+    }
+  }
+</style>
+
+<!-- Mensaje de éxito -->
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  {% endfor %}
+{% endif %}
+
+<div class="membresias-container">
+    <div class="header">
+        <h1>Administración de Membresías</h1>
+        <button class="btn-agregar" id="btn-agregar-membresia">Agregar Membresía</button>
+    </div>
+    
+    <div class="membresias-grid">
+        {% for membresia in membresias %}
+        <div class="membresia-card">
+            <div class="membresia-header">
+                <h2>{{ membresia.nombreMembresia }}</h2>
+                <div class="membresia-precio">C${{ membresia.precio|floatformat:2 }}</div>
+                <div class="membresia-periodo">{{ membresia.duracionDias }} días</div>
+            </div>
+            <div class="membresia-body">
+                <div class="membresia-info">
+                    <!-- Eliminamos la fila del ID -->
+                    <p>
+                        <span class="label">Nombre:</span>
+                        <span class="value">{{ membresia.nombreMembresia }}</span>
+                    </p>
+                    <p>
+                        <span class="label">Duración:</span>
+                        <span class="value">{{ membresia.duracionDias }} días</span>
+                    </p>
+                    <p>
+                        <span class="label">Precio:</span>
+                        <span class="value">C${{ membresia.precio|floatformat:2 }}</span>
+                    </p>
+                </div>
+                <div class="membresia-actions">
+                    <button class="btn-editar" data-id="{{ membresia.id_membresia }}">Editar</button>
+                    <button class="btn-eliminar" data-id="{{ membresia.id_membresia }}" data-nombre="{{ membresia.nombreMembresia }}">Eliminar</button>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">
+                No hay membresías disponibles. ¡Agrega una nueva!
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{# Modal para agregar/editar membresía #}
+{% include 'membresias/modal_membresia.html' %}
+
+{# Modal de confirmación para eliminar membresía #}
+{% include 'membresias/modal_confirmar_eliminar.html' %}
+
+<!-- Script para manejar los modales y la interacción -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Referencias a elementos del DOM
+    const modalMembresia = document.getElementById('modal-membresia');
+    const modalConfirmar = document.getElementById('modal-confirmar');
+    const modalTitle = document.getElementById('modal-title');
+    const formMembresia = document.getElementById('form-membresia');
+    const formEliminar = document.getElementById('form-eliminar');
+    const btnAgregarMembresia = document.getElementById('btn-agregar-membresia');
+    const btnCancelar = document.getElementById('btn-cancelar');
+    const btnCancelarEliminar = document.getElementById('btn-cancelar-eliminar');
+    const modalClose = document.querySelectorAll('.modal-close');
+    
+    // Campos del formulario
+    const inputId = document.getElementById('membresia_id');
+    const inputModoEdicion = document.getElementById('modo_edicion');
+    const inputNombre = document.getElementById('nombreMembresia');
+    const inputDuracion = document.getElementById('duracionDias');
+    const inputPrecio = document.getElementById('precio');
+    
+    // Campos para eliminar
+    const inputIdEliminar = document.getElementById('membresia_id_eliminar');
+    const nombreMembresiaEliminar = document.getElementById('nombre-membresia-eliminar');
+    
+    // Botón para agregar nueva membresía
+    btnAgregarMembresia.addEventListener('click', function() {
+      modalTitle.textContent = 'Agregar Membresía';
+      inputId.value = '';
+      inputModoEdicion.value = '0';
+      inputNombre.value = '';
+      inputDuracion.value = '';
+      inputPrecio.value = '';
+      
+      // Habilitar todos los campos para agregar
+      inputNombre.readOnly = false;
+      inputNombre.classList.remove('readonly');
+      inputDuracion.readOnly = false;
+      inputDuracion.classList.remove('readonly');
+      
+      formMembresia.action = "{% url 'guardar_membresia' %}";
+      
+      abrirModal(modalMembresia);
+    });
+    
+    // Botones para editar membresía
+    document.querySelectorAll('.btn-editar').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const id = this.getAttribute('data-id');
+        
+        // Hacer una petición AJAX para obtener los datos de la membresía
+        fetch(`{% url 'obtener_membresia' %}?id=${id}`)
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              modalTitle.textContent = 'Editar Membresía';
+              inputId.value = data.membresia.id_membresia;
+              inputModoEdicion.value = '1';
+              inputNombre.value = data.membresia.nombreMembresia;
+              inputDuracion.value = data.membresia.duracionDias;
+              inputPrecio.value = data.membresia.precio;
+              
+              // Deshabilitar campos que no se pueden editar
+              inputNombre.readOnly = true;
+              inputNombre.classList.add('readonly');
+              inputDuracion.readOnly = true;
+              inputDuracion.classList.add('readonly');
+              
+              formMembresia.action = "{% url 'guardar_membresia' %}";
+              
+              abrirModal(modalMembresia);
+            } else {
+              alert('Error al cargar los datos de la membresía');
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            alert('Error al cargar los datos de la membresía');
+          });
+      });
+    });
+    
+    // Botones para eliminar membresía
+    document.querySelectorAll('.btn-eliminar').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const id = this.getAttribute('data-id');
+        const nombre = this.getAttribute('data-nombre');
+        
+        // Asegurarse de que el ID se establezca correctamente
+        inputIdEliminar.value = id;
+        nombreMembresiaEliminar.textContent = nombre;
+        
+        console.log("ID a eliminar:", id); // Para depuración
+        
+        abrirModal(modalConfirmar);
+      });
+    });
+    
+    // Verificar que el ID se envíe correctamente en el formulario de eliminación
+    formEliminar.addEventListener('submit', function(event) {
+      if (!inputIdEliminar.value) {
+        event.preventDefault();
+        alert('Error: No se ha especificado el ID de la membresía a eliminar');
+        return false;
+      }
+      console.log("Enviando formulario con ID:", inputIdEliminar.value); // Para depuración
+    });
+    
+    // Función para abrir modal
+    function abrirModal(modal) {
+      modal.style.display = 'block';
+      setTimeout(() => {
+        modal.classList.add('show');
+      }, 10);
+    }
+    
+    // Función para cerrar modal
+    function cerrarModal(modal) {
+      modal.classList.remove('show');
+      setTimeout(() => {
+        modal.style.display = 'none';
+      }, 300);
+    }
+    
+    // Event listeners para cerrar modales
+    modalClose.forEach(close => {
+      close.addEventListener('click', function() {
+        cerrarModal(this.closest('.modal'));
+      });
+    });
+    
+    btnCancelar.addEventListener('click', function() {
+      cerrarModal(modalMembresia);
+    });
+    
+    btnCancelarEliminar.addEventListener('click', function() {
+      cerrarModal(modalConfirmar);
+    });
+    
+    // Cerrar modal al hacer clic fuera del contenido
+    window.addEventListener('click', function(event) {
+      if (event.target === modalMembresia) {
+        cerrarModal(modalMembresia);
+      }
+      if (event.target === modalConfirmar) {
+        cerrarModal(modalConfirmar);
+      }
+    });
+    
+    // Validación del formulario
+    formMembresia.addEventListener('submit', function(event) {
+      const precio = parseFloat(inputPrecio.value);
+      const duracion = parseInt(inputDuracion.value);
+      
+      if (isNaN(precio) || precio <= 0) {
+        event.preventDefault();
+        alert('Por favor, ingrese un precio válido mayor que cero.');
+        return false;
+      }
+      
+      if (isNaN(duracion) || duracion <= 0) {
+        event.preventDefault();
+        alert('Por favor, ingrese una duración válida en días mayor que cero.');
+        return false;
+      }
+    });
+    
+    // Cerrar automáticamente las alertas después de 5 segundos
+    setTimeout(function() {
+      document.querySelectorAll('.alert').forEach(alert => {
+        if (alert.querySelector('.btn-close')) {
+          alert.querySelector('.btn-close').click();
+        }
+      });
+    }, 5000);
+  });
+</script>
+{% endblock %}

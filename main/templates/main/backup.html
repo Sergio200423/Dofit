@@ -1,0 +1,685 @@
+{% extends 'common/base.html' %}
+{% block title %}Backup{% endblock %}
+{% block page_name%}Backup{% endblock %}
+{% block content %}
+
+{% load static %}
+
+<!-- Main Content -->
+<main class="main-content">
+    <div class="content-header">
+        <h1 class="page-title">Backup del Sistema</h1>
+        <div class="storage-info">
+            <span class="storage-used">2.4GB</span>
+            <span class="storage-total">de 10GB usado</span>
+        </div>
+    </div>
+
+    <div class="backup-grid">
+        <!-- Latest Backup Card -->
+        <div class="backup-card">
+            <div class="card-header">
+                <h3>Último Backup</h3>
+                <div class="backup-status success">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Completado</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="backup-info">
+                    <div class="backup-icon">
+                        <i class="fas fa-cloud"></i>
+                    </div>
+                    <div class="backup-details">
+                        <div class="backup-date">18 Mayo 2024, 21:13:10</div>
+                        <div class="backup-size">1.2GB</div>
+                    </div>
+                </div>
+                <button class="btn btn-primary backup-now-btn">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    Crear Backup Ahora
+                </button>
+            </div>
+        </div>
+
+        <!-- Backup Settings Card -->
+        <div class="backup-card">
+            <div class="card-header">
+                <h3>Configuración de Backup</h3>
+            </div>
+            <div class="card-body">
+                <div class="settings-section">
+                    <h4>Incluir/Excluir Contenido</h4>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" checked>
+                            <span class="checkmark"></span>
+                            <div class="checkbox-content">
+                                <span class="checkbox-label">Archivos del Sistema</span>
+                                <span class="checkbox-description">Incluye todos los archivos de la aplicación</span>
+                            </div>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" checked>
+                            <span class="checkmark"></span>
+                            <div class="checkbox-content">
+                                <span class="checkbox-label">Base de Datos</span>
+                                <span class="checkbox-description">Incluye toda la información de clientes, empleados y transacciones</span>
+                            </div>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox">
+                            <span class="checkmark"></span>
+                            <div class="checkbox-content">
+                                <span class="checkbox-label">Archivos de Media</span>
+                                <span class="checkbox-description">Incluye imágenes y documentos subidos</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h4>Programación Automática</h4>
+                    <div class="schedule-options">
+                        <label class="radio-item">
+                            <input type="radio" name="schedule" value="daily" checked>
+                            <span class="radio-mark"></span>
+                            <span>Diario a las 2:00 AM</span>
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="schedule" value="weekly">
+                            <span class="radio-mark"></span>
+                            <span>Semanal (Domingos)</span>
+                        </label>
+                        <label class="radio-item">
+                            <input type="radio" name="schedule" value="manual">
+                            <span class="radio-mark"></span>
+                            <span>Solo manual</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="card-actions">
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-times"></i>
+                        Cancelar
+                    </button>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Guardar Configuración
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Backup History Card -->
+        <div class="backup-card full-width">
+            <div class="card-header">
+                <h3>Historial de Backups</h3>
+                <button class="btn btn-danger btn-sm">
+                    <i class="fas fa-trash"></i>
+                    Eliminar Todos
+                </button>
+            </div>
+            <div class="card-body">
+                <div class="backup-list">
+                    <div class="backup-item">
+                        <div class="backup-item-info">
+                            <div class="backup-item-icon">
+                                <i class="fas fa-file-archive"></i>
+                            </div>
+                            <div class="backup-item-details">
+                                <div class="backup-item-name">backup_dofit_20240518.zip</div>
+                                <div class="backup-item-meta">18 Mayo 2024 • 1.2GB</div>
+                            </div>
+                        </div>
+                        <div class="backup-item-actions">
+                            <button class="btn btn-outline btn-sm">
+                                <i class="fas fa-download"></i>
+                                Descargar
+                            </button>
+                            <button class="btn btn-outline btn-sm">
+                                <i class="fas fa-undo"></i>
+                                Restaurar
+                            </button>
+                            <button class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="backup-item">
+                        <div class="backup-item-info">
+                            <div class="backup-item-icon">
+                                <i class="fas fa-file-archive"></i>
+                            </div>
+                            <div class="backup-item-details">
+                                <div class="backup-item-name">backup_dofit_20240517.zip</div>
+                                <div class="backup-item-meta">17 Mayo 2024 • 1.1GB</div>
+                            </div>
+                        </div>
+                        <div class="backup-item-actions">
+                            <button class="btn btn-outline btn-sm">
+                                <i class="fas fa-download"></i>
+                                Descargar
+                            </button>
+                            <button class="btn btn-outline btn-sm">
+                                <i class="fas fa-undo"></i>
+                                Restaurar
+                            </button>
+                            <button class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="backup-item">
+                        <div class="backup-item-info">
+                            <div class="backup-item-icon">
+                                <i class="fas fa-file-archive"></i>
+                            </div>
+                            <div class="backup-item-details">
+                                <div class="backup-item-name">backup_dofit_20240516.zip</div>
+                                <div class="backup-item-meta">16 Mayo 2024 • 1.0GB</div>
+                            </div>
+                        </div>
+                        <div class="backup-item-actions">
+                            <button class="btn btn-outline btn-sm">
+                                <i class="fas fa-download"></i>
+                                Descargar
+                            </button>
+                            <button class="btn btn-outline btn-sm">
+                                <i class="fas fa-undo"></i>
+                                Restaurar
+                            </button>
+                            <button class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<style>
+    :root {
+        --primary-color: #1a56db;
+        --primary-hover: #1e429f;
+        --primary-light: #e6f0ff;
+        --secondary-color: #6b7280;
+        --secondary-hover: #4b5563;
+        --success-color: #10b981;
+        --success-light: #ecfdf5;
+        --danger-color: #ef4444;
+        --danger-light: #fef2f2;
+        --warning-color: #f59e0b;
+        --warning-light: #fffbeb;
+        --light-bg: #f9fafb;
+        --white: #ffffff;
+        --dark-text: #111827;
+        --gray-text: #6b7280;
+        --border-color: #e5e7eb;
+        --border-radius: 0.5rem;
+        --box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        --box-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --transition: all 0.3s ease;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--light-bg);
+        color: var(--dark-text);
+    }
+
+    .backup-container {
+        display: flex;
+        min-height: 100vh;
+    }
+
+    /* Main Content */
+    .main-content {
+        flex: 1;
+        margin-left: 0;
+        padding: 2rem;
+    }
+
+    .content-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+    .page-title {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--dark-text);
+    }
+
+    .storage-info {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    .storage-used {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--primary-color);
+    }
+
+    .storage-total {
+        font-size: 0.875rem;
+        color: var(--gray-text);
+    }
+
+    /* Backup Grid */
+    .backup-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+
+    .backup-card {
+        background: var(--white);
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        border: 1px solid var(--border-color);
+        overflow: hidden;
+    }
+
+    .backup-card.full-width {
+        grid-column: 1 / -1;
+    }
+
+    .card-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .card-header h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: var(--dark-text);
+    }
+
+    .backup-status {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.375rem 0.75rem;
+        border-radius: 9999px;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .backup-status.success {
+        background-color: var(--success-light);
+        color: var(--success-color);
+    }
+
+    .card-body {
+        padding: 1.5rem;
+    }
+
+    .backup-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .backup-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background-color: var(--primary-light);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary-color);
+        font-size: 1.5rem;
+    }
+
+    .backup-details {
+        flex: 1;
+    }
+
+    .backup-date {
+        font-weight: 600;
+        color: var(--dark-text);
+        margin-bottom: 0.25rem;
+    }
+
+    .backup-size {
+        color: var(--gray-text);
+        font-size: 0.875rem;
+    }
+
+    /* Settings Sections */
+    .settings-section {
+        margin-bottom: 2rem;
+    }
+
+    .settings-section h4 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--dark-text);
+        margin-bottom: 1rem;
+    }
+
+    .checkbox-group {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .checkbox-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        cursor: pointer;
+    }
+
+    .checkbox-item input[type="checkbox"] {
+        display: none;
+    }
+
+    .checkmark {
+        width: 20px;
+        height: 20px;
+        border: 2px solid var(--border-color);
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition);
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    .checkbox-item input[type="checkbox"]:checked + .checkmark {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+
+    .checkbox-item input[type="checkbox"]:checked + .checkmark::after {
+        content: '\f00c';
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        color: white;
+        font-size: 0.75rem;
+    }
+
+    .checkbox-content {
+        flex: 1;
+    }
+
+    .checkbox-label {
+        font-weight: 500;
+        color: var(--dark-text);
+        display: block;
+        margin-bottom: 0.25rem;
+    }
+
+    .checkbox-description {
+        font-size: 0.875rem;
+        color: var(--gray-text);
+    }
+
+    .schedule-options {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .radio-item {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        cursor: pointer;
+    }
+
+    .radio-item input[type="radio"] {
+        display: none;
+    }
+
+    .radio-mark {
+        width: 18px;
+        height: 18px;
+        border: 2px solid var(--border-color);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition);
+    }
+
+    .radio-item input[type="radio"]:checked + .radio-mark {
+        border-color: var(--primary-color);
+    }
+
+    .radio-item input[type="radio"]:checked + .radio-mark::after {
+        content: '';
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: var(--primary-color);
+    }
+
+    /* Backup List */
+    .backup-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .backup-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        border: 1px solid var(--border-color);
+        border-radius: var(--border-radius);
+        transition: var(--transition);
+    }
+
+    .backup-item:hover {
+        border-color: var(--primary-color);
+        box-shadow: var(--box-shadow-md);
+    }
+
+    .backup-item-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .backup-item-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        background-color: var(--primary-light);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary-color);
+    }
+
+    .backup-item-name {
+        font-weight: 500;
+        color: var(--dark-text);
+        margin-bottom: 0.25rem;
+    }
+
+    .backup-item-meta {
+        font-size: 0.875rem;
+        color: var(--gray-text);
+    }
+
+    .backup-item-actions {
+        display: flex;
+        gap: 0.5rem;
+    }
+
+    /* Buttons */
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: var(--border-radius);
+        font-weight: 600;
+        font-size: 0.875rem;
+        cursor: pointer;
+        transition: var(--transition);
+        text-decoration: none;
+    }
+
+    .btn-sm {
+        padding: 0.5rem 1rem;
+        font-size: 0.75rem;
+    }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background-color: var(--primary-hover);
+        transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+        background-color: var(--secondary-color);
+        color: white;
+    }
+
+    .btn-secondary:hover {
+        background-color: var(--secondary-hover);
+    }
+
+    .btn-danger {
+        background-color: var(--danger-color);
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background-color: #dc2626;
+    }
+
+    .btn-outline {
+        background-color: transparent;
+        color: var(--primary-color);
+        border: 1px solid var(--primary-color);
+    }
+
+    .btn-outline:hover {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+    .backup-now-btn {
+        width: 100%;
+        font-size: 1rem;
+        padding: 1rem;
+    }
+
+    .card-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border-color);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+        .backup-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .main-content {
+            margin-left: 0;
+            padding: 1rem;
+        }
+
+        .content-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .backup-item {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .backup-item-actions {
+            width: 100%;
+            justify-content: flex-end;
+        }
+
+        .card-actions {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<script>
+    // Simulación de funcionalidad
+    document.addEventListener('DOMContentLoaded', function() {
+        // Backup Now button
+        const backupBtn = document.querySelector('.backup-now-btn');
+        backupBtn.addEventListener('click', function() {
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creando Backup...';
+            this.disabled = true;
+            
+            setTimeout(() => {
+                this.innerHTML = '<i class="fas fa-check"></i> Backup Completado';
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> Crear Backup Ahora';
+                    this.disabled = false;
+                }, 2000);
+            }, 3000);
+        });
+
+        // Save configuration button
+        const saveBtn = document.querySelector('.card-actions .btn-primary');
+        if (saveBtn) {
+            saveBtn.addEventListener('click', function() {
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+                this.disabled = true;
+                
+                setTimeout(() => {
+                    this.innerHTML = '<i class="fas fa-check"></i> Guardado';
+                    setTimeout(() => {
+                        this.innerHTML = '<i class="fas fa-save"></i> Guardar Configuración';
+                        this.disabled = false;
+                    }, 2000);
+                }, 1500);
+            });
+        }
+    });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+{% endblock %}

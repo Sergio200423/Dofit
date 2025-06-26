@@ -1,0 +1,16 @@
+<!-- Modal de confirmación para eliminar membresía -->
+<div id="modal-confirmar" class="modal">
+    <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <h2 class="modal-title">Confirmar Eliminación</h2>
+        <p>¿Estás seguro de que deseas eliminar la membresía <strong id="nombre-membresia-eliminar"></strong>?</p>
+        <form id="form-eliminar" method="post" action="{% url 'eliminar_membresia' %}">
+            {% csrf_token %}
+            <input type="hidden" id="membresia_id_eliminar" name="membresia_id" value="">
+            <div class="form-actions">
+                <button type="button" class="btn-cancelar" id="btn-cancelar-eliminar">Cancelar</button>
+                <button type="submit" class="btn-eliminar">Eliminar</button>
+            </div>
+        </form>
+    </div>
+</div>

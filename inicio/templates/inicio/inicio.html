@@ -1,0 +1,600 @@
+{% load static %}
+
+<!Doctype html>
+<html lang="en">
+  <head>
+    <title>DOFIT GYM</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'inicio/fonts/icomoon/style.css' %}">
+
+    <link rel="stylesheet" href="{% static 'inicio/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'inicio/css/jquery-ui.css' %}">
+    <link rel="stylesheet" href="{% static 'inicio/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'inicio/css/owl.theme.default.min.css' %}">
+    <link rel="stylesheet" href="{% static 'inicio/css/owl.theme.default.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'inicio/css/jquery.fancybox.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'inicio/css/bootstrap-datepicker.css' %}">
+
+    <link rel="stylesheet" href="{% static 'inicio/fonts/flaticon/font/flaticon.css' %}">
+
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'inicio/css/style.css' %}">
+
+    <link rel="icon" href="{% static 'img/IconoDofit.svg' %}" type="image/svg+xml">
+
+  </head>
+  <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+  
+
+  <div id="overlayer"></div>
+  <div class="loader">
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+
+
+  <div class="site-wrap">
+
+    <div class="site-mobile-menu site-navbar-target">
+      <div class="site-mobile-menu-header">
+        <div class="site-mobile-menu-close mt-3">
+          <span class="icon-close2 js-menu-toggle"></span>
+        </div>
+      </div>
+      <div class="site-mobile-menu-body"></div>
+    </div>
+   
+    
+    <header class="site-navbar py-4 js-sticky-header site-navbar-target" role="banner">
+
+      <div class="container">
+        <div class="row align-items-center">
+
+          <div class="col-12 col-md-10 d-none d-xl-block">
+            <nav class="site-navigation position-relative text-right" role="navigation">
+
+              <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
+                <li class="">
+                  <a href="#about-section" class="nav-link">Sobre nosotros</a>
+                </li>
+                
+                <li><a href="#team-section" class="nav-link">Equipo</a></li>
+                <li><a href="#portfolio-section" class="nav-link">Máquinas</a></li>
+                <li><a href="#pricing-section" class="nav-link">Precios</a></li>
+                <li><a href="#contact-section" class="nav-link">Contáctanos</a></li>
+                <li><a href="{% url 'inicio_sesion' %}" class="nav-link">Inicio de Sesión</a></li>
+              </ul>
+            </nav>
+          </div>
+
+
+          <div class="col-6 d-inline-block d-xl-none ml-md-0 py-3" style="position: relative; top: 3px;"><a href="#" class="site-menu-toggle js-menu-toggle float-right"><span class="icon-menu h3"></span></a></div>
+
+        </div>
+      </div>
+      
+    </header>
+
+    
+    <div class="site-section cta-big-image" id="about-section">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-12 text-center" data-aos="fade">
+            <h2 class="section-title mb-3">Acerca de nosotros</h2>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6 mb-5" data-aos="fade-up" data-aos-delay="">
+            <img src="{% static 'img/dofit2.svg' %}" alt="Image" class="img-fluid">
+          </div>
+          <div class="col-lg-5 ml-auto mt-5" data-aos="fade-up" data-aos-delay="100">
+            <div class="mb-4">
+               <h3 class="h3 mb-4 text-black">Impulsá tu mejor versión</h3>
+                <p>
+                  Desde 2020, en DOFIT GYM trabajamos para ofrecer un entorno accesible, motivador y profesional para quienes desean transformar su estilo de vida. 
+                  Somos más que un gimnasio: somos una comunidad comprometida con tu progreso.
+                </p>
+              
+            </div>     
+              
+            <div class="mb-4">
+            <ul class="list-unstyled ul-check success">
+            <li><span class="icon-check text-success"></span> Entrenamientos personalizados y efectivos.</li>
+            <li><span class="icon-check text-success"></span> Ambiente motivador con equipo de última generación.</li>
+            <li><span class="icon-check text-success"></span> Acompañamiento profesional en cada paso.</li>
+          </ul>
+                        
+            </div>  
+          </div>
+        </div>
+      </div>  
+    </div>
+
+    <section class="site-section">
+      <div class="container">
+
+        <div class="row mb-5 justify-content-center">
+          <div class="col-md-7 text-center">
+            <h2 class="section-title mb-3" data-aos="fade-up" data-aos-delay="">Ideal para ti si buscas</h2>
+            <p class="lead" data-aos="fade-up" data-aos-delay="100">
+              
+            </p>
+          </div>
+        </div>
+        
+        <div class="row" >
+          <div class="col-lg-6 mb-5" data-aos="fade-up" data-aos-delay="">
+
+            <div class="owl-carousel slide-one-item-alt">
+              <img src="https://i.pinimg.com/736x/25/8f/58/258f584339bb5cd656971b3a6ffcc834.jpg" alt="Image" class="img-fluid">
+              <img src="https://i.pinimg.com/736x/a6/10/14/a61014e9f65e6732f00cca37dc4ff411.jpg" alt="Image" class="img-fluid">
+              <img src="https://i.pinimg.com/736x/ef/4e/31/ef4e312bfbc9d202d888fa2117e2242f.jpg" alt="Image" class="img-fluid">
+              <img src="https://i.pinimg.com/736x/30/0c/de/300cde7487b6bb7574ba6cfd77396405.jpg" alt="Image" class="img-fluid">
+            </div>
+            <style>
+              .owl-carousel img {
+                  width: 100%;  /* O un tamaño específico como 300px */
+                  height: 400px;  /* Ajusta la altura según necesites */
+                  object-fit: cover;  /* Recorta la imagen para llenar el espacio sin deformarla */
+                }
+
+            </style>
+            <div class="custom-direction">
+              <a href="#" class="custom-prev"><span><span class="icon-keyboard_backspace"></span></span></a><a href="#" class="custom-next"><span><span class="icon-keyboard_backspace"></span></span></a>
+            </div>
+
+          </div>
+          <div class="col-lg-5 ml-auto" data-aos="fade-up" data-aos-delay="100">
+            
+            <div class="owl-carousel slide-one-item-alt-text">
+              <div>
+                <h2 class="section-title mb-3">Aumentar tu fuerza</h2>
+                <p class="lead">
+                  <br>Mejora tu capacidad física, previene lesiones y te ayuda a realizar actividades diarias con mayor facilidad. Además, fortalece tus huesos y articulaciones.
+                </p>
+
+              </div>
+              <div>
+                <h2 class="section-title mb-3">Mejorar tu resistencia</h2>
+                <p class="lead">
+                  Aumenta tu energía, optimiza tu rendimiento en el deporte y en la vida cotidiana, y fortalece tu corazón y pulmones para una mejor salud cardiovascular.
+                </p>
+
+              </div>
+              <div>
+                <h2 class="section-title mb-3">Adoptar un estilo de vida más saludable</h2>
+                <p class="lead">
+                  Reduce el estrés, mejora tu estado de ánimo y potencia tu bienestar general. También ayuda a mantener un peso equilibrado y a prevenir enfermedades.
+                </p>
+
+              </div>
+              <div>
+                <h2 class="section-title mb-3">Formar parte de una comunidad que te impulsa</h2>
+                <p class="lead">
+                  Entrenar rodeado de personas con tus mismos objetivos te motiva, te mantiene constante y hace que el proceso sea más divertido y llevadero.
+                </p>
+
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    
+    <section class="site-section border-bottom" id="team-section">
+      <div class="container">
+        <div class="row mb-5 justify-content-center">
+          <div class="col-md-8 text-center">
+            <h2 class="section-title mb-3" data-aos="fade-up" data-aos-delay="">Nuestro equipo</h2>
+            <p class="lead" data-aos="fade-up" data-aos-delay="100">
+              Contamos con entrenadores capacitados que te guiarán en cada paso de tu entrenamiento, ayudándote a mejorar tu rendimiento y alcanzar tus objetivos. Si necesitas apoyo o asesoramiento, ellos estarán siempre disponibles para brindarte la mejor orientación.            </p>
+          </div>
+        </div>
+        <div class="row">
+
+
+
+
+          <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="team-member">
+              <figure>
+                <ul class="social">
+                  <li><a href="#"><span class="icon-facebook"></span></a></li>
+                  <li><a href="#"><span class="icon-twitter"></span></a></li>
+                  <li><a href="#"><span class="icon-linkedin"></span></a></li>
+                  <li><a href="#"><span class="icon-instagram"></span></a></li>
+                </ul>
+                <img src="{% static 'inicio/img/entrenador1.png' %}" alt="Image" class="img-fluid">
+              </figure>
+              <div class="p-3">
+                <h3>Joseph Flores</h3>
+                <span class="position">Entrenador</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="">
+            <div class="team-member">
+              <figure>
+                <ul class="social">
+                  <li><a href="#"><span class="icon-facebook"></span></a></li>
+                  <li><a href="#"><span class="icon-twitter"></span></a></li>
+                  <li><a href="#"><span class="icon-linkedin"></span></a></li>
+                  <li><a href="#"><span class="icon-instagram"></span></a></li>
+                </ul>
+                <img src="https://img.freepik.com/free-photo/front-view-fit-man-posing-while-wearing-tank-top-with-crossed-arms_23-2148700610.jpg?t=st=1743690332~exp=1743693932~hmac=cad2ef67003fb0dd9cd4d980681bf8f64e6a5c9dc54f83cd26c85240239bd6be&w=826" alt="Image" class="img-fluid">
+              </figure>
+              <div class="p-3">
+                <h3>Kaiara Spencer</h3>
+                <span class="position">Entrenador</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="team-member">
+              <figure>
+                <ul class="social">
+                  <li><a href="#"><span class="icon-facebook"></span></a></li>
+                  <li><a href="#"><span class="icon-twitter"></span></a></li>
+                  <li><a href="#"><span class="icon-linkedin"></span></a></li>
+                  <li><a href="#"><span class="icon-instagram"></span></a></li>
+                </ul>
+                <img src="https://img.freepik.com/free-photo/front-view-handsome-man-posing-with-his-arms-crossed_23-2148692178.jpg?t=st=1743690445~exp=1743694045~hmac=ed66ad7723a4ea15aee2ba907b9ea78b417f21ef9509035e0cf492709d7c3da9&w=826" alt="Image" class="img-fluid">
+              </figure>
+              <div class="p-3">
+                <h3>Dave Simpson</h3>
+                <span class="position">Entrenador</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-3 mb-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="team-member">
+              <figure>
+                <ul class="social">
+                  <li><a href="#"><span class="icon-facebook"></span></a></li>
+                  <li><a href="#"><span class="icon-twitter"></span></a></li>
+                  <li><a href="#"><span class="icon-linkedin"></span></a></li>
+                  <li><a href="#"><span class="icon-instagram"></span></a></li>
+                </ul>
+                <img src="https://img.freepik.com/free-photo/portrait-man-laughing_23-2148859448.jpg?t=st=1743690633~exp=1743694233~hmac=3c9d1a7c276f9425b581c46d62b74c6d77572a1b3a194ce614ef8aa1eb8221f2&w=826" alt="Image" class="img-fluid">
+              </figure>
+              <div class="p-3">
+                <h3>Ben Thompson</h3>
+                <span class="position">Entrenador</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="site-section" id="portfolio-section">
+      
+
+      <div class="container">
+
+        <div class="row mb-3">
+          <div class="col-12 text-center" data-aos="fade">
+            <h2 class="section-title mb-3">Nuestras máquinas</h2>
+          </div>
+        </div>
+
+        <div class="row justify-content-center mb-5" data-aos="fade-up">
+          <div id="filters" class="filters text-center button-group col-md-7">
+            <button class="btn btn-primary active" data-filter="*">Todas</button>
+            <button class="btn btn-primary" data-filter=".superior">Tren Superior</button>
+            <button class="btn btn-primary" data-filter=".inferior">Tren Inferior</button>
+            <button class="btn btn-primary" data-filter=".cardio">Cardio y Abdomen</button>
+          </div>
+        </div>  
+        
+        <div id="posts" class="row no-gutter">
+          <div class="item inferior col-sm-6 col-md-4 col-lg-4 col-xl-3 mb-4">
+            <a href="https://i.pinimg.com/736x/cb/45/6c/cb456ca0b42d0bdd7deacbb0b38f921f.jpg" class="item-wrap fancybox" data-fancybox="gallery2">
+              <span class="icon-search2"></span>
+              <img class="img-fluid" src="https://i.pinimg.com/736x/cb/45/6c/cb456ca0b42d0bdd7deacbb0b38f921f.jpg">
+            </a>
+          </div>
+
+          <div class="item superior col-sm-6 col-md-4 col-lg-4 col-xl-3 mb-4">
+            <a href="https://homegymsupply.co.uk/cdn/shop/products/InspireFitnessFT2FunctionalTrainer1_800x.jpg?v=1678702958" class="item-wrap fancybox" data-fancybox="gallery2">
+              <span class="icon-search2"></span>
+              <img class="img-fluid" src="https://homegymsupply.co.uk/cdn/shop/products/InspireFitnessFT2FunctionalTrainer1_800x.jpg?v=1678702958">
+            </a>
+          </div>
+
+          <div class="item cardio col-sm-6 col-md-4 col-lg-4 col-xl-3 mb-4">
+            <a href="{% static 'inicio/img/Bicicletas.png' %}" class="item-wrap fancybox" data-fancybox="gallery2">
+              <span class="icon-search2"></span>
+              <img class="img-fluid" src="{% static 'inicio/img/Bicicletas.png' %}">
+            </a>
+          </div>
+
+          <div class="item inferior col-sm-6 col-md-4 col-lg-4 col-xl-3 mb-4">
+
+            <a href="https://i.pinimg.com/736x/a9/4a/5e/a94a5e84a5219eda4e954db9bb9e1607.jpg" class="item-wrap fancybox" data-fancybox="gallery2">
+              <span class="icon-search2"></span>
+              <img class="img-fluid" src="https://i.pinimg.com/736x/a9/4a/5e/a94a5e84a5219eda4e954db9bb9e1607.jpg">
+            </a>
+
+          </div>
+
+          <div class="item inferior col-sm-6 col-md-4 col-lg-4 col-xl-3 mb-4">
+            <a href="https://i.pinimg.com/736x/32/18/ce/3218cea891fd19383bb69593e8cc251c.jpg" class="item-wrap fancybox" data-fancybox="gallery2">
+              <span class="icon-search2"></span>
+              <img class="img-fluid" src="https://i.pinimg.com/736x/32/18/ce/3218cea891fd19383bb69593e8cc251c.jpg">
+            </a>
+          </div>
+
+          <div class="item superior col-sm-6 col-md-4 col-lg-4 col-xl-3 mb-4">
+            <a href="https://i.pinimg.com/736x/af/f9/2b/aff92bec2432deb505bfebd8ca724661.jpg" class="item-wrap fancybox" data-fancybox="gallery2">
+              <span class="icon-search2"></span>
+              <img class="img-fluid" src="https://i.pinimg.com/736x/af/f9/2b/aff92bec2432deb505bfebd8ca724661.jpg">
+            </a>
+          </div>
+
+          <div class="item superior col-sm-6 col-md-4 col-lg-4 col-xl-3 mb-4">
+            <a href="https://i.pinimg.com/736x/e4/00/42/e400420e7a19ef8484f8b280df9b1ca1.jpg" class="item-wrap fancybox" data-fancybox="gallery2">
+              <span class="icon-search2"></span>
+              <img class="img-fluid" src="https://i.pinimg.com/736x/e4/00/42/e400420e7a19ef8484f8b280df9b1ca1.jpg">
+            </a>
+          </div>
+
+          <div class="item superior col-sm-6 col-md-4 col-lg-4 col-xl-3 mb-4">
+            <a href="https://i.pinimg.com/736x/9c/d8/49/9cd84952e92decea867a04426517e771.jpg" class="item-wrap fancybox" data-fancybox="gallery2">
+              <span class="icon-search2"></span>
+              <img class="img-fluid" src="https://i.pinimg.com/736x/9c/d8/49/9cd84952e92decea867a04426517e771.jpg">
+            </a>
+          </div>
+
+          <div class="item superior col-sm-6 col-md-4 col-lg-4 col-xl-3 mb-4">
+            <a href="https://i.pinimg.com/736x/25/07/b1/2507b1d3a94172f742119e2490419fdc.jpg" class="item-wrap fancybox" data-fancybox="gallery2">
+              <span class="icon-search2"></span>
+              <img class="img-fluid" src="https://i.pinimg.com/736x/25/07/b1/2507b1d3a94172f742119e2490419fdc.jpg">
+            </a>
+          </div>
+
+          <div class="item inferior col-sm-6 col-md-4 col-lg-4 col-xl-3 mb-4">
+            <a href="https://i.pinimg.com/736x/a0/14/0e/a0140e4b36a9347ba46233a08b421603.jpg" class="item-wrap fancybox" data-fancybox="gallery2">
+              <span class="icon-search2"></span>
+              <img class="img-fluid" src="https://i.pinimg.com/736x/a0/14/0e/a0140e4b36a9347ba46233a08b421603.jpg">
+            </a>
+          </div>
+
+          <div class="item inferior col-sm-6 col-md-4 col-lg-4 col-xl-3 mb-4">
+            <a href="https://i.pinimg.com/736x/b0/dc/67/b0dc67ef6d863081f678c22abfa79557.jpg" class="item-wrap fancybox" data-fancybox="gallery2">
+              <span class="icon-search2"></span>
+              <img class="img-fluid" src="https://i.pinimg.com/736x/b0/dc/67/b0dc67ef6d863081f678c22abfa79557.jpg">
+            </a>
+          </div>
+
+          <div class="item inferior col-sm-6 col-md-4 col-lg-4 col-xl-3 mb-4">
+            <a href="{% static 'inicio/img/maquinafemoral.png' %}" class="item-wrap fancybox" data-fancybox="gallery2">
+              <span class="icon-search2"></span>
+              <img class="img-fluid" src="{% static 'inicio/img/maquinafemoral.png' %}">
+            </a>
+          </div>
+
+          <div class="item inferior col-sm-6 col-md-4 col-lg-4 col-xl-3 mb-4">
+            <a href="{% static 'inicio/img/maquinapantorrillas.png' %}" class="item-wrap fancybox" data-fancybox="gallery2">
+              <span class="icon-search2"></span>
+              <img class="img-fluid" src="{% static 'inicio/img/maquinapantorrillas.png' %}">
+            </a>
+          </div>
+
+          <div class="item superior col-sm-6 col-md-4 col-lg-4 col-xl-3 mb-4">
+            <a href="https://i.pinimg.com/736x/80/1a/0e/801a0ef903d8790847fc2efae59edd87.jpg" class="item-wrap fancybox" data-fancybox="gallery2">
+              <span class="icon-search2"></span>
+              <img class="img-fluid" src="https://i.pinimg.com/736x/80/1a/0e/801a0ef903d8790847fc2efae59edd87.jpg">
+            </a>
+          </div>
+
+          <div class="item superior col-sm-6 col-md-4 col-lg-4 col-xl-3 mb-4">
+            <a href="https://i.pinimg.com/736x/cf/87/55/cf87558bc4dd321d498f63c8b5f59aff.jpg" class="item-wrap fancybox" data-fancybox="gallery2">
+              <span class="icon-search2"></span>
+              <img class="img-fluid" src="https://i.pinimg.com/736x/cf/87/55/cf87558bc4dd321d498f63c8b5f59aff.jpg">
+            </a>
+          </div>
+
+          <div class="item cardio col-sm-6 col-md-4 col-lg-4 col-xl-3 mb-4">
+            <a href="https://i.pinimg.com/736x/9c/62/00/9c620021b3744c4ee15834766c2442ce.jpg" class="item-wrap fancybox" data-fancybox="gallery2">
+              <span class="icon-search2"></span>
+              <img class="img-fluid" src="https://i.pinimg.com/736x/9c/62/00/9c620021b3744c4ee15834766c2442ce.jpg">
+            </a>
+          </div>
+
+          <div class="item cardio col-sm-6 col-md-4 col-lg-4 col-xl-3 mb-4">
+            <a href="{% static 'inicio/img/maquinaabdomen.png' %}" class="item-wrap fancybox" data-fancybox="gallery2">
+              <span class="icon-search2"></span>
+              <img class="img-fluid" src="{% static 'inicio/img/maquinaabdomen.png' %}">
+            </a>
+          </div>
+
+          <div class="item cardio col-sm-6 col-md-4 col-lg-4 col-xl-3 mb-4">
+            <a href="https://i.pinimg.com/736x/ad/52/0e/ad520eea329b1fe28529adbbb3c032fc.jpg" class="item-wrap fancybox" data-fancybox="gallery2">
+              <span class="icon-search2"></span>
+              <img class="img-fluid" src="https://i.pinimg.com/736x/ad/52/0e/ad520eea329b1fe28529adbbb3c032fc.jpg">
+            </a>
+          </div>
+
+          <div class="item cardio col-sm-6 col-md-4 col-lg-4 col-xl-3 mb-4">
+            <a href="{% static 'inicio/img/abcore.png' %}" class="item-wrap fancybox" data-fancybox="gallery2">
+              <span class="icon-search2"></span>
+              <img class="img-fluid" src="{% static 'inicio/img/abcore.png' %}">
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+    
+    <section class="site-section bg-light" id="pricing-section">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-12 text-center" data-aos="fade-up">
+            <h2 class="section-title mb-3">Nuestros Precios</h2>
+          </div>
+        </div>
+        <div class="row mb-5">
+          <div class="col-md-6 mb-4 mb-lg-3 col-lg-3" data-aos="fade-up">
+            <div class="pricing">
+              <h3 class="text-center text-black">Día</h3>
+              <div class="price text-center mb-4">
+                <span><span>C$40.00</span></span>
+              </div>
+            </div>
+          </div>
+    
+          <div class="col-md-6 mb-4 mb-lg-3 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+            <div class="pricing">
+              <h3 class="text-center text-black">Semanal</h3>
+              <div class="price text-center mb-4">
+                <span><span>C$200.00</span></span>
+              </div>
+            </div>
+          </div>
+    
+          <div class="col-md-6 mb-4 mb-lg-3 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+            <div class="pricing">
+              <h3 class="text-center text-black">Quincenal</h3>
+              <div class="price text-center mb-4">
+                <span><span>C$350.00</span></span>
+              </div>
+            </div>
+          </div>
+    
+          <div class="col-md-6 mb-4 mb-lg-3 col-lg-3" data-aos="fade-up" data-aos-delay="300">
+            <div class="pricing">
+              <h3 class="text-center text-black">Mensual</h3>
+              <div class="price text-center mb-4">
+                <span><span>C$500.00</span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+
+    <section class="site-section bg-light" id="contact-section" data-aos="fade">
+      <div class="container">
+        <div class="row mb-5">
+          <div class="col-12 text-center">
+            <h2 class="section-title mb-3">Contáctanos</h2>
+          </div>
+        </div>
+        <div class="row mb-5">
+          
+
+
+          <div class="col-md-4 text-center">
+            <p class="mb-4">
+              <span class="icon-room d-block h4 text-primary"></span>
+                <a href="https://www.google.com/maps/search/?api=1&query=Frente+al+portón+de+la+UNI,+Academia+de+la+Danza" 
+                   target="_blank" 
+                   class="text-primary" 
+                   style="text-decoration: none;">
+                    <i class="bi bi-geo-alt"></i> Frente al portón de la UNI, Academia de la Danza
+                </a>
+            </p>
+        </div>
+        
+          <div class="col-md-4 text-center">
+            <p class="mb-4">
+              <span class="icon-phone d-block h4 text-primary"></span>
+              <a href="https://wa.me/50582481440?text=%C2%A1Hola!%20Quiero%20m%C3%A1s%20informaci%C3%B3n%20sobre%20su%20gimnasio." target="_blank">+505 8248-1440</a>
+            </p>
+          </div>
+          <div class="col-md-4 text-center">
+            <p class="mb-0">
+              <span class="icon-mail_outline d-block h4 text-primary"></span>
+              <a href="https://mail.google.com/mail/?view=cm&fs=1&to=info.dofit@gmail.com" target="_blank">info.dofit@gmail.com</a>
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-5">
+          </div>
+          
+        </div>
+      </div>
+    </section>
+
+    
+    <footer class="site-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-9">
+            <div class="row">
+              <div class="col-md-5">
+                <h2 class="footer-heading mb-4">Acerca de nosotros</h2>
+                <p>
+                  Fundado en 2020, nuestro gimnasio nació con la misión de proporcionar un espacio accesible para quienes buscan mejorar su bienestar físico.  
+                </p>
+              </div>
+              <div class="col-md-3 ml-auto">
+                <h2 class="footer-heading mb-4">Enlaces</h2>
+                <ul class="list-unstyled">
+                  <li><a href="#about-section" class="smoothscroll">Sobre nosotros</a></li>
+                  <li><a href="#team-section" class="smoothscroll">Equipo</a></li>
+                  <li><a href="#portfolio-section" class="smoothscroll">Máquinas</a></li>
+                  <li><a href="#contact-section" class="smoothscroll">Contáctanos</a></li>
+                </ul>
+              </div>
+              <div class="col-md-3">
+                <h2 class="footer-heading mb-4">Síguenos</h2>
+                <a href="https://www.facebook.com/DoFitGManagua" class="pl-0 pr-3"><span class="icon-facebook"></span></a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="row pt-5 mt-5 text-center">
+          <div class="col-md-12">
+            <div class="border-top pt-5">
+              <p>
+            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+            <!--Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart text-danger" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" >Colorlib</a>
+           Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+            </p>
+        
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </footer>
+
+  </div> <!-- .site-wrap -->
+
+  <script src="{% static 'inicio/js/jquery-3.3.1.min.js' %}"></script>
+  <script src="{% static 'inicio/js/jquery-ui.js' %}"></script>
+  <script src="{% static 'inicio/js/popper.min.js' %}"></script>
+  <script src="{% static 'inicio/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'inicio/js/owl.carousel.min.js' %}"></script>
+  <script src="{% static 'inicio/js/jquery.countdown.min.js' %}"></script>
+  <script src="{% static 'inicio/js/jquery.easing.1.3.js' %}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <script src="{% static 'inicio/js/jquery.fancybox.min.js' %}"></script>
+  <script src="{% static 'inicio/js/jquery.sticky.js' %}"></script>
+  <script src="{% static 'inicio/js/isotope.pkgd.min.js' %}"></script>
+
+
+  <script src="{% static 'inicio/js/main.js' %}"></script>
+
+  </body>
+</html>

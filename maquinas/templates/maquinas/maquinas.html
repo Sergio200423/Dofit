@@ -1,0 +1,439 @@
+{% extends 'common/base.html' %}
+{% block title %}Máquinas{% endblock %}
+{% load static %}
+
+{% block content %}
+<style>
+  .card {
+    height: 100%; /* Todas las cards tendrán la misma altura */
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card img {
+    width: 100%;
+    height: 300px; /* Tamaño fijo para todas las imágenes */
+    object-fit: cover; /* Recorta la imagen sin deformarla */
+  }     
+
+  .card-body {
+    flex-grow: 1; /* Hace que el contenido crezca uniformemente */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribuye el contenido */
+  }
+  
+  .alert-success {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    animation: fadeOut 5s forwards;
+  }
+  
+  @keyframes fadeOut {
+    0% { opacity: 1; }
+    70% { opacity: 1; }
+    100% { opacity: 0; visibility: hidden; }
+  }
+  
+  .badge-reparacion {
+    background-color: #ffc107;
+    color: #212529;
+  }
+  
+  .badge-mal_estado {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .badge-mantenimiento {
+    background-color: #17a2b8;
+    color: white;
+  }
+  
+  .badge-otra {
+    background-color: #6c757d;
+    color: white;
+  }
+  
+  .estado-inactiva {
+    color: #dc3545;
+    font-weight: bold;
+  }
+  
+  .estado-activa {
+    color: #28a745;
+    font-weight: bold;
+  }
+  
+  .tab-content {
+    padding-top: 20px;
+  }
+  
+  .inactividad-info {
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+</style>
+
+<!-- Mensaje de éxito -->
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  {% endfor %}
+{% endif %}
+
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Máquinas del Gimnasio</h2>
+    <div>
+      <a href="{% url 'maquinas_inactivas' %}" class="btn btn-warning me-2">Ver Máquinas en Reparación</a>
+      <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Agregar Máquina</a>
+    </div>
+  </div>
+  
+  <!-- Pestañas para filtrar máquinas -->
+  <ul class="nav nav-tabs" id="maquinasTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="todas-tab" data-bs-toggle="tab" data-bs-target="#todas" type="button" role="tab" aria-controls="todas" aria-selected="true">Todas</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="activas-tab" data-bs-toggle="tab" data-bs-target="#activas" type="button" role="tab" aria-controls="activas" aria-selected="false">Activas</button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="inactivas-tab" data-bs-toggle="tab" data-bs-target="#inactivas" type="button" role="tab" aria-controls="inactivas" aria-selected="false">Inactivas</button>
+    </li>
+  </ul>
+  
+  <div class="tab-content" id="maquinasTabsContent">
+    <!-- Todas las máquinas -->
+    <div class="tab-pane fade show active" id="todas" role="tabpanel" aria-labelledby="todas-tab">
+      <div class="row">
+        {% for maquina in maquinas %}
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            <div class="bg-image hover-overlay">
+              {% if maquina.imagen %}
+                <img src="{{ maquina.imagen.url }}" alt="{{ maquina.nombre }}">
+              {% else %}
+                <img src="{% static 'img/default-machine.jpg' %}" alt="{{ maquina.nombre }}">
+              {% endif %}
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{ maquina.nombre }}</h5>
+              <p class="card-text"><strong>Cantidad:</strong> <span class="cantidad-text">{{ maquina.cantidad }}</span></p>
+              <p class="card-text">
+                <strong>Estado:</strong> 
+                <span class="estado-text {% if maquina.estado == 'inactiva' %}estado-inactiva{% else %}estado-activa{% endif %}">
+                  {{ maquina.estado|title }}
+                </span>
+                {% if maquina.estado == 'inactiva' and maquina.razon_inactividad != 'no_aplica' %}
+                  <span class="badge badge-{{ maquina.razon_inactividad }}">{{ maquina.get_razon_inactividad_display }}</span>
+                {% endif %}
+              </p>
+              <p class="card-text"><strong>Descripción:</strong> <span class="descripcion-text">{{ maquina.descripcion }}</span></p>
+              
+              {% if maquina.estado == 'inactiva' and maquina.razon_inactividad != 'no_aplica' %}
+              <div class="inactividad-info">
+                <p><strong>Razón:</strong> {{ maquina.get_razon_inactividad_display }}</p>
+                {% if maquina.fecha_inactividad %}
+                <p><strong>Fecha de inactividad:</strong> {{ maquina.fecha_inactividad|date:"d/m/Y" }}</p>
+                {% endif %}
+                {% if maquina.fecha_estimada_reparacion %}
+                <p><strong>Fecha estimada de reparación:</strong> {{ maquina.fecha_estimada_reparacion|date:"d/m/Y" }}</p>
+                {% endif %}
+                {% if maquina.notas_inactividad %}
+                <p><strong>Notas:</strong> {{ maquina.notas_inactividad }}</p>
+                {% endif %}
+              </div>
+              {% endif %}
+              
+              <a href="#" class="btn btn-primary edit-btn mt-3" data-bs-toggle="modal" data-bs-target="#editModal" data-id="{{ maquina.id_maquina }}">Editar</a>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+          <div class="alert alert-info">
+            No hay máquinas registradas. ¡Agrega una nueva!
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    
+    <!-- Máquinas activas -->
+    <div class="tab-pane fade" id="activas" role="tabpanel" aria-labelledby="activas-tab">
+      <div class="row">
+        {% for maquina in maquinas %}
+        {% if maquina.estado == 'activa' %}
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            <div class="bg-image hover-overlay">
+              {% if maquina.imagen %}
+                <img src="{{ maquina.imagen.url }}" alt="{{ maquina.nombre }}">
+              {% else %}
+                <img src="{% static 'img/default-machine.jpg' %}" alt="{{ maquina.nombre }}">
+              {% endif %}
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{ maquina.nombre }}</h5>
+              <p class="card-text"><strong>Cantidad:</strong> <span class="cantidad-text">{{ maquina.cantidad }}</span></p>
+              <p class="card-text">
+                <strong>Estado:</strong> 
+                <span class="estado-text estado-activa">{{ maquina.estado|title }}</span>
+              </p>
+              <p class="card-text"><strong>Descripción:</strong> <span class="descripcion-text">{{ maquina.descripcion }}</span></p>
+              <a href="#" class="btn btn-primary edit-btn mt-3" data-bs-toggle="modal" data-bs-target="#editModal" data-id="{{ maquina.id_maquina }}">Editar</a>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        {% empty %}
+        <div class="col-12">
+          <div class="alert alert-info">
+            No hay máquinas activas registradas.
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    
+    <!-- Máquinas inactivas -->
+    <div class="tab-pane fade" id="inactivas" role="tabpanel" aria-labelledby="inactivas-tab">
+      <div class="row">
+        {% for maquina in maquinas %}
+        {% if maquina.estado == 'inactiva' %}
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            <div class="bg-image hover-overlay">
+              {% if maquina.imagen %}
+                <img src="{{ maquina.imagen.url }}" alt="{{ maquina.nombre }}">
+              {% else %}
+                <img src="{% static 'img/default-machine.jpg' %}" alt="{{ maquina.nombre }}">
+              {% endif %}
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{ maquina.nombre }}</h5>
+              <p class="card-text"><strong>Cantidad:</strong> <span class="cantidad-text">{{ maquina.cantidad }}</span></p>
+              <p class="card-text">
+                <strong>Estado:</strong> 
+                <span class="estado-text estado-inactiva">{{ maquina.estado|title }}</span>
+                {% if maquina.razon_inactividad != 'no_aplica' %}
+                  <span class="badge badge-{{ maquina.razon_inactividad }}">{{ maquina.get_razon_inactividad_display }}</span>
+                {% endif %}
+              </p>
+              <p class="card-text"><strong>Descripción:</strong> <span class="descripcion-text">{{ maquina.descripcion }}</span></p>
+              
+              {% if maquina.razon_inactividad != 'no_aplica' %}
+              <div class="inactividad-info">
+                <p><strong>Razón:</strong> {{ maquina.get_razon_inactividad_display }}</p>
+                {% if maquina.fecha_inactividad %}
+                <p><strong>Fecha de inactividad:</strong> {{ maquina.fecha_inactividad|date:"d/m/Y" }}</p>
+                {% endif %}
+                {% if maquina.fecha_estimada_reparacion %}
+                <p><strong>Fecha estimada de reparación:</strong> {{ maquina.fecha_estimada_reparacion|date:"d/m/Y" }}</p>
+                {% endif %}
+                {% if maquina.notas_inactividad %}
+                <p><strong>Notas:</strong> {{ maquina.notas_inactividad }}</p>
+                {% endif %}
+              </div>
+              {% endif %}
+              
+              <a href="#" class="btn btn-primary edit-btn mt-3" data-bs-toggle="modal" data-bs-target="#editModal" data-id="{{ maquina.id_maquina }}">Editar</a>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        {% empty %}
+        <div class="col-12">
+          <div class="alert alert-info">
+            No hay máquinas inactivas registradas.
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{# Modal para agregar máquina #}
+{% include 'maquinas/modal_agregar_maquina.html' %}
+
+<!-- Modal de Edición -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Editar Máquina</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editForm" method="post" action="{% url 'editar_maquina' %}" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="hidden" id="maquina_id" name="maquina_id">
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" required>
+          </div>
+          <div class="mb-3">
+            <label for="cantidad" class="form-label">Cantidad</label>
+            <input type="number" min="0" class="form-control" id="cantidad" name="cantidad" required>
+          </div>
+          <div class="mb-3">
+            <label for="estado" class="form-label">Estado</label>
+            <select class="form-control" id="estado" name="estado">
+              <option value="activa">Activa</option>
+              <option value="inactiva">Inactiva</option>
+            </select>
+          </div>
+          
+          <!-- Campos adicionales para máquinas inactivas -->
+          <div id="inactividad-fields" style="display: none;">
+            <div class="alert alert-warning">
+              <strong>Atención:</strong> Al marcar una máquina como inactiva, debes especificar la razón y proporcionar información adicional.
+            </div>
+            
+            <div class="mb-3">
+              <label for="razon_inactividad" class="form-label">Razón de Inactividad</label>
+              <select class="form-control" id="razon_inactividad" name="razon_inactividad">
+                <option value="reparacion">En Reparación</option>
+                <option value="mal_estado">Mal Estado</option>
+                <option value="mantenimiento">Mantenimiento Preventivo</option>
+                <option value="otra">Otra Razón</option>
+              </select>
+            </div>
+            
+            <div class="mb-3">
+              <label for="fecha_estimada_reparacion" class="form-label">Fecha Estimada de Reparación</label>
+              <input type="date" class="form-control" id="fecha_estimada_reparacion" name="fecha_estimada_reparacion">
+            </div>
+            
+            <div class="mb-3">
+              <label for="notas_inactividad" class="form-label">Notas sobre la Inactividad</label>
+              <textarea class="form-control" id="notas_inactividad" name="notas_inactividad" rows="3" placeholder="Describe el problema o la razón de la inactividad..."></textarea>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="descripcion" class="form-label">Descripción</label>
+            <textarea class="form-control" id="descripcion" name="descripcion"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="imagen" class="form-label">Imagen</label>
+            <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*">
+            <div id="imagen_preview_container" class="mt-2" style="display: none;">
+              <p>Imagen actual:</p>
+              <img id="imagen_preview" src="/placeholder.svg" alt="Vista previa" style="max-width: 100%; max-height: 200px;">
+            </div>
+            <div class="form-text">Deja este campo vacío si no quieres cambiar la imagen.</div>
+          </div>
+          <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-success">Guardar Cambios</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Script para Manejar el Modal y la Edición -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Obtener todas las máquinas en formato JSON para usar en JavaScript
+    const maquinas = JSON.parse('{{ maquinas_json|safe }}');
+    
+    // Manejar el cambio en el campo de estado
+    const estadoSelect = document.getElementById('estado');
+    const inactividadFields = document.getElementById('inactividad-fields');
+    
+    estadoSelect.addEventListener('change', function() {
+      if (this.value === 'inactiva') {
+        inactividadFields.style.display = 'block';
+      } else {
+        inactividadFields.style.display = 'none';
+      }
+    });
+    
+    // Manejar el clic en los botones de editar
+    document.querySelectorAll(".edit-btn").forEach(button => {
+      button.addEventListener("click", function() {
+        const maquinaId = this.getAttribute('data-id');
+        
+        // Encontrar la máquina correspondiente en el array
+        const maquina = maquinas.find(m => m.id_maquina == maquinaId);
+        
+        if (maquina) {
+          // Rellenar el formulario con los datos de la máquina
+          document.getElementById("maquina_id").value = maquina.id_maquina;
+          document.getElementById("nombre").value = maquina.nombre;
+          document.getElementById("cantidad").value = maquina.cantidad;
+          document.getElementById("estado").value = maquina.estado;
+          document.getElementById("descripcion").value = maquina.descripcion;
+          
+          // Mostrar/ocultar campos de inactividad según el estado
+          if (maquina.estado === 'inactiva') {
+            inactividadFields.style.display = 'block';
+            
+            // Rellenar campos de inactividad si existen
+            if (maquina.razon_inactividad) {
+              document.getElementById("razon_inactividad").value = maquina.razon_inactividad;
+            }
+            
+            if (maquina.fecha_estimada_reparacion) {
+              document.getElementById("fecha_estimada_reparacion").value = maquina.fecha_estimada_reparacion;
+            }
+            
+            if (maquina.notas_inactividad) {
+              document.getElementById("notas_inactividad").value = maquina.notas_inactividad;
+            }
+          } else {
+            inactividadFields.style.display = 'none';
+          }
+          
+          // Mostrar la imagen actual si existe
+          if (maquina.imagen_url) {
+            document.getElementById("imagen_preview").src = maquina.imagen_url;
+            document.getElementById("imagen_preview_container").style.display = "block";
+          } else {
+            document.getElementById("imagen_preview_container").style.display = "none";
+          }
+        }
+      });
+    });
+    
+    // Vista previa de la imagen seleccionada
+    document.getElementById('imagen').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('imagen_preview').src = e.target.result;
+          document.getElementById('imagen_preview_container').style.display = 'block';
+        }
+        reader.readAsDataURL(file);
+      }
+    });
+    
+    // Cerrar automáticamente las alertas después de 5 segundos
+    setTimeout(function() {
+      document.querySelectorAll('.alert').forEach(alert => {
+        if (alert.querySelector('.btn-close')) {
+          alert.querySelector('.btn-close').click();
+        }
+      });
+    }, 5000);
+  });
+</script>
+
+<!-- Bootstrap JS (necesario para los modales) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  
+{% endblock %}
