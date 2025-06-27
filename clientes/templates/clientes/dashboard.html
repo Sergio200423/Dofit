@@ -2,8 +2,8 @@
 - Gimnasio Dofit{% endblock %} {% block extra_css %}
 <link rel="stylesheet" href="{% static 'clientes/css/dashboard.css' %}" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-
 {% endblock %} {% block content %}
+
 <div class="dashboard-container">
   <div class="dashboard-header">
     <h1>Control de Membresías</h1>
@@ -89,9 +89,7 @@
               <td>{{ membresia.fecha_fin|date:"d/m/Y" }}</td>
               <td class="days-left">{{ membresia.days_left }}</td>
               <td>
-                <a
-                  class="btn-action btn-renew"
-                  href="#">
+                <a class="btn-action btn-renew" href="#">
                   <i class="fas fa-sync-alt"></i> Renovar
                 </a>
               </td>
@@ -138,16 +136,10 @@
               <td>{{ membresia.fecha_fin|date:"d/m/Y" }}</td>
               <td class="days-expired">{{ membresia.days_expired }}</td>
               <td>
-                <button
-                  class="btn-action btn-renew"
-                  data-id="{{ membership.id_membresia_cliente }}"
-                >
+                <button class="btn-action btn-renew" data-id="{{ membership.id_membresia_cliente }}">
                   <i class="fas fa-sync-alt"></i> Renovar
                 </button>
-                <button
-                  class="btn-action btn-contact"
-                  data-id="{{ membership.cliente.id_cliente }}"
-                >
+                <button class="btn-action btn-contact" data-id="{{ membership.cliente.id_cliente }}">
                   <i class="fas fa-phone"></i> Contactar
                 </button>
               </td>
@@ -166,49 +158,36 @@
     <div class="membership-distribution">
       <div class="section-header">
         <h2>Distribución de Membresías</h2>
+        <button class="btn-print" id="print-chart" title="Imprimir gráfico">
+          <i class="fas fa-print"></i>
+        </button>
       </div>
-      <div class="chart-container">
+      <div class="chart-container" id="chart-print-area">
         <canvas id="distribution-chart"></canvas>
       </div>
       <div class="distribution-stats">
-        <div
-          class="stat-item"
-          id="diaria-count"
-          data-count="{{ contador_diaria }}"
-        >
+        <div class="stat-item" id="diaria-count" data-count="{{ contador_diaria }}">
           <div class="stat-color" style="background-color: #0066ff"></div>
           <div class="stat-info">
             <span class="stat-label">Diaria</span>
             <span class="stat-value">{{ contador_diaria }}</span>
           </div>
         </div>
-        <div
-          class="stat-item"
-          id="semanal-count"
-          data-count="{{ contador_semanal }}"
-        >
+        <div class="stat-item" id="semanal-count" data-count="{{ contador_semanal }}">
           <div class="stat-color" style="background-color: #4d94ff"></div>
           <div class="stat-info">
             <span class="stat-label">Semanal</span>
             <span class="stat-value">{{ contador_semanal }}</span>
           </div>
         </div>
-        <div
-          class="stat-item"
-          id="quincenal-count"
-          data-count="{{ contador_quincenal }}"
-        >
+        <div class="stat-item" id="quincenal-count" data-count="{{ contador_quincenal }}">
           <div class="stat-color" style="background-color: #80b5ff"></div>
           <div class="stat-info">
             <span class="stat-label">Quincenal</span>
             <span class="stat-value">{{ contador_quincenal }}</span>
           </div>
         </div>
-        <div
-          class="stat-item"
-          id="mensual-count"
-          data-count="{{ contador_mensual }}"
-        >
+        <div class="stat-item" id="mensual-count" data-count="{{ contador_mensual }}">
           <div class="stat-color" style="background-color: #b3d1ff"></div>
           <div class="stat-info">
             <span class="stat-label">Mensual</span>
@@ -248,8 +227,19 @@
     </form>
   </div>
 </div>
+
+<!-- Loading overlay para PDF -->
+<div class="loading-overlay" id="loading-overlay">
+  <div class="loading-content">
+    <i class="fas fa-spinner fa-spin"></i>
+    <p>Generando PDF...</p>
+  </div>
+</div>
+
 {% endblock %} {% block extra_js %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="{% static 'clientes/js/dashboard.js' %}"></script>
 <script>
   localStorage.setItem("loginAttempts", "0");

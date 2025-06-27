@@ -5,25 +5,32 @@ from datetime import timedelta
 
 class RepositorioMembresiaCliente:
     @staticmethod
-    def crear_membresia_cliente(id_cliente, id_membresia, fecha_inicio):
+    def crear_membresia_cliente(id_cliente, id_membresia, fecha_inicio=None):
         """
-        Crea una nueva MembresiaCliente.
+        Crea una nueva MembresiaCliente. Si el cliente tiene membresías activas o futuras, la nueva se programa para iniciar después de la última.
         """
         try:
             cliente = Cliente.objects.get(id_cliente=id_cliente)
             membresia = TipoMembresia.objects.get(id_membresia=id_membresia)
-            # Asegurarse de que fecha_inicio sea un objeto de tipo datetime.date
-            if isinstance(fecha_inicio, str):
-                from datetime import datetime
-                fecha_inicio = datetime.strptime(fecha_inicio, "%Y-%m-%d").date()
-
-        # Calcular fecha_fin
-            fecha_fin = fecha_inicio + timedelta(days=membresia.duracionDias)
-
+            from datetime import datetime
+            hoy = now().date()
+            # Buscar la última membresía futura o activa (la de mayor fecha_fin >= hoy)
+            ultima = cliente.membresias_cliente.filter(fecha_fin__gte=hoy).order_by('-fecha_fin').first()
+            if ultima:
+                fecha_inicio_real = ultima.fecha_fin
+            else:
+                # Si no hay membresía activa o futura, inicia hoy o la fecha indicada
+                if fecha_inicio is None:
+                    fecha_inicio_real = hoy
+                elif isinstance(fecha_inicio, str):
+                    fecha_inicio_real = datetime.strptime(fecha_inicio, "%Y-%m-%d").date()
+                else:
+                    fecha_inicio_real = fecha_inicio
+            fecha_fin = fecha_inicio_real + timedelta(days=membresia.duracionDias)
             membresia_cliente = MembresiaCliente.objects.create(
                 cliente=cliente,
                 membresia=membresia,
-                fecha_inicio=fecha_inicio,
+                fecha_inicio=fecha_inicio_real,
                 fecha_fin=fecha_fin
             )
             return {"success": True, "membresia_cliente": membresia_cliente}
@@ -49,13 +56,12 @@ class RepositorioMembresiaCliente:
     @staticmethod
     def obtener_membresia_activa(id_cliente):
         """
-        Obtiene la membresía activa de un cliente (aquella cuya fecha de fin no ha caducado).
-        :param id_cliente: ID del cliente
-        :return: Diccionario con la membresía activa o un mensaje de error
+        Obtiene la membresía activa de un cliente (fecha_inicio <= hoy <= fecha_fin).
         """
         try:
             cliente = Cliente.objects.get(id_cliente=id_cliente)
-            membresia_activa = cliente.membresias_cliente.filter(fecha_fin__gte=now().date()).first()
+            hoy = now().date()
+            membresia_activa = cliente.membresias_cliente.filter(fecha_inicio__lte=hoy, fecha_fin__gte=hoy).order_by('fecha_inicio').first()
             if membresia_activa:
                 return {"success": True, "membresia_activa": membresia_activa}
             return {"success": False, "error": "El cliente no tiene una membresía activa."}
