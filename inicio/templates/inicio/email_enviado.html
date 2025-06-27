@@ -1,17 +1,18 @@
-<!DOCTYPE html>
-<html lang="es">
 {% load static %}
 
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verifica tu código</title>
-    <link rel="stylesheet" href="{% static 'inicio/css/ingresarCodigoEmail.css' %}">
-    <link rel="shortcut icon" href="{% static 'img/IconoDofit.svg' %}" type="image/x-icon">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{% static 'img/dofit2.svg' %}" type="image/x-icon">
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="{% static 'inicio/css/email_enviado.css' %}">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-
 <body>
     <div class="page-wrapper">
         <main class="page-content">
@@ -20,35 +21,50 @@
                     <h1 class="card-title">Verifica tu código</h1>
                     <p class="card-subtitle">Un código de confirmación de 4 dígitos ha sido enviado a tu correo</p>
                 </div>
+
+                <div class="expired-message{% if not expired %} visually-hidden{% endif %}" id="expiredMessage">
+                    El tiempo ha expirado o has agotado tus intentos. Por favor, solicita un nuevo código.
+                </div>
+
+                <div class="timer-container" id="timerContainer">
+                    <div class="timer-info">
+                        <div class="timer-label">Tiempo restante</div>
+                        <div class="timer-value" id="timerValue">03:00</div>
+                    </div>
+                    <div class="attempts-info">
+                        <div class="attempts-label">Intentos restantes</div>
+                        <div class="attempts-value" id="attemptsValue">3</div>
+                    </div>
+                </div>
+                
                 <div class="card-body">
-                    <div id="contador" class="contador"></div>
-                    <div id="segundos" class="contador-segundos">segundos</div>
-                    <div class="alert" id="alert-message" style="display:none;"></div>
-                    <form class="sign-up-form form" action="{% url 'email_enviado'%}" method="POST">
-                        {%csrf_token%}  
+                    <form class="sign-up-form form" action="{% url 'email_enviado' %}" method="POST" id="verificationForm" data-codigo="{{ codigo_verificacion }}" data-intentos="{{ intentos_restantes }}">
+                        {% csrf_token %}
                         <div class="code-container">
                             <input type="text" class="code-input" maxlength="1" name="primerNumero">
                             <input type="text" class="code-input" maxlength="1" name="segundoNumero">
                             <input type="text" class="code-input" maxlength="1" name="tercerNumero">
                             <input type="text" class="code-input" maxlength="1" name="cuartoNumero">
                         </div>
-                        <button class="primary-default-btn" type="submit">Confirmar</button>
+                        <button class="primary-default-btn" type="submit" id="submitBtn">Confirmar</button>
                     </form>
-                    <div class="links-container">
-                        <p class="sign-up__subtitle">
-                            ¿No recibiste el correo?
-                            <a href="/reenviar_correo">Reenviar correo</a>
-                        </p>
-                        <p class="sign-up__subtitle">
-                            ¿Te equivocaste de correo?
-                            <a href="/recuperar_contraseña">Cambiar correo electrónico</a>
-                        </p>
-                    </div>
+                </div>
+
+                <div class="bottom-links">
+                    <p class="sign-up__subtitle">
+                        ¿No recibiste el correo?
+                        <a href="{% url 'reenviar_correo' %}">Reenviar correo</a>
+                    </p>
+                    <p class="sign-up__subtitle">
+                        ¿Te equivocaste de correo?
+                        <a href="{% url 'recuperar_contrasena' %}">Cambiar correo electrónico</a>
+                    </p>
                 </div>
             </div>
         </main>
     </div>
     
-    <script src="{% static 'inicio/js/ingresarCodigoEMail.js'%}"></script>
+    <script src="{% static 'inicio/js/email_enviado.js' %}"></script>
+
 </body>
 </html>

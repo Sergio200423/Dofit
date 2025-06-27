@@ -1,5 +1,5 @@
 #Importaciones de Django
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.http import JsonResponse
 from django.db import transaction
 import json
@@ -21,12 +21,36 @@ from pagos import repositorioPagoDescuento as rpd
 #Servicios pago
 from pagos import servicioPagos as sp
 from pagos import servicioPagoDescuento as spd
+from clientes.utils.contador import contar_total_clientes, contar_membresias_activas, contar_membresias_por_vencer, contar_membresias_expiradas, contar_membresias_diarias_activas, contar_membresias_semanales_activas, contar_membresias_quincenales_activas, contar_membresias_mensuales_activas
 
 # Create your views here.
 def index(request):
     """Cargamos la vista de inicio de la aplicacion.
     """
-    return render(request, 'clientes/dashboard.html')
+    total_clients = contar_total_clientes()
+    membresias_activas = contar_membresias_activas()
+    membresias_por_vencer = contar_membresias_por_vencer()
+    membresias_expiradas = contar_membresias_expiradas()
+    lista_membresias_por_vencer = rmc.RepositorioMembresiaCliente.obtener_membresias_por_vencer()
+    lista_membresias_expiradas = rmc.RepositorioMembresiaCliente.obtener_membresias_expiradas()
+    contador_diaria = contar_membresias_diarias_activas()
+    contador_semanal = contar_membresias_semanales_activas()
+    contador_semanal = contar_membresias_quincenales_activas()
+    contador_mensual = contar_membresias_mensuales_activas()
+    tipos_membresia = rm.obtenerMembresias()
+    return render(request, 'clientes/dashboard.html', {
+        'total_clients': total_clients,
+        'membresias_activas': membresias_activas,
+        'membresias_por_vencer': membresias_por_vencer,
+        'membresias_expiradas': membresias_expiradas,
+        'lista_membresias_por_vencer': lista_membresias_por_vencer,
+        'lista_membresias_expiradas': lista_membresias_expiradas,
+        'contador_diaria': contador_diaria,
+        'contador_semanal': contador_semanal,
+        'contador_quincenal': contador_semanal,
+        'contador_mensual': contador_mensual,
+        'tipos_membresia': tipos_membresia
+    })
 
 def clientes(request):
     if request.method == 'GET' and 'cliente_id' in request.GET:

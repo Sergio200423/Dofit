@@ -26,7 +26,7 @@
         <i class="fas fa-users" style="color: #0061f7"></i>
       </div>
       <div class="card-content">
-        <h3 id="total-clientes">{{ total_clients }}</h3>
+        <h3 id="total-clientes">{{ total_clientes }}</h3>
         <p>Total Clientes</p>
       </div>
     </div>
@@ -35,7 +35,7 @@
         <i class="fas fa-check-circle" style="color: green"></i>
       </div>
       <div class="card-content">
-        <h3 id="membresias-activas">{{ active_memberships }}</h3>
+        <h3 id="membresias-activas">{{ membresias_activas }}</h3>
         <p>Membresías Activas</p>
       </div>
     </div>
@@ -44,7 +44,7 @@
         <i class="fas fa-exclamation-triangle" style="color: orange"></i>
       </div>
       <div class="card-content">
-        <h3 id="membresias-por-vencer">{{ memberships_expiring_count }}</h3>
+        <h3 id="membresias-por-vencer">{{ membresias_por_vencer }}</h3>
         <p>Por Vencer</p>
       </div>
     </div>
@@ -53,7 +53,7 @@
         <i class="fas fa-times-circle" style="color: red"></i>
       </div>
       <div class="card-content">
-        <h3 id="membresias-vencidas">{{ expired_memberships }}</h3>
+        <h3 id="membresias-vencidas">{{ membresias_expiradas }}</h3>
         <p>Vencidas</p>
       </div>
     </div>
@@ -81,13 +81,13 @@
             </tr>
           </thead>
           <tbody id="expiring-memberships-body">
-            {% for membership in memberships_expiring %}
+            {% for membresia in lista_membresias_por_vencer %}
             <tr>
-              <td>{{ membership.cliente.nombre_cliente }}</td>
-              <td>{{ membership.membresia.nombreMembresia }}</td>
-              <td>{{ membership.fecha_inicio|date:"d/m/Y" }}</td>
-              <td>{{ membership.fecha_fin|date:"d/m/Y" }}</td>
-              <td class="days-left">{{ membership.days_left }}</td>
+              <td>{{ membresia.cliente.nombre_cliente }}</td>
+              <td>{{ membresia.membresia.nombreMembresia }}</td>
+              <td>{{ membresia.fecha_inicio|date:"d/m/Y" }}</td>
+              <td>{{ membresia.fecha_fin|date:"d/m/Y" }}</td>
+              <td class="days-left">{{ membresia.days_left }}</td>
               <td>
                 <a
                   class="btn-action btn-renew"
@@ -131,12 +131,12 @@
             </tr>
           </thead>
           <tbody id="expired-memberships-body">
-            {% for membership in expired_memberships_list %}
+            {% for membresia in lista_membresias_expiradas %}
             <tr>
-              <td>{{ membership.cliente.nombre_cliente }}</td>
-              <td>{{ membership.membresia.nombreMembresia }}</td>
-              <td>{{ membership.fecha_fin|date:"d/m/Y" }}</td>
-              <td class="days-expired">{{ membership.days_expired }}</td>
+              <td>{{ membresia.cliente.nombre_cliente }}</td>
+              <td>{{ membresia.membresia.nombreMembresia }}</td>
+              <td>{{ membresia.fecha_fin|date:"d/m/Y" }}</td>
+              <td class="days-expired">{{ membresia.days_expired }}</td>
               <td>
                 <button
                   class="btn-action btn-renew"
@@ -174,45 +174,45 @@
         <div
           class="stat-item"
           id="diaria-count"
-          data-count="{{ diaria_count }}"
+          data-count="{{ contador_diaria }}"
         >
           <div class="stat-color" style="background-color: #0066ff"></div>
           <div class="stat-info">
             <span class="stat-label">Diaria</span>
-            <span class="stat-value">{{ diaria_count }}</span>
+            <span class="stat-value">{{ contador_diaria }}</span>
           </div>
         </div>
         <div
           class="stat-item"
           id="semanal-count"
-          data-count="{{ semanal_count }}"
+          data-count="{{ contador_semanal }}"
         >
           <div class="stat-color" style="background-color: #4d94ff"></div>
           <div class="stat-info">
             <span class="stat-label">Semanal</span>
-            <span class="stat-value">{{ semanal_count }}</span>
+            <span class="stat-value">{{ contador_semanal }}</span>
           </div>
         </div>
         <div
           class="stat-item"
           id="quincenal-count"
-          data-count="{{ quincenal_count }}"
+          data-count="{{ contador_quincenal }}"
         >
           <div class="stat-color" style="background-color: #80b5ff"></div>
           <div class="stat-info">
             <span class="stat-label">Quincenal</span>
-            <span class="stat-value">{{ quincenal_count }}</span>
+            <span class="stat-value">{{ contador_quincenal }}</span>
           </div>
         </div>
         <div
           class="stat-item"
           id="mensual-count"
-          data-count="{{ mensual_count }}"
+          data-count="{{ contador_mensual }}"
         >
           <div class="stat-color" style="background-color: #b3d1ff"></div>
           <div class="stat-info">
             <span class="stat-label">Mensual</span>
-            <span class="stat-value">{{ mensual_count }}</span>
+            <span class="stat-value">{{ contador_mensual }}</span>
           </div>
         </div>
       </div>

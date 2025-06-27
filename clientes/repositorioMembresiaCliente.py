@@ -97,3 +97,29 @@ class RepositorioMembresiaCliente:
             return {"success": True, "message": "Membresía del cliente eliminada correctamente."}
         except MembresiaCliente.DoesNotExist:
             return {"success": False, "error": "Membresía del cliente no encontrada."}
+    
+    @staticmethod
+    def contar_membresias_por_vencer(dias=7):
+        """Cuenta cuántas membresías vencen en los próximos 'dias' días."""
+        hoy = now().date()
+        hasta = hoy + timedelta(days=dias)
+        return MembresiaCliente.objects.filter(fecha_fin__gt=hoy, fecha_fin__lte=hasta).count()
+    
+    @staticmethod
+    def contar_membresias_expiradas():
+        """Cuenta cuántas membresías ya expiraron (fecha_fin < hoy)."""
+        hoy = now().date()
+        return MembresiaCliente.objects.filter(fecha_fin__lt=hoy).count()
+    
+    @staticmethod
+    def obtener_membresias_por_vencer(dias=7):
+        """Devuelve una lista de MembresiaCliente que vencen en los próximos 'dias' días."""
+        hoy = now().date()
+        hasta = hoy + timedelta(days=dias)
+        return MembresiaCliente.objects.filter(fecha_fin__gt=hoy, fecha_fin__lte=hasta)
+
+    @staticmethod
+    def obtener_membresias_expiradas():
+        """Devuelve una lista de MembresiaCliente que ya expiraron (fecha_fin < hoy)."""
+        hoy = now().date()
+        return MembresiaCliente.objects.filter(fecha_fin__lt=hoy)

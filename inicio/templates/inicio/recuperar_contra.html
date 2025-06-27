@@ -17,6 +17,7 @@
 <body>
     <div class="page-wrapper">
         <main class="page-content">
+            <!-- Botón volver atrás fuera del card -->
             <div class="back-button-container">
                 <a href="{% url 'inicio_sesion' %}" class="back-button">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
@@ -33,22 +34,33 @@
                 </div>
                 
                 <div class="card-body">
+                    <!-- Mensaje de éxito (se mostrará con JavaScript) -->
+                    <div id="success-message" class="success-message" style="display: none;">
+                        <div class="success-icon">✓</div>
+                        <span>¡Correo enviado exitosamente!</span>
+                    </div>
+
                     <form id="form-correos" method="post" action="{% url 'recuperar_contrasena' %}">
                         {% csrf_token %}
                         <div class="user-list">
                             {% for usuario in usuarios %}
-                                <div class="user-item {% if not usuario.correo %}disabled{% endif %}">
-                                    <label class="user-checkbox">
-                                        <input type="checkbox" name="correo" value="{{ usuario.correo }}" {% if not usuario.correo %}disabled{% endif %} required>
+                                <div class="user-item {% if not usuario.correo %}disabled{% endif %}" data-index="{{ forloop.counter0 }}">
+                                    <div class="user-content">
+                                        <input type="checkbox" 
+                                               name="correo" 
+                                               value="{{ usuario.correo }}" 
+                                               data-original-email="{{ usuario.correo }}"
+                                               {% if not usuario.correo %}disabled{% endif %}
+                                               style="display: none;">
                                         <div class="user-info">
                                             <span class="user-name">{{ usuario.nombre_usuario }}</span>
                                             {% if usuario.correo %}
-                                                <span class="user-email">{{ usuario.correo }}</span>
+                                                <span class="user-email" data-email="{{ usuario.correo }}">{{ usuario.correo }}</span>
                                             {% else %}
                                                 <span class="user-email no-email">(sin correo)</span>
                                             {% endif %}
                                         </div>
-                                    </label>
+                                    </div>
                                 </div>
                             {% empty %}
                                 <div class="empty-state">No hay usuarios registrados.</div>
@@ -56,19 +68,20 @@
                         </div>
                         
                         <div class="form-actions">
-                            <button id="btn-enviar" class="btn-submit email-button" type="submit">
-                                <div class="email-icon-container">
-                                    <div class="email-icon-circle">
-                                        <div class="email-icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                <rect x="2" y="4" width="20" height="16" rx="2" />
-                                                <path d="M22 7l-10 7L2 7" />
-                                            </svg>
-                                        </div>
+                            <button id="btn-enviar" class="btn-submit" type="submit" disabled>
+                                <div class="button-content">
+                                    <div class="email-icon-container">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="2" y="4" width="20" height="16" rx="2" />
+                                            <path d="M22 7l-10 7L2 7" />
+                                        </svg>
                                     </div>
-                                    <div class="email-circle-outer"></div>
+                                    <span class="button-text">Enviar correo de recuperación</span>
                                 </div>
-                                <span>Enviar</span>
+                                <div class="button-loading">
+                                    <div class="spinner"></div>
+                                    <span>Enviando...</span>
+                                </div>
                             </button>
                         </div>
                     </form>
@@ -78,6 +91,6 @@
     </div>
 
     <!-- Scripts -->
-    <script src="{% static 'js/recuperarContra.js' %}"></script>
+    <script src="{% static 'inicio/js/recuperarContra.js' %}"></script>
 </body>
 </html>

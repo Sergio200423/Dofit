@@ -1,5 +1,5 @@
 from django.contrib.auth.hashers import check_password
-from main.models import Usuario
+from usuarios.models import Usuario
 
 ERRORCREDENCIAL = 'Usuario o contraseña incorrecta'
 ERRORBLOQUEO = 'Usuario bloqueado por demasiados intentos fallidos. Contacte al administrador.'
@@ -16,8 +16,17 @@ def usuario_valido(username):
 def contrasena_valida(user, password):
     """Verifica si la contraseña proporcionada es correcta para el usuario dado."""
     if user is None:
+        print(f"[LOGIN DEBUG] Usuario es None en contrasena_valida")
         return False
-    return check_password(password, user.contra)
+    print(f"[LOGIN DEBUG] Password recibido: {password} (type: {type(password)})")
+    print(f"[LOGIN DEBUG] Hash en BD: {user.contra} (type: {type(user.contra)})")
+    try:
+        resultado = check_password(password, user.contra)
+        print(f"[LOGIN DEBUG] check_password result: {resultado}")
+    except Exception as e:
+        print(f"[LOGIN DEBUG] ERROR en check_password: {e}")
+        resultado = False
+    return resultado
 
 def manejar_intentos(user):
     """"Maneja los intentos de inicio de sesion del usuario. Si tiene menos de tres intentos,
@@ -45,9 +54,10 @@ def login(username, password, n_intentos=0):
     if n_intentos >= 3:
         print(f"[LOGIN DEBUG] ERROR (usuario bloqueado): {ERRORBLOQUEO} | n_intentos={n_intentos}")
         return {'success': False, 'error': ERRORBLOQUEO, 'user': user, 'n_intentos': n_intentos}
-    if getattr(user.rol, 'id', None) not in [1, 2]:
-        n_intentos = manejar_intentos(user)
-        return {'success': False, 'error': ERRORCREDENCIAL, 'user': user, 'n_intentos': n_intentos}
+    # if getattr(user.rol, 'id', None) not in [1, 2]:
+    #     n_intentos = manejar_intentos(user)
+    #     return {'success': False, 'error': ERRORCREDENCIAL, 'user': user, 'n_intentos': n_intentos}
+    # Comentado para pruebas de login sin validación de rol
     if contrasena_valida(user, password):
         user.n_intentos = 0
         user.save()

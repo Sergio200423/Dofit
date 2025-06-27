@@ -1,4 +1,5 @@
 /* Estilos para el dashboard */
+
 :root {
   --primary-color: #0066ff;
   --secondary-color: #4d94ff;
@@ -92,9 +93,10 @@
 
 .dashboard-bottom {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 400px;
   gap: 30px;
   margin-bottom: 30px;
+  align-items: start;
 }
 
 .table-container,
@@ -104,6 +106,14 @@
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
   overflow: hidden;
+}
+
+.membership-distribution {
+  width: 400px;
+  min-height: 450px;
+  max-height: 450px;
+  position: sticky;
+  top: 20px;
 }
 
 .section-header {
@@ -208,6 +218,7 @@ tbody tr:hover {
 .chart-container {
   padding: 20px;
   height: 250px;
+  width: 100%;
 }
 
 .distribution-stats {
@@ -334,6 +345,11 @@ tbody tr:hover {
   .dashboard-bottom {
     grid-template-columns: 1fr;
   }
+
+  .membership-distribution {
+    width: 100%;
+    position: static;
+  }
 }
 
 @media (max-width: 768px) {
@@ -353,5 +369,10 @@ tbody tr:hover {
 
   .date-filter select {
     width: 100%;
+  }
+
+  .membership-distribution {
+    min-height: 400px;
+    max-height: 400px;
   }
 }
