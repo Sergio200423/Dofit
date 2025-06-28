@@ -1,0 +1,248 @@
+/* Icon Styles */
+
+.icon {
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+
+.logo {
+  background-image: url(../img/dofit_logo.svg);
+  width: 49px;
+  height: 49px;
+  background-color: transparent;
+  margin-right: 9px;
+}
+
+.menu-toggle {
+  background-image: url(../img/Menu-toggle-white.svg);
+  width: 24px;
+  height: 24px;
+}
+
+.home,
+.menu-toggle--gray {
+  background-image: url(../img/Menu-toggle-gray.svg);
+  width: 24px;
+  height: 24px;
+}
+
+.home {
+  background-image: url(../img/svg/Bulk/Home-white.svg);
+}
+
+.arrow-down,
+.document,
+.folder {
+  background-image: url(../img/3-User-gray.svg);
+  width: 24px;
+  height: 24px;
+}
+
+.image,
+.message,
+.paper {
+  background-image: url(../img/svg/Bulk/Image-white.svg);
+  width: 24px;
+  height: 24px;
+}
+
+.message,
+.paper {
+  background-image: url(../img/svg/Bulk/Paper-white.svg);
+}
+
+.message {
+  background-image: url(../img/svg/Bulk/Message-white.svg);
+}
+
+.category,
+.edit,
+.user-3 {
+  background-image: url(../img/svg/Bulk/Edit-white.svg);
+  width: 24px;
+  height: 24px;
+}
+
+.category,
+.user-3 {
+  background-image: url(../img/svg/Bulk/Category-white.svg);
+}
+
+.user-3 {
+  background-image: url(../img/3-User-white.svg);
+}
+
+.setting,
+.settings-line {
+  background-image: url(../img/Setting-white.svg);
+  width: 24px;
+  height: 24px;
+}
+
+.settings-line {
+  background-image: url(../img/svg/Bulk/Settings-line.svg);
+}
+
+.avatar {
+  background-image: url(../img/avatar/Avatar.svg);
+  width: 56px;
+  height: 56px;
+}
+
+.avatar-2 {
+  background-image: url(../img/avatar/avatar-2.svg);
+  width: 40px;
+  height: 40px;
+}
+
+.notification {
+  background-image: url(../img/Notification-gray.svg);
+  width: 24px;
+  height: 24px;
+}
+
+.arrows-up-down {
+  background-image: url(../img/svg/Bulk/Arrows-up-down.svg);
+  width: 10px;
+  height: 17px;
+  margin-left: 10px;
+}
+
+.move,
+.radio {
+  background-image: url(../img/svg/move.svg);
+  width: 24px;
+  height: 24px;
+}
+
+.radio {
+  background-image: url(../img/svg/radio.svg);
+}
+
+.thumbnail {
+  background-image: url(../img/svg/thumbnail.svg);
+  width: 60px;
+  height: 60px;
+}
+
+.google-drive,
+.time-circle {
+  background-image: url(../img/svg/Bulk/TimeCircle.svg);
+  width: 24px;
+  height: 24px;
+}
+
+.google-drive {
+  background-image: url(../img/svg/GoogleDrive.svg);
+}
+
+.delete,
+.dropbox,
+.star {
+  background-image: url(../img/svg/dropbox.svg);
+  width: 24px;
+  height: 24px;
+}
+
+.delete,
+.star {
+  background-image: url(../img/svg/Bulk/Star.svg);
+}
+
+.delete {
+  background-image: url(../img/svg/Bulk/Delete.svg);
+}
+
+/* SVG Icon Styles */
+.search-wrapper svg {
+  stroke: #d6d7e3;
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  z-index: 1;
+}
+
+.lang-switcher svg {
+  stroke: #b9b9b9;
+}
+
+.theme-switcher svg {
+  width: 24px;
+  height: 24px;
+}
+
+.theme-switcher circle {
+  fill: #d6d7e3;
+  stroke: #d6d7e3;
+}
+
+.theme-switcher line {
+  stroke: #d6d7e3;
+}
+
+.users .primary-white-btn svg {
+  margin-right: 5px;
+}
+
+.folder-list svg {
+  color: #ffb648;
+  fill: #ffb648;
+}
+
+.files-item__img svg {
+  color: #fff;
+  width: 27px;
+  height: 27px;
+}
+
+.dropzone-start svg {
+  width: 60px;
+  height: 60px;
+  color: #d6d7e3;
+  stroke-width: 1px;
+}
+
+/* Library Table Name Spans */
+.library-table-name span {
+  width: 20px;
+  height: 20px;
+  padding: 2px 3px;
+  margin-right: 5px;
+  border-radius: 3px;
+  color: #fff;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.library-table-name span.info {
+  background-color: #5887ff;
+}
+
+.library-table-name span.danger {
+  background-color: #f26464;
+}
+
+.library-table-name span.warning {
+  background-color: #ffb648;
+}
+
+.library-table-name span.success {
+  background-color: #4bde97;
+}
+
+.library-table-name span.purple {
+  background-color: #5f2eea;
+}

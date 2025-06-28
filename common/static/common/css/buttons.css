@@ -1,0 +1,331 @@
+/* Button Styles */
+
+button {
+  cursor: pointer;
+  -webkit-transition: 0.3s all;
+  -o-transition: 0.3s all;
+  transition: 0.3s all;
+  border: 2px solid transparent;
+}
+
+.transparent-btn:focus,
+button:focus {
+  outline: 0;
+  border: 2px solid #afbcff !important;
+}
+
+button.disabled {
+  cursor: default;
+  color: #d6d7e3;
+}
+
+button.disabled:hover {
+  color: #d6d7e3;
+}
+
+button.disabled:focus {
+  border-color: transparent !important;
+  outline: 0;
+}
+
+.main-btns-wrapper button,
+.main-btns-wrapper select {
+  min-height: 48px;
+  line-height: 1.5;
+}
+
+.transparent-btn {
+  background-color: transparent;
+  border: 2px solid transparent !important;
+}
+
+.primary-default-btn,
+.primary-white-btn,
+.secondary-default-btn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  border-radius: 4px;
+  padding: 10px 20px;
+}
+
+.primary-default-btn {
+  background-color: #2f49d1;
+  color: #fff;
+}
+
+.primary-default-btn:hover {
+  background-color: #4661f0;
+  color: #fff;
+}
+
+.primary-white-btn,
+.secondary-default-btn {
+  color: #2f49d1;
+}
+
+.primary-white-btn {
+  background-color: #fff;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 2.43;
+}
+
+.primary-white-btn:hover {
+  color: #4661f0;
+}
+
+.secondary-default-btn {
+  border: 2px solid #2f49d1;
+  background-color: transparent;
+}
+
+.flat-btn,
+.secondary-default-btn:hover,
+.users-table tbody tr.active td {
+  background-color: rgba(47, 73, 209, 0.1);
+}
+
+.flat-btn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  text-align: center;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #2f49d1;
+}
+
+/* Sidebar Toggle */
+.sidebar-toggle {
+  opacity: 0.6;
+  -webkit-transition: 0.3s all;
+  -o-transition: 0.3s all;
+  transition: 0.3s all;
+}
+
+.sidebar-toggle:hover {
+  opacity: 1;
+}
+
+.category__btn.rotated .icon,
+.sidebar-toggle.rotated {
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+/* Category Button */
+.category__btn,
+.gray-circle-btn,
+.ligt-circle-btn {
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.category__btn {
+  position: absolute;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  right: 0;
+  top: 13px;
+  z-index: 1;
+}
+
+/* Circle Buttons */
+.gray-circle-btn,
+.ligt-circle-btn {
+  width: 40px;
+  height: 40px;
+  border-width: 0;
+}
+
+.gray-circle-btn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-color: #eff0f6;
+}
+
+.ligt-circle-btn {
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  background-color: #f5efff;
+}
+
+.lang-switcher,
+.ligt-circle-btn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+/* Extension and Navigation Buttons */
+.extentions-btn,
+.nav-user-btn {
+  background-color: transparent;
+}
+
+.extentions-btn {
+  border: 1px solid #eee !important;
+  border-radius: 4px;
+  padding: 5px 20px;
+  color: #f26464;
+}
+
+.extentions-btn.disabled {
+  color: #d6d7e3;
+}
+
+.filter-btn svg {
+  margin-right: 6px;
+}
+
+/* Sort and Tag Buttons */
+.sort-btn {
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+.folder-btn,
+.sort-btn,
+.tag-btn {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.tag-btn {
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1.67;
+  color: #d6d7e3;
+  padding: 2px 8px;
+  background-color: #fff;
+  border: 1px solid #eee;
+  border-radius: 4px;
+}
+
+.tag-btn svg {
+  margin-left: 8px;
+  width: 16px;
+  height: 16px;
+}
+
+.folder-btn {
+  width: 30px;
+  height: 30px;
+  background-color: #eff0f6;
+  border-radius: 5px;
+}
+
+.folder-btn svg {
+  width: 16px;
+  height: 16px;
+  color: #b9b9b9;
+}
+
+/* Media Table and Upgrade Buttons */
+.media-table-btn,
+.upgrade-btn {
+  border-radius: 4px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.upgrade-btn {
+  padding: 10px 17px;
+  background: rgba(0, 97, 247, 0.1);
+  font-style: normal;
+  font-weight: 500;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+  color: #5f2eea;
+}
+
+.upgrade-btn:hover {
+  color: #5f2eea;
+  background: rgba(0, 97, 247, 0.15);
+}
+
+.upgrade-btn svg {
+  margin-left: 10px;
+}
+
+.media-table-btn {
+  padding: 10px 20px;
+  background-color: transparent;
+  border: 2px solid #eee;
+  color: #b9b9b9;
+}
+
+/* View Sort Button */
+.view-sort-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background-color: #eff0f6;
+  color: #d6d7e3;
+}
+
+.view-sort-btn:hover {
+  color: #fff;
+  background-color: #e0e3f1;
+}
+
+/* Dropdown Button */
+.dropdown-btn {
+  color: #b9b9b9;
+}
+
+/* Link Info */
+.link-info {
+  color: #5887ff;
+  border-bottom: dashed 1px transparent;
+}
+
+.link-info:hover {
+  color: #5887ff;
+  border-bottom-color: #5887ff;
+}

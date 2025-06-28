@@ -1,0 +1,201 @@
+/* Navigation Styles */
+
+.main-nav {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+.main-nav a:focus {
+  outline: 0;
+}
+
+.main-nav--bg {
+  -webkit-transition: 0.3s all;
+  -o-transition: 0.3s all;
+  transition: 0.3s all;
+  background-color: #fff;
+}
+
+.main-nav-end {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.main-nav-end > * {
+  margin-right: 15px;
+}
+
+.footer-end li:last-child,
+.main-btns-wrapper button:last-child,
+.main-nav-end > :last-child,
+.sort-bar .select-wrapper:last-child .select {
+  margin-right: 0;
+}
+
+/* Notification Styles */
+.main-nav .notification,
+.main-nav .notification-wrapper {
+  position: relative;
+}
+
+.main-nav .notification::after {
+  display: none;
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  border-radius: 50%;
+  height: 9px;
+  width: 9px;
+  border: 1px solid #fff;
+  background-color: #f26464;
+}
+
+.main-nav .notification.active::after {
+  display: initial;
+}
+
+.main-nav .notification-dropdown {
+  right: 0;
+  width: 236px;
+  padding: 10px;
+}
+
+.main-nav .notification-dropdown-text {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  width: 167px;
+}
+
+.main-nav .notification-dropdown__title {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.22;
+  color: #171717;
+  margin-bottom: 5px;
+}
+
+.main-nav .notification-dropdown__subtitle {
+  font-size: 10px;
+  line-height: 1.2;
+  color: #767676;
+}
+
+.main-nav .notification-dropdown-icon {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.main-nav .notification-dropdown-icon.info {
+  background-color: rgba(88, 135, 255, 0.1);
+  color: #5887ff;
+}
+
+.main-nav .notification-dropdown-icon.danger {
+  background-color: rgba(242, 100, 100, 0.1);
+  color: #f26464;
+}
+
+.main-nav .notification-dropdown a {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: start;
+  -ms-flex-align: start;
+  align-items: flex-start;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  padding-bottom: 10px;
+  padding-top: 15px;
+}
+
+.main-nav .notification-dropdown a.link-to-page {
+  padding-top: 17px;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 15px;
+  color: #5887ff;
+}
+
+/* Navigation User */
+.main-nav .nav-user-wrapper,
+.search-wrapper {
+  position: relative;
+}
+
+.main-nav .nav-user-wrapper .users-item-dropdown {
+  width: 171px;
+  right: 0;
+}
+
+.main-nav .nav-user-wrapper .users-item-dropdown svg {
+  margin-right: 13px;
+}
+
+.main-nav .nav-user-img,
+.main-nav .nav-user-img picture,
+.main-nav .nav-user-wrapper .users-item-dropdown a {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.main-nav .nav-user-wrapper .users-item-dropdown a.danger {
+  color: #f26464;
+}
+
+.main-nav .nav-user-img {
+  border-radius: 50%;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  overflow: hidden;
+  width: 40px;
+  height: 40px;
+  background-color: #f5efff;
+}
+
+.main-nav .nav-user-img picture {
+  -webkit-box-align: end;
+  -ms-flex-align: end;
+  align-items: flex-end;
+}

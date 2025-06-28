@@ -1,0 +1,47 @@
+{% load static %}
+
+<!-- Modal de Perfil -->
+<div id="profileModal" class="profile-modal">
+  <div class="profile-modal-content">
+    <div class="profile-modal-header">
+      <h3>Editar Perfil</h3>
+      <button class="profile-modal-close" type="button">&times;</button>
+    </div>
+    
+    <div class="profile-modal-body">
+      <div class="profile-section">
+        <label for="profileName">Nombre:</label>
+        <input type="text" id="profileName" class="profile-input" placeholder="Ingresa tu nombre" maxlength="30">
+      </div>
+      
+      <div class="profile-section">
+        <label>Selecciona tu avatar:</label>
+        <div class="avatar-grid">
+          <div class="avatar-option" data-avatar="avatar-illustrated-01">
+            <img src="" alt="Avatar 1">
+          </div>
+          <div class="avatar-option" data-avatar="avatar-illustrated-02">
+            <img src="" alt="Avatar 2">
+          </div>
+          <div class="avatar-option" data-avatar="avatar-illustrated-03">
+            <img src="" alt="Avatar 3">
+          </div>
+          <div class="avatar-option" data-avatar="avatar-illustrated-04">
+            <img src="" alt="Avatar 4">
+          </div>
+          <div class="avatar-option" data-avatar="avatar-illustrated-05">
+            <img src="" alt="Avatar 5">
+          </div>
+          <div class="avatar-option" data-avatar="avatar-illustrated-06">
+            <img src="" alt="Avatar 6">
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="profile-modal-footer">
+      <button type="button" class="btn-cancel" id="cancelProfile">Cancelar</button>
+      <button type="button" class="btn-save" id="saveProfile">Guardar</button>
+    </div>
+  </div>
+</div>
