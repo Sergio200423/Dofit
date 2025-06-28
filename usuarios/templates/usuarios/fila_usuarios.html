@@ -1,0 +1,13 @@
+{# Fila de usuario para tabla, con clases para estilos #}
+<tr id="usuario-{{ usuario.id_usuario }}">
+    <td class="col-nombre">{{ usuario.nombre_usuario }}</td>
+    <td class="col-email">{{ usuario.correo }}</td>
+    <td class="col-rol">
+        <span class="badge-rol {{ usuario.rol.nombre|lower }}">{{ usuario.rol.nombre }}</span>
+    </td>
+    <td class="acciones-usuario">
+        <a href="#" class="accion-btn ver" title="Ver usuario"></a>
+        <a href="#" class="accion-btn editar" title="Editar usuario"></a>
+        <button type="button" class="btn-eliminar-usuario accion-btn eliminar" title="Eliminar usuario"></button>
+    </td>
+</tr>

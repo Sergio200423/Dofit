@@ -1,37 +1,125 @@
 {% extends 'common/base.html' %}
 {% load static %}
+
 {% block content %}
-<link rel="stylesheet" href="{% static 'usuarios/usuarios.css' %}">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
-<script src="{% static 'usuarios/modals.js' %}"></script>
-<script src="{% static 'usuarios/usuarios_modals.js' %}"></script>
-<script src="{% static 'usuarios/usuarios_ajax.js' %}"></script>
+<link rel="stylesheet" href="{% static 'usuarios/css/usuarios.css' %}">
+<link rel="stylesheet" href="{% static 'usuarios/css/estilo_modal.css' %}">
+
 {% include 'usuarios/modal_usuario.html' %}
-{% include 'usuarios/modal_base.html' %}
+
 <div class="usuarios-container">
   <div class="header-usuarios">
     <h2>Usuarios</h2>
-    <button class="btn-agregar-usuario" onclick="cargarFormularioUsuario('{% url 'usuario_create' %}', 'Nuevo Usuario')"><i class="fas fa-user-plus"></i> Nuevo Usuario</button>
+    <button class="btn-agregar-usuario">
+      <i class="fas fa-user-plus"></i> 
+      <span>Nuevo Usuario</span>
+    </button>
   </div>
-  <table class="table-usuarios">
-    <thead>
-      <tr><th>Nombre</th><th>Correo</th><th>Rol</th><th>Acciones</th></tr>
-    </thead>
-    <tbody>
-      {% for usuario in usuarios %}
-      <tr>
-        <td>{{ usuario.nombre_usuario }}</td>
-        <td>{{ usuario.correo }}</td>
-        <td>{{ usuario.rol }}</td>
-        <td class="acciones-usuario">
-          <a href="#" onclick="cargarFormularioUsuario('{% url 'usuario_update' usuario.id_usuario %}', 'Editar Usuario')"><i class="fas fa-edit"></i> Editar</a>
-          <a href="#" onclick="openUsuarioDeleteModal('¿Estás seguro de eliminar a <strong>{{ usuario.nombre_usuario }}</strong>?', '{% url 'usuario_delete' usuario.id_usuario %}')"><i class="fas fa-trash"></i> Eliminar</a>
-        </td>
-      </tr>
-      {% empty %}
-      <tr><td colspan="4">No hay usuarios registrados.</td></tr>
-      {% endfor %}
-    </tbody>
-  </table>
+
+  <!-- Filtros opcionales -->
+  <div class="filtros-usuarios" style="display: none;">
+    <div class="filtro-grupo">
+      <label>Buscar</label>
+      <input type="text" class="filtro-input" placeholder="Nombre o email...">
+    </div>
+    <div class="filtro-grupo">
+      <label>Rol</label>
+      <select class="filtro-input">
+        <option value="">Todos los roles</option>
+        <option value="administrador">Administrador</option>
+        <option value="empleado">Empleado</option>
+        <option value="cliente">Cliente</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Vista de tabla para desktop -->
+  <div class="table-container">
+    <table class="table-usuarios" id="tablaUsuarios">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Correo</th>
+          <th>Rol</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for usuario in usuarios %}
+        <tr id="usuario-{{ usuario.id_usuario }}">
+          <td class="col-nombre">{{ usuario.nombre_usuario }}</td>
+          <td class="col-email">{{ usuario.correo }}</td>
+          <td class="col-rol">
+            <span class="badge-rol {{ usuario.rol|lower }}">{{ usuario.rol }}</span>
+          </td>
+          <td class="acciones-usuario">
+            <a href="#" class="accion-btn ver" title="Ver usuario"></a>
+            <a href="#" class="accion-btn editar" title="Editar usuario"></a>
+            <button type="button" class="btn-eliminar-usuario accion-btn eliminar" title="Eliminar usuario"></button>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="4" class="tabla-vacia">
+            <div class="tabla-vacia-icon">👥</div>
+            <h3>No hay usuarios registrados</h3>
+            <p>Comienza agregando tu primer usuario</p>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Vista de cards para móviles -->
+  <div class="usuarios-cards">
+    {% for usuario in usuarios %}
+    <div class="usuario-card">
+      <div class="usuario-card-header">
+        <div class="usuario-card-avatar">
+          {{ usuario.nombre_usuario|first|upper }}
+        </div>
+        <div class="usuario-card-info">
+          <h3>{{ usuario.nombre_usuario }}</h3>
+          <p>{{ usuario.correo }}</p>
+        </div>
+      </div>
+      
+      <div class="usuario-card-details">
+        <div class="usuario-card-field">
+          <label>Rol</label>
+          <span class="badge-rol {{ usuario.rol|lower }}">{{ usuario.rol }}</span>
+        </div>
+        <div class="usuario-card-field">
+          <label>Estado</label>
+          <span class="badge-estado activo">Activo</span>
+        </div>
+      </div>
+      
+      <div class="usuario-card-actions">
+        <a href="#" class="accion-btn ver" title="Ver usuario"></a>
+        <a href="#" class="accion-btn editar" title="Editar usuario"></a>
+        <a href="#" class="accion-btn eliminar" title="Eliminar usuario"></a>
+      </div>
+    </div>
+    {% empty %}
+    <div class="tabla-vacia">
+      <div class="tabla-vacia-icon">👥</div>
+      <h3>No hay usuarios registrados</h3>
+      <p>Comienza agregando tu primer usuario</p>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Paginación -->
+  <div class="paginacion">
+    <a href="#" class="paginacion-btn">‹</a>
+    <a href="#" class="paginacion-btn activo">1</a>
+    <a href="#" class="paginacion-btn">2</a>
+    <a href="#" class="paginacion-btn">3</a>
+    <a href="#" class="paginacion-btn">›</a>
+  </div>
 </div>
+
+<script src="{% static 'usuarios/js/modal_usuario.js'%}"></script>
 {% endblock %}
