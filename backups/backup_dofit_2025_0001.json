@@ -1,0 +1,2258 @@
+[
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "admin",
+    "model": "logentry"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "auth",
+    "model": "permission"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "auth",
+    "model": "group"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "auth",
+    "model": "user"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "contenttypes",
+    "model": "contenttype"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "sessions",
+    "model": "session"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "main",
+    "model": "descuento"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "main",
+    "model": "empleado"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "main",
+    "model": "maquina"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "main",
+    "model": "permiso"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "main",
+    "model": "producto"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "main",
+    "model": "rol"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "main",
+    "model": "tipomembresia"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "main",
+    "model": "cliente"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "main",
+    "model": "asistencia"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "main",
+    "model": "pago"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "main",
+    "model": "pagodescuento"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "main",
+    "model": "pagoproducto"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "main",
+    "model": "membresiacliente"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "main",
+    "model": "usuario"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "main",
+    "model": "administrador"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "main",
+    "model": "rolpermiso"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "usuarios",
+    "model": "administrador"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "usuarios",
+    "model": "rol"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "usuarios",
+    "model": "usuario"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "usuarios",
+    "model": "empleado"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "usuarios",
+    "model": "permiso"
+  }
+},
+{
+  "model": "contenttypes.contenttype",
+  "fields": {
+    "app_label": "usuarios",
+    "model": "rolpermiso"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "0k775b8gcsfz4gmzeecj9y1cooxleg0i",
+  "fields": {
+    "session_data": "eyJpbnRlbnRvc19jb2RpZ28iOjN9:1uKNZo:4OawTGQ4KYlqudaxKnfaqtaYnUpJChj8KavCkse8UR0",
+    "expire_date": "2025-06-11T20:40:40.117Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "197x3o363ecnd0rl5c4o1j1h1vln163y",
+  "fields": {
+    "session_data": ".eJx9zUEKwjAQRuG7zLpI0kbFrLxJCMkYfmgyMElFKL27gltx_T54OyVRZQlb36JCyFNnLZAcG3h95dkYdy81Yj0lqTR9fEaR8GTFAykmSCN_M879TGGgMnl7PVuzXKydJ0Ib3Ib08OXk9_9LvxzHG4dgOp8:1uVATy:Xnki1vYdvAQU4gSNuEcO_TU4GQCGZJIkEdYW2gAgHnQ",
+    "expire_date": "2025-07-11T14:55:14.317Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "1y9f8elxdt1c1nc8nzk5vu3tg2f083x1",
+  "fields": {
+    "session_data": ".eJwlyk0KgCAQBtC7zDpC-iFw1U1EdJIP1IGxIojuXtBbv5uCqLK4ox1eIWSpsSZI9BWcrzgYM62peOQ-SKHu-xFJ3MmKDcEHSCU7zfPSEerOdZfm_kN2fF6jtSJl:1uJdDR:0lCNp_ekFjRZJlvjmTE-SeNAvMCcDjQ43tpiDLNj7m0",
+    "expire_date": "2025-06-09T19:10:29.910Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "2bnmehbfa85fjpuz2k1cjl7htbhhguhx",
+  "fields": {
+    "session_data": ".eJyrViotLk0sysyPz0xRsjLSgXPz8nOTilKVrJRScwtyUhNT8pUQckX5OcgStQBpgBjl:1uJFKx:x_6B9fQ4cgnem9P4ar-So0jEiZf8zM-ZyKDsqJLZ99k",
+    "expire_date": "2025-06-08T17:40:39.655Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "2f7392oyz85sm7h84ce3luowopkm8vi6",
+  "fields": {
+    "session_data": "eyJpbnRlbnRvc19jb2RpZ28iOjN9:1uJdHb:nBMIT_KviBDM6A3bQgLL0xwoGD4CLAlH12nscSAh0cw",
+    "expire_date": "2025-06-09T19:14:47.323Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "2i432bc2doqtwveaqfaoohpxdi6pn8et",
+  "fields": {
+    "session_data": ".eJyrViotLk0sysyPz0xRsjLSgXPz8nOTilKVrJRScwtyUhNT8pUQckX5OcgStQBpgBjl:1uKkgX:eEFnk18QnjTXisJUk3A3swIAMJZ70kSVZJWTTWH4cUE",
+    "expire_date": "2025-06-12T21:21:09.250Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "3o5mhppwwcdex5kcxsrj4xj6btac655v",
+  "fields": {
+    "session_data": "eyJjb3JyZW9fdXN1YXJpbyI6InNlcmdpb2RhbmllbHhkMjAwNEBnbWFpbC5jb20iLCJjb2RpZ29fdmVyaWZpY2FjaW9uIjoxOTA1fQ:1uUs5T:u8u4NpVilHhpKOomiDoC7bgnF1zMneZ26f9piJYyiqs",
+    "expire_date": "2025-07-10T19:16:43.165Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "434jv8fgazgowdbu0gul7qmyh6xti8s9",
+  "fields": {
+    "session_data": ".eJyrVkrOT8lMz48vSy3KTMtMTkzOzM9TsjIxtzTVwSYVX5KZm6pkZWhuamhgbG5kbgRSVVSUmh9fWlyaWJSZr2SVV5qTUwsAaxYe7Q:1uVAmo:1gGonGpwGnftpBgMZVzY-Bneg4zBI1Tb7ybi1YsgxZQ",
+    "expire_date": "2025-07-11T15:14:42.617Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "4ruycp187vg8dkf8wi0xpctl7npffydr",
+  "fields": {
+    "session_data": "eyJpbnRlbnRvc19jb2RpZ28iOjB9:1uKM4V:2hBYC7-nYCowwIYZmfkuhOzZ9tSMVgjFQPhP0ho4YRg",
+    "expire_date": "2025-06-11T19:04:15.707Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "7gph7cxs1f3uql5lqt3w453acux0dsnq",
+  "fields": {
+    "session_data": "eyJpbnRlbnRvc19jb2RpZ28iOjN9:1uJgFl:Ju6cG1mzW4bgSm6PI7AsGAaFcst4PR6TSFdP-d-CQjI",
+    "expire_date": "2025-06-09T22:25:05.975Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "7hjeou0ib4v4i33vdkq0d5inrzeosurk",
+  "fields": {
+    "session_data": "eyJpbnRlbnRvc19jb2RpZ28iOjB9:1uJgFI:9Zpzw_dPFYD2BRUg_lXal0p9kV-SN448HlKte36yLFc",
+    "expire_date": "2025-06-09T22:24:36.130Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "860vb1qp08v9sc66bg4kgsawqb94yb4z",
+  "fields": {
+    "session_data": "eyJjb3JyZW9fdXN1YXJpbyI6InNlcmdpb2RhbmllbHhkMjAwNEBnbWFpbC5jb20iLCJjb2RpZ29fdmVyaWZpY2FjaW9uIjozNTY0fQ:1uUqR3:lz9wFG21t5Cik7VIGSLcEge1PlCYJsbyNDwv0THd7Ks",
+    "expire_date": "2025-07-10T17:30:53.668Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "979d0lpd5gwhzyjcd90yho7kdlfafepf",
+  "fields": {
+    "session_data": ".eJyrViotLk0sysyPz0xRsjLSgXPz8nOTilKVrJRScwtyUhNT8pUQckX5OcgStQBpgBjl:1uNzuC:qDOHCuCs-VG5LYJYinB425Lh1sEQ8Ywf_-yiRp15gAc",
+    "expire_date": "2025-06-21T20:12:40.862Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "9qqc594wu0u50ri64wodnzl8r23or9vl",
+  "fields": {
+    "session_data": "eyJpbnRlbnRvc19jb2RpZ28iOjB9:1uJgFH:64T3tAINCQBt9JOLsSOqkWCckMn06aMJS7KQp676jMw",
+    "expire_date": "2025-06-09T22:24:35.755Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "9yc0gsrni42b7j7ujpi5qx2upntgtgrk",
+  "fields": {
+    "session_data": "eyJpbnRlbnRvc19jb2RpZ28iOjB9:1uMr66:cQd09CnJURZ1LiECGxMFk1OwkIBElzw46GSNfYTDj70",
+    "expire_date": "2025-06-18T16:36:14.215Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "aa6syvmxsb8642tsubo8uc86wr8nrzgv",
+  "fields": {
+    "session_data": "eyJjb3JyZW9fdXN1YXJpbyI6InNlcmdpb2RhbmllbHhkMjAwNEBnbWFpbC5jb20iLCJjb2RpZ29fdmVyaWZpY2FjaW9uIjo5MDY4fQ:1uIePG:ptCFEDmLPSPkAoQfIouH4agj4JVawGzxm-PU-b6T5nQ",
+    "expire_date": "2025-06-07T02:14:38.269Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ahnskktb4j90md5spaxdri7lyigv3zs2",
+  "fields": {
+    "session_data": ".eJyrViotLk0sysyPz0xRsjLSgXPz8nOTilKVrJRScwtyUhNT8pUQckX5OcgStQBpgBjl:1uP0ZM:qpQ5nBEmVongO1S1BJ4q2fiRgbZQgDXTZ6MJeZ1kgsc",
+    "expire_date": "2025-06-24T15:07:20.523Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "bhauo4ubv13hce2hlmcpa5vmfl89y1dq",
+  "fields": {
+    "session_data": "eyJpbnRlbnRvc19jb2RpZ28iOjB9:1uJgFH:64T3tAINCQBt9JOLsSOqkWCckMn06aMJS7KQp676jMw",
+    "expire_date": "2025-06-09T22:24:35.855Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "cqt2dl2ixxqjfjy3bmksvxcrq19y3ije",
+  "fields": {
+    "session_data": "eyJpbnRlbnRvc19jb2RpZ28iOjB9:1uMrYB:fYsIbiJI9GpDU2mTL-mn3rX_ZGksFg9zyXzu_CR3sQM",
+    "expire_date": "2025-06-18T17:05:15.879Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "d49155uz749hhpeqcttkzgkg3y3ettsx",
+  "fields": {
+    "session_data": ".eJyrVkrOT8lMz48vSy3KTMtMTkzOzM9TsjIyMTTTwSYVX5KZm6pkZWhuamhgbGZmZFkLAB2WFpA:1uVAcK:mPwT40qzaQnD0J88gDhVy4gJ24fzPlOfZatHlFeeL5A",
+    "expire_date": "2025-07-11T15:03:52.345Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "dxbe4fg0kobbbzuy0eyopgmfxbcasdao",
+  "fields": {
+    "session_data": "eyJpbnRlbnRvc19jb2RpZ28iOjB9:1uKM5x:cyno0NsPGarx2FfW97AooVYUXSlg5bumVkuLH2R-PVM",
+    "expire_date": "2025-06-11T19:05:45.817Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "h7flema6z32b36np7mdzcvivwo3ibwc1",
+  "fields": {
+    "session_data": "eyJpbnRlbnRvc19jb2RpZ28iOjB9:1uJgFH:64T3tAINCQBt9JOLsSOqkWCckMn06aMJS7KQp676jMw",
+    "expire_date": "2025-06-09T22:24:35.927Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "hdptj6h92aau3ga6dhv5rrmbvjvy4zb2",
+  "fields": {
+    "session_data": "eyJpbnRlbnRvc19jb2RpZ28iOjB9:1uMr2y:l8iKEUO7MJ5SGusUhrY2h_B658JZHiaebDjjuM7b2n4",
+    "expire_date": "2025-06-18T16:33:00.959Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ibz4ze9qradlpmy9lnu4h0ga01nwyxlj",
+  "fields": {
+    "session_data": "eyJjb3JyZW9fdXN1YXJpbyI6InNlcmdpb2RhbmllbHhkMjAwNEBnbWFpbC5jb20iLCJjb2RpZ29fdmVyaWZpY2FjaW9uIjo5MDg4fQ:1uIZ6K:xLl-gXxBKDFNvG07GM-zz8H9u60o6XbD2gFi-kGyg7Q",
+    "expire_date": "2025-06-06T20:34:44.014Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "imufdsp9ivfr02qldc7hpxoxd8ex9zxw",
+  "fields": {
+    "session_data": "eyJpbnRlbnRvc19jb2RpZ28iOjB9:1uKM5x:cyno0NsPGarx2FfW97AooVYUXSlg5bumVkuLH2R-PVM",
+    "expire_date": "2025-06-11T19:05:45.639Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ivi1kvta50xd0fwdvbmlgmcszwuxt1pm",
+  "fields": {
+    "session_data": ".eJyrViotLk0sysyPz0xRsjLSgXPz8nOTilKVrJRScwtyUhNT8pUQckX5OcgStQBpgBjl:1uNPxl:i5X_4Nut0CFhbfc6VMpONJHzscBKefptAZNeSc8WdGs",
+    "expire_date": "2025-06-20T05:49:57.237Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "jvd2lmt5l8cdfnfv5day9rsvfqihlguw",
+  "fields": {
+    "session_data": ".eJyrViotLk0sysyPz0xRsjLSgXPz8nOTilKVrJRScwtyUhNT8pUQckX5OcgStQBpgBjl:1uKkgY:bcfx2O2-BpD4uAQSw1392B1xhNFlII-rLlF2shAyMXQ",
+    "expire_date": "2025-06-12T21:21:10.445Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "lgzth6wludaot25zm4121qtbf54s0x0h",
+  "fields": {
+    "session_data": "eyJpbnRlbnRvc19jb2RpZ28iOjF9:1uMrB6:kXHlgRZgO8lm5HXQRm7ynLbe0iPRqYqPQtiCryDTyVE",
+    "expire_date": "2025-06-18T16:41:24.964Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "mfeespfm8c3j2i41albr95j3waq1rihv",
+  "fields": {
+    "session_data": ".eJxtijsOgCAMQO_SmYEG1MhlCAKaJkITFBfj3WWSxfF9bvAcaGN7xUIreeeJMxg1ayn-kj0pRTA4DShHRK0E1KO6QmwpNN8xc1pKW8GFRBl6KLx_9nkBNOcsIw:1uVH1r:BcUvVXilRLa-ecW35RvUIu571BvGoIbGnkJRNTrHk6k",
+    "expire_date": "2025-07-11T21:54:39.915Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "n8dmgafx6o94ovranialclunjaj1njis",
+  "fields": {
+    "session_data": "eyJpbnRlbnRvc19jb2RpZ28iOjB9:1uMToI:GNELZT15JMDvGXdH60b2gMLZzAo-HG3WuJKkhbAY8ck",
+    "expire_date": "2025-06-17T15:44:18.047Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "nmei84q088w106njouxhqihj918jam4t",
+  "fields": {
+    "session_data": "eyJpbnRlbnRvc19jb2RpZ28iOjB9:1uJgFI:9Zpzw_dPFYD2BRUg_lXal0p9kV-SN448HlKte36yLFc",
+    "expire_date": "2025-06-09T22:24:36.287Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "q3234jxxlrbx3azxj4shsytv7hyg53ja",
+  "fields": {
+    "session_data": "eyJjb3JyZW9fdXN1YXJpbyI6InNlcmdpb2RhbmllbHhkMjAwNEBnbWFpbC5jb20iLCJjb2RpZ29fdmVyaWZpY2FjaW9uIjoxNDAxfQ:1uIZhp:KKjtKOTxME_CBGHsDLcIQ-t0Onjzx0HiXA0NAfEE7uk",
+    "expire_date": "2025-06-06T21:13:29.119Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "s53aet7n5eanlgnx291eufyywbgl9mp4",
+  "fields": {
+    "session_data": "eyJjb3JyZW9fdXN1YXJpbyI6InNlcmdpb2RhbmllbHhkMjAwNEBnbWFpbC5jb20iLCJjb2RpZ29fdmVyaWZpY2FjaW9uIjo3NjI2fQ:1uUt8j:c8WJ9R8m5JebPy6rkkgVyHEoKmiTj9cx8uIgXKs78e0",
+    "expire_date": "2025-07-10T20:24:09.305Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "sjijp7l499hv5crd4vuhwtlkdd2g9lq8",
+  "fields": {
+    "session_data": ".eJyrViotLk0sysyPz0xRsjLSgXPz8nOTilKVrJRScwtyUhNT8pUQckX5OcgStQBpgBjl:1uOyqa:wcCMwKneF-2PDKkVAruBGEbeHKAX-tEupLPEfbglboU",
+    "expire_date": "2025-06-24T13:17:00.638Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "thq7x046m1s5sktqw1m333fstyj38mmv",
+  "fields": {
+    "session_data": "eyJpbnRlbnRvc19jb2RpZ28iOjB9:1uJgFH:64T3tAINCQBt9JOLsSOqkWCckMn06aMJS7KQp676jMw",
+    "expire_date": "2025-06-09T22:24:35.449Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "u4khd3abou9ydayf65z6etfbkc6wcxh7",
+  "fields": {
+    "session_data": ".eJwlykEKgCAQBdC7zDpCoiBcdRMRneSDOTBqBNHdC3rrd1MQVRbXa_cKIUuVNUGiL-B8xcmYeUuHRx6DHDR8PyKJO1mxI_gAKWRns6wDoTQuTar7D1nzvKNNIl4:1uNev3:lEyx7iFWD6Kqdg9i-3W2Fj5BG0c_lYGnl2SJ7BjnllU",
+    "expire_date": "2025-06-20T21:48:09.884Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "v5gzr8hhb6bcwlknj9y5v5lzr2ijm50z",
+  "fields": {
+    "session_data": "eyJpbnRlbnRvc19jb2RpZ28iOjB9:1uMr66:cQd09CnJURZ1LiECGxMFk1OwkIBElzw46GSNfYTDj70",
+    "expire_date": "2025-06-18T16:36:14.787Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "vmlrnlui6q2g5largggc0p578cwh8eyi",
+  "fields": {
+    "session_data": "eyJjb3JyZW9fdXN1YXJpbyI6InNlcmdpb2RhbmllbHhkMjAwNEBnbWFpbC5jb20iLCJjb2RpZ29fdmVyaWZpY2FjaW9uIjoyOTc4fQ:1uHkCt:WqyQPz9yZqrdCnVy7f3fYUYYXw-E2cFtCCAOWDJ-3bI",
+    "expire_date": "2025-06-04T14:14:07.790Z"
+  }
+},
+{
+  "model": "main.tipomembresia",
+  "pk": 1,
+  "fields": {
+    "nombreMembresia": "Mensual",
+    "duracionDias": 30,
+    "precio": 500.0
+  }
+},
+{
+  "model": "main.tipomembresia",
+  "pk": 3,
+  "fields": {
+    "nombreMembresia": "Semanal",
+    "duracionDias": 7,
+    "precio": 200.0
+  }
+},
+{
+  "model": "main.tipomembresia",
+  "pk": 4,
+  "fields": {
+    "nombreMembresia": "Diaria",
+    "duracionDias": 1,
+    "precio": 40.0
+  }
+},
+{
+  "model": "main.cliente",
+  "pk": 1,
+  "fields": {
+    "nombre_cliente": "Caroline",
+    "sexo": "F",
+    "fecha_nacimiento": "2004-05-10",
+    "empleado": null,
+    "fecha_registro": "2025-05-20",
+    "estudiante": ""
+  }
+},
+{
+  "model": "main.cliente",
+  "pk": 2,
+  "fields": {
+    "nombre_cliente": "David Baltodano",
+    "sexo": "M",
+    "fecha_nacimiento": "1998-07-22",
+    "empleado": null,
+    "fecha_registro": "2025-05-25",
+    "estudiante": ""
+  }
+},
+{
+  "model": "main.cliente",
+  "pk": 4,
+  "fields": {
+    "nombre_cliente": "Regina Hernández",
+    "sexo": "F",
+    "fecha_nacimiento": "1996-08-12",
+    "empleado": null,
+    "fecha_registro": "2025-05-25",
+    "estudiante": ""
+  }
+},
+{
+  "model": "main.cliente",
+  "pk": 6,
+  "fields": {
+    "nombre_cliente": "Santiago Quintero",
+    "sexo": "M",
+    "fecha_nacimiento": "2000-07-27",
+    "empleado": null,
+    "fecha_registro": "2025-05-25",
+    "estudiante": ""
+  }
+},
+{
+  "model": "main.cliente",
+  "pk": 7,
+  "fields": {
+    "nombre_cliente": "Sergio Martínez",
+    "sexo": "M",
+    "fecha_nacimiento": "2004-08-28",
+    "empleado": null,
+    "fecha_registro": "2025-05-25",
+    "estudiante": ""
+  }
+},
+{
+  "model": "main.cliente",
+  "pk": 8,
+  "fields": {
+    "nombre_cliente": "Alanis Sotelo",
+    "sexo": "F",
+    "fecha_nacimiento": "2004-06-01",
+    "empleado": null,
+    "fecha_registro": "2025-05-25",
+    "estudiante": ""
+  }
+},
+{
+  "model": "main.cliente",
+  "pk": 9,
+  "fields": {
+    "nombre_cliente": "Amaru Montenegro",
+    "sexo": "M",
+    "fecha_nacimiento": "2005-05-05",
+    "empleado": null,
+    "fecha_registro": "2025-05-25",
+    "estudiante": ""
+  }
+},
+{
+  "model": "main.cliente",
+  "pk": 10,
+  "fields": {
+    "nombre_cliente": "Natasha Mendez",
+    "sexo": "F",
+    "fecha_nacimiento": "2003-10-08",
+    "empleado": null,
+    "fecha_registro": "2025-05-25",
+    "estudiante": ""
+  }
+},
+{
+  "model": "main.cliente",
+  "pk": 11,
+  "fields": {
+    "nombre_cliente": "Alejandro Mendoza",
+    "sexo": "M",
+    "fecha_nacimiento": "2005-04-13",
+    "empleado": null,
+    "fecha_registro": "2025-05-25",
+    "estudiante": ""
+  }
+},
+{
+  "model": "main.cliente",
+  "pk": 12,
+  "fields": {
+    "nombre_cliente": "Alanis Tobias",
+    "sexo": "F",
+    "fecha_nacimiento": "2004-01-01",
+    "empleado": null,
+    "fecha_registro": "2025-06-05",
+    "estudiante": ""
+  }
+},
+{
+  "model": "main.membresiacliente",
+  "pk": 1,
+  "fields": {
+    "cliente": 1,
+    "membresia": 1,
+    "fecha_inicio": "2025-05-20",
+    "fecha_fin": "2025-06-19"
+  }
+},
+{
+  "model": "main.membresiacliente",
+  "pk": 4,
+  "fields": {
+    "cliente": 4,
+    "membresia": 3,
+    "fecha_inicio": "2025-05-24",
+    "fecha_fin": "2025-05-31"
+  }
+},
+{
+  "model": "main.membresiacliente",
+  "pk": 6,
+  "fields": {
+    "cliente": 6,
+    "membresia": 1,
+    "fecha_inicio": "2025-05-25",
+    "fecha_fin": "2025-06-24"
+  }
+},
+{
+  "model": "main.membresiacliente",
+  "pk": 8,
+  "fields": {
+    "cliente": 8,
+    "membresia": 1,
+    "fecha_inicio": "2025-05-25",
+    "fecha_fin": "2025-06-24"
+  }
+},
+{
+  "model": "main.membresiacliente",
+  "pk": 10,
+  "fields": {
+    "cliente": 10,
+    "membresia": 3,
+    "fecha_inicio": "2025-05-25",
+    "fecha_fin": "2025-06-01"
+  }
+},
+{
+  "model": "main.membresiacliente",
+  "pk": 11,
+  "fields": {
+    "cliente": 11,
+    "membresia": 1,
+    "fecha_inicio": "2025-05-25",
+    "fecha_fin": "2025-06-24"
+  }
+},
+{
+  "model": "main.membresiacliente",
+  "pk": 12,
+  "fields": {
+    "cliente": 12,
+    "membresia": 1,
+    "fecha_inicio": "2025-06-05",
+    "fecha_fin": "2025-07-05"
+  }
+},
+{
+  "model": "main.producto",
+  "pk": 1,
+  "fields": {
+    "nombre_producto": "Botella de Agua",
+    "precio": 30.0,
+    "descripcion": "1000ml",
+    "fecha_ingreso": "2025-05-25",
+    "existencia": 20,
+    "tipo": "Bebidas",
+    "estado": "disponible",
+    "imagen": "productos/fuente_pura.jpg"
+  }
+},
+{
+  "model": "main.producto",
+  "pk": 2,
+  "fields": {
+    "nombre_producto": "Barra Energética",
+    "precio": 20.0,
+    "descripcion": "Precio por Unidad",
+    "fecha_ingreso": "2025-05-25",
+    "existencia": 24,
+    "tipo": "Barra energetica",
+    "estado": "disponible",
+    "imagen": "productos/barras.jpg"
+  }
+},
+{
+  "model": "main.producto",
+  "pk": 3,
+  "fields": {
+    "nombre_producto": "Powerade",
+    "precio": 40.0,
+    "descripcion": "Colores: azul, rojo, naranja",
+    "fecha_ingreso": "2025-05-25",
+    "existencia": 30,
+    "tipo": "Bebidas",
+    "estado": "disponible",
+    "imagen": "productos/powerade.jpg"
+  }
+},
+{
+  "model": "main.producto",
+  "pk": 4,
+  "fields": {
+    "nombre_producto": "Electrolit",
+    "precio": 100.0,
+    "descripcion": "Colores: azul, morado",
+    "fecha_ingreso": "2025-05-25",
+    "existencia": 20,
+    "tipo": "Bebidas",
+    "estado": "disponible",
+    "imagen": "productos/electrolit.jpg"
+  }
+},
+{
+  "model": "main.producto",
+  "pk": 5,
+  "fields": {
+    "nombre_producto": "Proteína",
+    "precio": 1500.0,
+    "descripcion": "Sabor Vainilla, 5lbs",
+    "fecha_ingreso": "2025-05-25",
+    "existencia": 2,
+    "tipo": "Proteina",
+    "estado": "disponible",
+    "imagen": "productos/proteina.jpg"
+  }
+},
+{
+  "model": "main.producto",
+  "pk": 6,
+  "fields": {
+    "nombre_producto": "Gatorade",
+    "precio": 40.0,
+    "descripcion": "Rojo",
+    "fecha_ingreso": "2025-06-06",
+    "existencia": 10,
+    "tipo": "Bebidas",
+    "estado": "disponible",
+    "imagen": ""
+  }
+},
+{
+  "model": "main.pago",
+  "pk": 1,
+  "fields": {
+    "tipo": "Membresia",
+    "fecha": "2025-05-20",
+    "cliente": 1,
+    "total_a_pagar": 500.0
+  }
+},
+{
+  "model": "main.pago",
+  "pk": 2,
+  "fields": {
+    "tipo": "Membresia",
+    "fecha": "2025-05-25",
+    "cliente": 2,
+    "total_a_pagar": 350.0
+  }
+},
+{
+  "model": "main.pago",
+  "pk": 3,
+  "fields": {
+    "tipo": "Membresia",
+    "fecha": "2025-05-24",
+    "cliente": 4,
+    "total_a_pagar": 200.0
+  }
+},
+{
+  "model": "main.pago",
+  "pk": 5,
+  "fields": {
+    "tipo": "Membresia",
+    "fecha": "2025-05-25",
+    "cliente": 6,
+    "total_a_pagar": 500.0
+  }
+},
+{
+  "model": "main.pago",
+  "pk": 6,
+  "fields": {
+    "tipo": "Membresia",
+    "fecha": "2025-05-25",
+    "cliente": 7,
+    "total_a_pagar": 350.0
+  }
+},
+{
+  "model": "main.pago",
+  "pk": 7,
+  "fields": {
+    "tipo": "Membresia",
+    "fecha": "2025-05-25",
+    "cliente": 8,
+    "total_a_pagar": 500.0
+  }
+},
+{
+  "model": "main.pago",
+  "pk": 8,
+  "fields": {
+    "tipo": "Membresia",
+    "fecha": "2025-05-25",
+    "cliente": 9,
+    "total_a_pagar": 350.0
+  }
+},
+{
+  "model": "main.pago",
+  "pk": 9,
+  "fields": {
+    "tipo": "Membresia",
+    "fecha": "2025-05-25",
+    "cliente": 10,
+    "total_a_pagar": 200.0
+  }
+},
+{
+  "model": "main.pago",
+  "pk": 10,
+  "fields": {
+    "tipo": "Membresia",
+    "fecha": "2025-05-25",
+    "cliente": 11,
+    "total_a_pagar": 500.0
+  }
+},
+{
+  "model": "main.pago",
+  "pk": 11,
+  "fields": {
+    "tipo": "Membresia",
+    "fecha": "2025-06-05",
+    "cliente": 12,
+    "total_a_pagar": 500.0
+  }
+},
+{
+  "model": "main.maquina",
+  "pk": 1,
+  "fields": {
+    "nombre": "Máquina de abdominales",
+    "cantidad": 1,
+    "estado": "activa",
+    "descripcion": "Abcore",
+    "imagen": "maquinas/abcore_OpUTXJT.png",
+    "razon_inactividad": "no_aplica",
+    "fecha_inactividad": null,
+    "notas_inactividad": null,
+    "fecha_estimada_reparacion": null
+  }
+},
+{
+  "model": "main.maquina",
+  "pk": 2,
+  "fields": {
+    "nombre": "Máquina de abductores y aductores",
+    "cantidad": 1,
+    "estado": "inactiva",
+    "descripcion": "Esta máquina está diseñada para trabajar los músculos de la parte interna y externa de los muslos.",
+    "imagen": "maquinas/abductored.png",
+    "razon_inactividad": "mal_estado",
+    "fecha_inactividad": "2025-05-25",
+    "notas_inactividad": "Asiento dañado",
+    "fecha_estimada_reparacion": "2025-06-25"
+  }
+},
+{
+  "model": "main.maquina",
+  "pk": 3,
+  "fields": {
+    "nombre": "Bicicleta estática de spinning",
+    "cantidad": 6,
+    "estado": "activa",
+    "descripcion": "Las bicicletas estáticas de spinning son equipos de cardio diseñados para simular el pedaleo de una bicicleta convencional, pero sin desplazamiento. ",
+    "imagen": "maquinas/Bicicletas_estáticas_z2sU9pW.png",
+    "razon_inactividad": "no_aplica",
+    "fecha_inactividad": null,
+    "notas_inactividad": null,
+    "fecha_estimada_reparacion": null
+  }
+},
+{
+  "model": "main.maquina",
+  "pk": 4,
+  "fields": {
+    "nombre": "Máquina de press de banca",
+    "cantidad": 2,
+    "estado": "activa",
+    "descripcion": "Diseñada para trabajar principalmente los músculos del pecho (pectorales).",
+    "imagen": "maquinas/pressbanca_GmYYIIW.png",
+    "razon_inactividad": "no_aplica",
+    "fecha_inactividad": null,
+    "notas_inactividad": null,
+    "fecha_estimada_reparacion": null
+  }
+},
+{
+  "model": "main.maquina",
+  "pk": 5,
+  "fields": {
+    "nombre": "Maquina de Femoral de Pie",
+    "cantidad": 1,
+    "estado": "activa",
+    "descripcion": "Trabaja el musculo de femoral",
+    "imagen": "maquinas/maquinafemoral_n28PyI5.png",
+    "razon_inactividad": "no_aplica",
+    "fecha_inactividad": null,
+    "notas_inactividad": null,
+    "fecha_estimada_reparacion": null
+  }
+},
+{
+  "model": "usuarios.rol",
+  "pk": 1,
+  "fields": {
+    "nombre": "admin",
+    "descripcion": "Administrador"
+  }
+},
+{
+  "model": "usuarios.rol",
+  "pk": 2,
+  "fields": {
+    "nombre": "empleado",
+    "descripcion": "Empleado"
+  }
+},
+{
+  "model": "usuarios.usuario",
+  "pk": 1,
+  "fields": {
+    "nombre_usuario": "admin",
+    "correo": "sergiodanielxd2004@gmail.com",
+    "contra": "pbkdf2_sha256$1000000$nSq8gWfbWYtY6i0RQ8OBAH$x+DA4tDU+HRojTAFHYFWGTknh+51z0jo4pYPUZ0l0QI=",
+    "n_intentos": 0,
+    "rol": 1
+  }
+},
+{
+  "model": "usuarios.usuario",
+  "pk": 2,
+  "fields": {
+    "nombre_usuario": "empleado",
+    "correo": "sergiodanielxd2004+empleado@gmail.com",
+    "contra": "pbkdf2_sha256$870000$lz91LVWXX8e4bGydpT55ov$3r2nd/leZyZL+MRizidpXvPuHSYDbIQvwuDTjdIPXBg=",
+    "n_intentos": 3,
+    "rol": 2
+  }
+},
+{
+  "model": "usuarios.empleado",
+  "pk": 1,
+  "fields": {
+    "usuario": null,
+    "nombre_empleado": "Jose Luis",
+    "turno": "Mañana",
+    "salario": 500.0
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "add_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "change_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "delete_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view log entry",
+    "content_type": [
+      "admin",
+      "logentry"
+    ],
+    "codename": "view_logentry"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "add_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "change_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "delete_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view permission",
+    "content_type": [
+      "auth",
+      "permission"
+    ],
+    "codename": "view_permission"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "add_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "change_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "delete_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view group",
+    "content_type": [
+      "auth",
+      "group"
+    ],
+    "codename": "view_group"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add user",
+    "content_type": [
+      "auth",
+      "user"
+    ],
+    "codename": "add_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change user",
+    "content_type": [
+      "auth",
+      "user"
+    ],
+    "codename": "change_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete user",
+    "content_type": [
+      "auth",
+      "user"
+    ],
+    "codename": "delete_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view user",
+    "content_type": [
+      "auth",
+      "user"
+    ],
+    "codename": "view_user"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "add_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "change_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "delete_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view content type",
+    "content_type": [
+      "contenttypes",
+      "contenttype"
+    ],
+    "codename": "view_contenttype"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "add_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "change_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "delete_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view session",
+    "content_type": [
+      "sessions",
+      "session"
+    ],
+    "codename": "view_session"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add descuento",
+    "content_type": [
+      "main",
+      "descuento"
+    ],
+    "codename": "add_descuento"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change descuento",
+    "content_type": [
+      "main",
+      "descuento"
+    ],
+    "codename": "change_descuento"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete descuento",
+    "content_type": [
+      "main",
+      "descuento"
+    ],
+    "codename": "delete_descuento"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view descuento",
+    "content_type": [
+      "main",
+      "descuento"
+    ],
+    "codename": "view_descuento"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add empleado",
+    "content_type": [
+      "main",
+      "empleado"
+    ],
+    "codename": "add_empleado"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change empleado",
+    "content_type": [
+      "main",
+      "empleado"
+    ],
+    "codename": "change_empleado"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete empleado",
+    "content_type": [
+      "main",
+      "empleado"
+    ],
+    "codename": "delete_empleado"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view empleado",
+    "content_type": [
+      "main",
+      "empleado"
+    ],
+    "codename": "view_empleado"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add maquina",
+    "content_type": [
+      "main",
+      "maquina"
+    ],
+    "codename": "add_maquina"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change maquina",
+    "content_type": [
+      "main",
+      "maquina"
+    ],
+    "codename": "change_maquina"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete maquina",
+    "content_type": [
+      "main",
+      "maquina"
+    ],
+    "codename": "delete_maquina"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view maquina",
+    "content_type": [
+      "main",
+      "maquina"
+    ],
+    "codename": "view_maquina"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add permiso",
+    "content_type": [
+      "main",
+      "permiso"
+    ],
+    "codename": "add_permiso"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change permiso",
+    "content_type": [
+      "main",
+      "permiso"
+    ],
+    "codename": "change_permiso"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete permiso",
+    "content_type": [
+      "main",
+      "permiso"
+    ],
+    "codename": "delete_permiso"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view permiso",
+    "content_type": [
+      "main",
+      "permiso"
+    ],
+    "codename": "view_permiso"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add producto",
+    "content_type": [
+      "main",
+      "producto"
+    ],
+    "codename": "add_producto"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change producto",
+    "content_type": [
+      "main",
+      "producto"
+    ],
+    "codename": "change_producto"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete producto",
+    "content_type": [
+      "main",
+      "producto"
+    ],
+    "codename": "delete_producto"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view producto",
+    "content_type": [
+      "main",
+      "producto"
+    ],
+    "codename": "view_producto"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add rol",
+    "content_type": [
+      "main",
+      "rol"
+    ],
+    "codename": "add_rol"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change rol",
+    "content_type": [
+      "main",
+      "rol"
+    ],
+    "codename": "change_rol"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete rol",
+    "content_type": [
+      "main",
+      "rol"
+    ],
+    "codename": "delete_rol"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view rol",
+    "content_type": [
+      "main",
+      "rol"
+    ],
+    "codename": "view_rol"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add tipo membresia",
+    "content_type": [
+      "main",
+      "tipomembresia"
+    ],
+    "codename": "add_tipomembresia"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change tipo membresia",
+    "content_type": [
+      "main",
+      "tipomembresia"
+    ],
+    "codename": "change_tipomembresia"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete tipo membresia",
+    "content_type": [
+      "main",
+      "tipomembresia"
+    ],
+    "codename": "delete_tipomembresia"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view tipo membresia",
+    "content_type": [
+      "main",
+      "tipomembresia"
+    ],
+    "codename": "view_tipomembresia"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add cliente",
+    "content_type": [
+      "main",
+      "cliente"
+    ],
+    "codename": "add_cliente"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change cliente",
+    "content_type": [
+      "main",
+      "cliente"
+    ],
+    "codename": "change_cliente"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete cliente",
+    "content_type": [
+      "main",
+      "cliente"
+    ],
+    "codename": "delete_cliente"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view cliente",
+    "content_type": [
+      "main",
+      "cliente"
+    ],
+    "codename": "view_cliente"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add asistencia",
+    "content_type": [
+      "main",
+      "asistencia"
+    ],
+    "codename": "add_asistencia"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change asistencia",
+    "content_type": [
+      "main",
+      "asistencia"
+    ],
+    "codename": "change_asistencia"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete asistencia",
+    "content_type": [
+      "main",
+      "asistencia"
+    ],
+    "codename": "delete_asistencia"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view asistencia",
+    "content_type": [
+      "main",
+      "asistencia"
+    ],
+    "codename": "view_asistencia"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add pago",
+    "content_type": [
+      "main",
+      "pago"
+    ],
+    "codename": "add_pago"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change pago",
+    "content_type": [
+      "main",
+      "pago"
+    ],
+    "codename": "change_pago"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete pago",
+    "content_type": [
+      "main",
+      "pago"
+    ],
+    "codename": "delete_pago"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view pago",
+    "content_type": [
+      "main",
+      "pago"
+    ],
+    "codename": "view_pago"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add pago descuento",
+    "content_type": [
+      "main",
+      "pagodescuento"
+    ],
+    "codename": "add_pagodescuento"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change pago descuento",
+    "content_type": [
+      "main",
+      "pagodescuento"
+    ],
+    "codename": "change_pagodescuento"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete pago descuento",
+    "content_type": [
+      "main",
+      "pagodescuento"
+    ],
+    "codename": "delete_pagodescuento"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view pago descuento",
+    "content_type": [
+      "main",
+      "pagodescuento"
+    ],
+    "codename": "view_pagodescuento"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add pago producto",
+    "content_type": [
+      "main",
+      "pagoproducto"
+    ],
+    "codename": "add_pagoproducto"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change pago producto",
+    "content_type": [
+      "main",
+      "pagoproducto"
+    ],
+    "codename": "change_pagoproducto"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete pago producto",
+    "content_type": [
+      "main",
+      "pagoproducto"
+    ],
+    "codename": "delete_pagoproducto"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view pago producto",
+    "content_type": [
+      "main",
+      "pagoproducto"
+    ],
+    "codename": "view_pagoproducto"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add membresia cliente",
+    "content_type": [
+      "main",
+      "membresiacliente"
+    ],
+    "codename": "add_membresiacliente"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change membresia cliente",
+    "content_type": [
+      "main",
+      "membresiacliente"
+    ],
+    "codename": "change_membresiacliente"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete membresia cliente",
+    "content_type": [
+      "main",
+      "membresiacliente"
+    ],
+    "codename": "delete_membresiacliente"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view membresia cliente",
+    "content_type": [
+      "main",
+      "membresiacliente"
+    ],
+    "codename": "view_membresiacliente"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add usuario",
+    "content_type": [
+      "main",
+      "usuario"
+    ],
+    "codename": "add_usuario"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change usuario",
+    "content_type": [
+      "main",
+      "usuario"
+    ],
+    "codename": "change_usuario"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete usuario",
+    "content_type": [
+      "main",
+      "usuario"
+    ],
+    "codename": "delete_usuario"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view usuario",
+    "content_type": [
+      "main",
+      "usuario"
+    ],
+    "codename": "view_usuario"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add administrador",
+    "content_type": [
+      "main",
+      "administrador"
+    ],
+    "codename": "add_administrador"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change administrador",
+    "content_type": [
+      "main",
+      "administrador"
+    ],
+    "codename": "change_administrador"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete administrador",
+    "content_type": [
+      "main",
+      "administrador"
+    ],
+    "codename": "delete_administrador"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view administrador",
+    "content_type": [
+      "main",
+      "administrador"
+    ],
+    "codename": "view_administrador"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Rol-Permiso",
+    "content_type": [
+      "main",
+      "rolpermiso"
+    ],
+    "codename": "add_rolpermiso"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Rol-Permiso",
+    "content_type": [
+      "main",
+      "rolpermiso"
+    ],
+    "codename": "change_rolpermiso"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Rol-Permiso",
+    "content_type": [
+      "main",
+      "rolpermiso"
+    ],
+    "codename": "delete_rolpermiso"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Rol-Permiso",
+    "content_type": [
+      "main",
+      "rolpermiso"
+    ],
+    "codename": "view_rolpermiso"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add administrador",
+    "content_type": [
+      "usuarios",
+      "administrador"
+    ],
+    "codename": "add_administrador"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change administrador",
+    "content_type": [
+      "usuarios",
+      "administrador"
+    ],
+    "codename": "change_administrador"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete administrador",
+    "content_type": [
+      "usuarios",
+      "administrador"
+    ],
+    "codename": "delete_administrador"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view administrador",
+    "content_type": [
+      "usuarios",
+      "administrador"
+    ],
+    "codename": "view_administrador"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add rol",
+    "content_type": [
+      "usuarios",
+      "rol"
+    ],
+    "codename": "add_rol"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change rol",
+    "content_type": [
+      "usuarios",
+      "rol"
+    ],
+    "codename": "change_rol"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete rol",
+    "content_type": [
+      "usuarios",
+      "rol"
+    ],
+    "codename": "delete_rol"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view rol",
+    "content_type": [
+      "usuarios",
+      "rol"
+    ],
+    "codename": "view_rol"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add usuario",
+    "content_type": [
+      "usuarios",
+      "usuario"
+    ],
+    "codename": "add_usuario"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change usuario",
+    "content_type": [
+      "usuarios",
+      "usuario"
+    ],
+    "codename": "change_usuario"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete usuario",
+    "content_type": [
+      "usuarios",
+      "usuario"
+    ],
+    "codename": "delete_usuario"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view usuario",
+    "content_type": [
+      "usuarios",
+      "usuario"
+    ],
+    "codename": "view_usuario"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add empleado",
+    "content_type": [
+      "usuarios",
+      "empleado"
+    ],
+    "codename": "add_empleado"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change empleado",
+    "content_type": [
+      "usuarios",
+      "empleado"
+    ],
+    "codename": "change_empleado"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete empleado",
+    "content_type": [
+      "usuarios",
+      "empleado"
+    ],
+    "codename": "delete_empleado"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view empleado",
+    "content_type": [
+      "usuarios",
+      "empleado"
+    ],
+    "codename": "view_empleado"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add permiso",
+    "content_type": [
+      "usuarios",
+      "permiso"
+    ],
+    "codename": "add_permiso"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change permiso",
+    "content_type": [
+      "usuarios",
+      "permiso"
+    ],
+    "codename": "change_permiso"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete permiso",
+    "content_type": [
+      "usuarios",
+      "permiso"
+    ],
+    "codename": "delete_permiso"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view permiso",
+    "content_type": [
+      "usuarios",
+      "permiso"
+    ],
+    "codename": "view_permiso"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can add Rol-Permiso",
+    "content_type": [
+      "usuarios",
+      "rolpermiso"
+    ],
+    "codename": "add_rolpermiso"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can change Rol-Permiso",
+    "content_type": [
+      "usuarios",
+      "rolpermiso"
+    ],
+    "codename": "change_rolpermiso"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can delete Rol-Permiso",
+    "content_type": [
+      "usuarios",
+      "rolpermiso"
+    ],
+    "codename": "delete_rolpermiso"
+  }
+},
+{
+  "model": "auth.permission",
+  "fields": {
+    "name": "Can view Rol-Permiso",
+    "content_type": [
+      "usuarios",
+      "rolpermiso"
+    ],
+    "codename": "view_rolpermiso"
+  }
+}
+]
