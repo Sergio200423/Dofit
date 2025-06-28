@@ -1,0 +1,610 @@
+/* ===== CONTENEDOR PRINCIPAL ===== */
+.usuarios-container {
+  padding: 20px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  min-height: 100vh;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ===== HEADER MEJORADO ===== */
+.header-usuarios {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  padding: 24px 32px;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.header-usuarios::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230066ff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")
+    repeat;
+  opacity: 0.5;
+}
+
+.header-usuarios h2 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a202c;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-usuarios h2::before {
+  content: "👥";
+  font-size: 28px;
+  background: linear-gradient(135deg, #0066ff 0%, #0052cc 100%);
+  padding: 8px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+}
+
+/* ===== BOTÓN AGREGAR MEJORADO ===== */
+.btn-agregar-usuario {
+  background: linear-gradient(135deg, #0066ff 0%, #0052cc 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  box-shadow: 0 4px 15px rgba(0, 102, 255, 0.3);
+}
+
+.btn-agregar-usuario::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+  z-index: -1;
+}
+
+.btn-agregar-usuario:hover::before {
+  left: 100%;
+}
+
+.btn-agregar-usuario:hover {
+  background: linear-gradient(135deg, #0052cc 0%, #003d99 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 102, 255, 0.4);
+}
+
+.btn-agregar-usuario:active {
+  transform: translateY(0);
+}
+
+.btn-agregar-usuario::after {
+  content: "+";
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* ===== CONTENEDOR DE TABLA MEJORADO ===== */
+.table-container {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+}
+
+.table-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #0066ff, #00d4ff, #0066ff);
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%,
+  100% {
+    background-position: 200% 0;
+  }
+  50% {
+    background-position: -200% 0;
+  }
+}
+
+/* ===== TABLA MEJORADA ===== */
+.table-usuarios {
+  width: 100%;
+  border-collapse: collapse;
+  background: transparent;
+  font-size: 15px;
+}
+
+.table-usuarios th {
+  background: linear-gradient(135deg, #0066ff 0%, #0052cc 100%);
+  color: #ffffff;
+  font-weight: 700;
+  padding: 20px 24px;
+  text-align: left;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: relative;
+}
+
+.table-usuarios th::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.table-usuarios td {
+  padding: 18px 24px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #4a5568;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.table-usuarios tr {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.table-usuarios tbody tr:nth-child(even) {
+  background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+}
+
+.table-usuarios tbody tr:hover {
+  background: linear-gradient(135deg, #e6f3ff 0%, #cce7ff 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.15);
+}
+
+.table-usuarios tbody tr:hover td {
+  color: #2d3748;
+}
+
+/* ===== COLUMNAS ESPECÍFICAS ===== */
+.col-avatar {
+  width: 60px;
+  text-align: center;
+}
+
+.col-nombre {
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.col-email {
+  color: #0066ff;
+  font-family: "Courier New", monospace;
+}
+
+.col-rol {
+  width: 120px;
+}
+
+.col-estado {
+  width: 100px;
+  text-align: center;
+}
+
+.col-acciones {
+  width: 150px;
+  text-align: center;
+}
+
+/* ===== AVATAR EN TABLA ===== */
+.usuario-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #0066ff;
+  box-shadow: 0 2px 8px rgba(0, 102, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.usuario-avatar:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(0, 102, 255, 0.4);
+}
+
+/* ===== BADGES DE ROL ===== */
+.badge-rol {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.badge-rol.super-admin {
+  background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+  color: white;
+}
+
+.badge-rol.administrador {
+  background: linear-gradient(135deg, #0066ff 0%, #0052cc 100%);
+  color: white;
+}
+
+.badge-rol.empleado {
+  background: linear-gradient(135deg, #38a169 0%, #2f855a 100%);
+  color: white;
+}
+
+.badge-rol.entrenador {
+  background: linear-gradient(135deg, #d69e2e 0%, #b7791f 100%);
+  color: white;
+}
+
+.badge-rol.cliente {
+  background: linear-gradient(135deg, #805ad5 0%, #6b46c1 100%);
+  color: white;
+}
+
+/* ===== BADGES DE ESTADO ===== */
+.badge-estado {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-estado.activo {
+  background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+  color: white;
+  box-shadow: 0 2px 4px rgba(72, 187, 120, 0.3);
+}
+
+.badge-estado.inactivo {
+  background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+  color: white;
+  box-shadow: 0 2px 4px rgba(229, 62, 62, 0.3);
+}
+
+/* ===== ACCIONES MEJORADAS ===== */
+.acciones-usuario {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
+.accion-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.accion-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: currentColor;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.accion-btn:hover::before {
+  opacity: 0.1;
+}
+
+.accion-btn.ver {
+  color: #0066ff;
+  background: rgba(0, 102, 255, 0.1);
+  border: 1px solid rgba(0, 102, 255, 0.2);
+}
+
+.accion-btn.ver:hover {
+  background: rgba(0, 102, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+}
+
+.accion-btn.editar {
+  color: #38a169;
+  background: rgba(56, 161, 105, 0.1);
+  border: 1px solid rgba(56, 161, 105, 0.2);
+}
+
+.accion-btn.editar:hover {
+  background: rgba(56, 161, 105, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(56, 161, 105, 0.3);
+}
+
+.accion-btn.eliminar {
+  color: #e53e3e;
+  background: rgba(229, 62, 62, 0.1);
+  border: 1px solid rgba(229, 62, 62, 0.2);
+}
+
+.accion-btn.eliminar:hover {
+  background: rgba(229, 62, 62, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(229, 62, 62, 0.3);
+}
+
+/* ===== ICONOS PARA ACCIONES ===== */
+.accion-btn.ver::after {
+  content: "👁";
+  font-size: 16px;
+}
+
+.accion-btn.editar::after {
+  content: "✏️";
+  font-size: 14px;
+}
+
+.accion-btn.eliminar::after {
+  content: "🗑️";
+  font-size: 14px;
+}
+
+/* ===== ESTADO VACÍO ===== */
+.tabla-vacia {
+  text-align: center;
+  padding: 60px 20px;
+  color: #718096;
+}
+
+.tabla-vacia-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.tabla-vacia h3 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #4a5568;
+}
+
+.tabla-vacia p {
+  font-size: 16px;
+  margin-bottom: 24px;
+}
+
+/* ===== FILTROS Y BÚSQUEDA ===== */
+.filtros-usuarios {
+  background: white;
+  padding: 20px 24px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.filtro-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.filtro-grupo label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #4a5568;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.filtro-input {
+  padding: 8px 12px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  min-width: 150px;
+}
+
+.filtro-input:focus {
+  border-color: #0066ff;
+  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+  outline: none;
+}
+
+/* ===== PAGINACIÓN ===== */
+.paginacion {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+  padding: 20px;
+}
+
+.paginacion-btn {
+  padding: 8px 12px;
+  border: 2px solid #e2e8f0;
+  background: white;
+  color: #4a5568;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.paginacion-btn:hover {
+  border-color: #0066ff;
+  color: #0066ff;
+  background: rgba(0, 102, 255, 0.05);
+}
+
+.paginacion-btn.activo {
+  background: #0066ff;
+  color: white;
+  border-color: #0066ff;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 1024px) {
+  .table-usuarios {
+    font-size: 14px;
+  }
+
+  .table-usuarios th,
+  .table-usuarios td {
+    padding: 12px 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .usuarios-container {
+    padding: 16px;
+  }
+
+  .header-usuarios {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .header-usuarios h2 {
+    font-size: 24px;
+  }
+
+  .table-container {
+    overflow-x: auto;
+  }
+
+  .table-usuarios {
+    min-width: 800px;
+  }
+
+  .filtros-usuarios {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filtro-grupo {
+    width: 100%;
+  }
+
+  .filtro-input {
+    min-width: auto;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .acciones-usuario {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .accion-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .badge-rol,
+  .badge-estado {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+}
+
+/* ===== ANIMACIONES ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.table-usuarios tbody tr {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.table-usuarios tbody tr:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.table-usuarios tbody tr:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.table-usuarios tbody tr:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.table-usuarios tbody tr:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.table-usuarios tbody tr:nth-child(5) {
+  animation-delay: 0.5s;
+}
+
+/* ===== LOADING STATES ===== */
+.loading-row {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
