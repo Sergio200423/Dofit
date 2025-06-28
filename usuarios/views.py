@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from .models import Rol, Permiso, Usuario, Empleado, Administrador
@@ -16,7 +16,6 @@ def usuarios(request):
 
 
 @require_POST
-@csrf_exempt  # Si usas CSRF token en el form, puedes quitar esto
 def crear_usuario_ajax(request):
     try:
         data = json.loads(request.body)
@@ -31,7 +30,6 @@ def crear_usuario_ajax(request):
 
 
 @require_POST
-@csrf_exempt
 def eliminar_usuario_ajax(request):
     try:
         data = json.loads(request.body)
