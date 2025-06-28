@@ -71,44 +71,44 @@
                 </a>
             </li>          
             <li>
-              <a href="#">
+              <a href="{% url 'pagos' %}">
                 <img src="{% static 'common/img/billetes-de-banco.png' %}" alt="in" width="28">
                 <span aria-hidden="true"></span>&nbsp;&nbsp;Pagos</span>
               </a>
             </li> 
             <li>
-              <a href="#">
+              <a href="{% url 'reporte_pagos' %}">
                 <img src="{% static 'common/img/informes.png' %}" alt="in" width="28">
                 <span aria-hidden="true"></span>&nbsp;&nbsp;Reporte Pagos</span>
               </a>
             </li>            
             <li>
-              <a href="#">
+              <a href="{% url 'membresias' %}">
                 <img src="{% static 'common/img/tarjeta-de-miembro.png' %}" alt="in" width="28  ">
                 <span aria-hidden="true"></span>&nbsp;&nbsp;Membresías</span>
               </a>
           </li>
               <li>
-                  <a href="#">
+                  <a href="{% url 'maquinas' %}">
                     <img src="{% static 'common/img/gym-equipment.png' %}" alt="in" width="28  ">
                     <span aria-hidden="true"></span>&nbsp;&nbsp;Máquinas</span>
                   </a>
               </li>
               <li>
-                <a href="#" class="">
+                <a href="{% url 'empleados' %}" class="">
                   <img src="{% static 'common/img/agregar-contacto.png' %}" alt="in" width="28  ">
                   <span aria-hidden="true"></span>&nbsp;&nbsp;Empleados</span>
                 </a>
               </li>
               <li>
-                  <a href="#">
+                  <a href="{% url 'asistencia' %}">
                     <img src="{% static 'common/img/asistencia.png' %}" alt="in" width="28  ">
                     <span aria-hidden="true"></span>&nbsp;&nbsp;Asistencia</span>
                   </a>
               </li>
               <li>
-                  <a href="#">
-                    <img src="{% static 'common/img/recuperacion_base_de_datos.png' %}" alt="in" width="28  ">
+                  <a href="{% url 'backup' %}">
+                    <img src="{% static 'common/img/backup_Icon.svg' %}" alt="in" width="28  ">
                     <span aria-hidden="true"></span>&nbsp;&nbsp;Backup</span>
                   </a>
               </li>

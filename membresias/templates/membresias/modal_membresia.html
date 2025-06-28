@@ -1,28 +1,719 @@
-<!-- Modal para agregar/editar membresía -->
+<!-- Modal mejorado para agregar/editar membresía -->
 <div id="modal-membresia" class="modal">
-    <div class="modal-content">
-        <span class="modal-close">&times;</span>
-        <h2 class="modal-title" id="modal-title">Agregar Membresía</h2>
-        <form id="form-membresia" method="post" action="{% url 'guardar_membresia' %}">
-            {% csrf_token %}
-            <input type="hidden" id="membresia_id" name="membresia_id" value="">
-            <input type="hidden" id="modo_edicion" name="modo_edicion" value="0">
-            <div class="form-group">
-                <label for="nombreMembresia">Nombre de la Membresía:</label>
-                <input type="text" id="nombreMembresia" name="nombreMembresia" class="form-control" required>
-            </div>
-            <div class="form-group">
-                <label for="duracionDias">Duración (días):</label>
-                <input type="number" id="duracionDias" name="duracionDias" class="form-control" min="1" required>
-            </div>
-            <div class="form-group">
-                <label for="precio">Precio (C$):</label>
-                <input type="number" id="precio" name="precio" class="form-control" min="0" step="0.01" required>
-            </div>
-            <div class="form-actions">
-                <button type="button" class="btn-cancelar" id="btn-cancelar">Cancelar</button>
-                <button type="submit" class="btn-guardar">Guardar</button>
-            </div>
-        </form>
+  <div class="modal-content-enhanced">
+    <div class="modal-header-enhanced">
+      <div class="modal-icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" fill="currentColor"/>
+        </svg>
+      </div>
+      <h2 id="modal-title" class="modal-title-enhanced">Agregar Membresía</h2>
+      <button type="button" class="modal-close-enhanced" id="modal-close">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
     </div>
+
+    <form id="form-membresia" method="post" class="form-enhanced">
+      {% csrf_token %}
+      <input type="hidden" id="membresia_id" name="membresia_id">
+      <input type="hidden" id="modo_edicion" name="modo_edicion" value="0">
+      
+      <div class="form-body-enhanced">
+        <!-- Campo Nombre de Membresía -->
+        <div class="form-group-enhanced">
+          <label for="nombreMembresia" class="form-label-enhanced">
+            <div class="label-content">
+              <svg class="label-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" fill="currentColor"/>
+              </svg>
+              <span>Nombre de la Membresía</span>
+            </div>
+            <span class="required-indicator">*</span>
+          </label>
+          <div class="input-wrapper">
+            <input 
+              type="text" 
+              id="nombreMembresia" 
+              name="nombreMembresia" 
+              class="form-control-enhanced" 
+              placeholder="Ej: Membresía Premium"
+              required
+              maxlength="100"
+            >
+            <div class="input-focus-border"></div>
+          </div>
+          <div class="field-help">Ingresa un nombre descriptivo para la membresía</div>
+        </div>
+
+        <!-- Campo Duración -->
+        <div class="form-group-enhanced">
+          <label for="duracionDias" class="form-label-enhanced">
+            <div class="label-content">
+              <svg class="label-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 11H7v6h2v-6zm4 0h-2v6h2v-6zm4 0h-2v6h2v-6zm2-7h-1V2h-2v2H8V2H6v2H5c-1.1 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z" fill="currentColor"/>
+              </svg>
+              <span>Duración</span>
+            </div>
+            <span class="required-indicator">*</span>
+          </label>
+          <div class="input-wrapper">
+            <input 
+              type="number" 
+              id="duracionDias" 
+              name="duracionDias" 
+              class="form-control-enhanced" 
+              placeholder="30"
+              required
+              min="1"
+              max="365"
+            >
+            <span class="input-suffix-dynamic">días</span>
+            <div class="input-focus-border"></div>
+          </div>
+          <div class="field-help">Duración de la membresía en días (1-365)</div>
+        </div>
+
+        <!-- Campo Precio -->
+        <div class="form-group-enhanced">
+          <label for="precio" class="form-label-enhanced">
+            <div class="label-content">
+              <svg class="label-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z" fill="currentColor"/>
+              </svg>
+              <span>Precio</span>
+            </div>
+            <span class="required-indicator">*</span>
+          </label>
+          <div class="input-wrapper">
+            <span class="input-prefix">C$</span>
+            <input 
+              type="number" 
+              id="precio" 
+              name="precio" 
+              class="form-control-enhanced with-prefix" 
+              placeholder="0.00"
+              required
+              min="0.01"
+              step="0.01"
+            >
+            <div class="input-focus-border"></div>
+          </div>
+          <div class="field-help">Precio de la membresía en córdobas</div>
+        </div>
+      </div>
+
+      <!-- Acciones del formulario -->
+      <div class="form-actions-enhanced">
+        <button type="button" id="btn-cancelar" class="btn-cancelar-enhanced">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/>
+          </svg>
+          Cancelar
+        </button>
+        <button type="submit" class="btn-guardar-enhanced">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="currentColor"/>
+          </svg>
+          <span class="btn-text">Guardar Membresía</span>
+          <div class="btn-loading">
+            <div class="spinner"></div>
+            Guardando...
+          </div>
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
+
+<style>
+/* Estilos mejorados para el modal */
+.modal-content-enhanced {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  margin: 5% auto;
+  padding: 0;
+  border-radius: 16px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  max-width: 520px;
+  width: 90%;
+  transform: translateY(-20px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.modal.show .modal-content-enhanced {
+  transform: translateY(0);
+}
+
+/* Header del modal mejorado */
+.modal-header-enhanced {
+  background: linear-gradient(135deg, #0066ff 0%, #0052cc 100%);
+  color: white;
+  padding: 24px 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+}
+
+.modal-header-enhanced::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+  opacity: 0.3;
+}
+
+.modal-icon {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+}
+
+.modal-title-enhanced {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.modal-close-enhanced {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 8px;
+  padding: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  backdrop-filter: blur(10px);
+}
+
+.modal-close-enhanced:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+/* Cuerpo del formulario */
+.form-enhanced {
+  padding: 0;
+}
+
+.form-body-enhanced {
+  padding: 32px;
+  background: white;
+}
+
+/* Grupos de formulario mejorados */
+.form-group-enhanced {
+  margin-bottom: 28px;
+  position: relative;
+}
+
+.form-label-enhanced {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-weight: 600;
+  color: #374151;
+  font-size: 15px;
+}
+
+.label-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.label-icon {
+  color: #0066ff;
+  opacity: 0.8;
+}
+
+.required-indicator {
+  color: #ef4444;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+/* Wrapper de input mejorado */
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.form-control-enhanced {
+  width: 100%;
+  padding: 16px 20px;
+  font-size: 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: #ffffff;
+  color: #374151;
+  font-weight: 500;
+  position: relative;
+  z-index: 1;
+}
+
+.form-control-enhanced.with-prefix {
+  padding-left: 50px;
+}
+
+.form-control-enhanced:focus {
+  border-color: #0066ff;
+  box-shadow: 0 0 0 4px rgba(0, 102, 255, 0.1);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.form-control-enhanced.readonly {
+  background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+  border-color: #d1d5db;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+/* Prefijos y sufijos */
+.input-prefix, .input-suffix {
+  position: absolute;
+  color: #6b7280;
+  font-weight: 600;
+  font-size: 16px;
+  z-index: 2;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.input-prefix {
+  left: 20px;
+}
+
+.input-suffix {
+  right: 20px;
+  /* Cambiar a posición dinámica */
+  position: absolute;
+  right: auto;
+  left: calc(20px + 3ch); /* Ajusta según el ancho típico del número */
+  min-left: 60px; /* Posición mínima desde la izquierda */
+}
+
+/* Alternativa: sufijo más cerca del contenido */
+.input-suffix-dynamic {
+  position: absolute;
+  color: #6b7280;
+  font-weight: 600;
+  font-size: 16px;
+  z-index: 2;
+  pointer-events: none;
+  left: 90px; /* Posición fija desde la izquierda */
+  top: 50%;
+  transform: translateY(-50%);
+  transition: all 0.3s ease;
+}
+
+/* Asegurar que el input tenga suficiente padding para las flechitas */
+#duracionDias {
+  padding-right: 50px; /* Espacio para las flechitas del navegador */
+  padding-left: 20px;
+}
+
+/* Estilo para cuando el campo está enfocado */
+.form-control-enhanced:focus + .input-suffix-dynamic {
+  color: #0066ff;
+  font-weight: 700;
+}
+
+/* Responsive: ajustar en pantallas pequeñas */
+@media (max-width: 480px) {
+  .input-suffix-dynamic {
+    left: 70px; /* Menos espacio en móviles */
+  }
+}
+
+/* Borde de enfoque animado */
+.input-focus-border {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #0066ff, #0052cc);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateX(-50%);
+  border-radius: 1px;
+}
+
+.form-control-enhanced:focus + .input-suffix + .input-focus-border,
+.form-control-enhanced:focus + .input-focus-border {
+  width: 100%;
+}
+
+/* Texto de ayuda */
+.field-help {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #6b7280;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.field-help::before {
+  content: 'ℹ';
+  color: #0066ff;
+  font-weight: bold;
+}
+
+/* Acciones del formulario mejoradas */
+.form-actions-enhanced {
+  padding: 24px 32px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+}
+
+/* Botón cancelar mejorado */
+.btn-cancelar-enhanced {
+  background: white;
+  color: #6b7280;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 120px;
+  justify-content: center;
+}
+
+.btn-cancelar-enhanced:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Botón guardar mejorado */
+.btn-guardar-enhanced {
+  background: linear-gradient(135deg, #0066ff 0%, #0052cc 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 28px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 160px;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-guardar-enhanced::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-guardar-enhanced:hover::before {
+  left: 100%;
+}
+
+.btn-guardar-enhanced:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 102, 255, 0.3);
+}
+
+.btn-guardar-enhanced:active {
+  transform: translateY(0);
+}
+
+/* Estados de carga */
+.btn-loading {
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-guardar-enhanced.loading .btn-text {
+  display: none;
+}
+
+.btn-guardar-enhanced.loading .btn-loading {
+  display: flex;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Validación visual */
+.form-control-enhanced:invalid:not(:focus):not(:placeholder-shown) {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+}
+
+.form-control-enhanced:valid:not(:focus):not(:placeholder-shown) {
+  border-color: #10b981;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .modal-content-enhanced {
+    width: 95%;
+    margin: 2% auto;
+  }
+  
+  .modal-header-enhanced,
+  .form-body-enhanced,
+  .form-actions-enhanced {
+    padding: 20px;
+  }
+  
+  .form-actions-enhanced {
+    flex-direction: column;
+  }
+  
+  .btn-cancelar-enhanced,
+  .btn-guardar-enhanced {
+    width: 100%;
+  }
+}
+
+/* Animaciones de entrada */
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal.show .modal-content-enhanced {
+  animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+</style>
+
+<script>
+// JavaScript mejorado para el formulario
+document.addEventListener('DOMContentLoaded', function() {
+  // Referencias a elementos del DOM
+  const modalMembresia = document.getElementById('modal-membresia');
+  const modalConfirmar = document.getElementById('modal-confirmar');
+  const modalTitle = document.getElementById('modal-title');
+  const formMembresia = document.getElementById('form-membresia');
+  const formEliminar = document.getElementById('form-eliminar');
+  const btnAgregarMembresia = document.getElementById('btn-agregar-membresia');
+  const btnCancelar = document.getElementById('btn-cancelar');
+  const btnCancelarEliminar = document.getElementById('btn-cancelar-eliminar');
+  
+  // CORREGIR: Buscar tanto la clase antigua como la nueva
+  const modalClose = document.querySelectorAll('.modal-close, .modal-close-enhanced');
+  const btnGuardar = document.querySelector('.btn-guardar-enhanced');
+  
+  // Campos del formulario
+  const inputId = document.getElementById('membresia_id');
+  const inputModoEdicion = document.getElementById('modo_edicion');
+  const inputNombre = document.getElementById('nombreMembresia');
+  const inputDuracion = document.getElementById('duracionDias');
+  const inputPrecio = document.getElementById('precio');
+  
+  // Campos para eliminar
+  const inputIdEliminar = document.getElementById('membresia_id_eliminar');
+  const nombreMembresiaEliminar = document.getElementById('nombre-membresia-eliminar');
+  
+  // Función para abrir modal
+  function abrirModal(modal) {
+    modal.style.display = 'block';
+    setTimeout(() => {
+      modal.classList.add('show');
+    }, 10);
+  }
+  
+  // Función para cerrar modal
+  function cerrarModal(modal) {
+    modal.classList.remove('show');
+    setTimeout(() => {
+      modal.style.display = 'none';
+    }, 300);
+  }
+  
+  // Event listeners para cerrar modales - CORREGIDO
+  modalClose.forEach(close => {
+    close.addEventListener('click', function() {
+      const modal = this.closest('.modal');
+      if (modal) {
+        cerrarModal(modal);
+      }
+    });
+  });
+  
+  // Botón cancelar
+  if (btnCancelar) {
+    btnCancelar.addEventListener('click', function() {
+      if (modalMembresia) {
+        cerrarModal(modalMembresia);
+      }
+    });
+  }
+  
+  // Botón cancelar eliminar
+  if (btnCancelarEliminar) {
+    btnCancelarEliminar.addEventListener('click', function() {
+      if (modalConfirmar) {
+        cerrarModal(modalConfirmar);
+      }
+    });
+  }
+  
+  // Cerrar modal al hacer clic fuera del contenido
+  window.addEventListener('click', function(event) {
+    if (event.target === modalMembresia) {
+      cerrarModal(modalMembresia);
+    }
+    if (modalConfirmar && event.target === modalConfirmar) {
+      cerrarModal(modalConfirmar);
+    }
+  });
+
+  // Resto del código de validación y envío del formulario...
+  if (formMembresia) {
+    formMembresia.addEventListener('submit', function(e) {
+      // Mostrar estado de carga
+      if (btnGuardar) {
+        btnGuardar.classList.add('loading');
+        btnGuardar.disabled = true;
+      }
+      
+      // Validación mejorada
+      const precio = parseFloat(document.getElementById('precio').value);
+      const duracion = parseInt(document.getElementById('duracionDias').value);
+      const nombre = document.getElementById('nombreMembresia').value.trim();
+      
+      if (!nombre) {
+        e.preventDefault();
+        showFieldError('nombreMembresia', 'El nombre de la membresía es requerido');
+        resetButtonState();
+        return false;
+      }
+      
+      if (isNaN(precio) || precio <= 0) {
+        e.preventDefault();
+        showFieldError('precio', 'Por favor, ingrese un precio válido mayor que cero');
+        resetButtonState();
+        return false;
+      }
+      
+      if (isNaN(duracion) || duracion <= 0 || duracion > 365) {
+        e.preventDefault();
+        showFieldError('duracionDias', 'La duración debe estar entre 1 y 365 días');
+        resetButtonState();
+        return false;
+      }
+    });
+  }
+  
+  function showFieldError(fieldId, message) {
+    const field = document.getElementById(fieldId);
+    if (!field) return;
+    
+    const wrapper = field.closest('.form-group-enhanced');
+    if (!wrapper) return;
+    
+    // Remover error anterior
+    const existingError = wrapper.querySelector('.field-error');
+    if (existingError) {
+      existingError.remove();
+    }
+    
+    // Agregar nuevo error
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'field-error';
+    errorDiv.style.cssText = `
+      color: #ef4444;
+      font-size: 13px;
+      margin-top: 8px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    `;
+    errorDiv.innerHTML = `⚠ ${message}`;
+    
+    wrapper.appendChild(errorDiv);
+    field.focus();
+    
+    // Remover error cuando el usuario empiece a escribir
+    field.addEventListener('input', function() {
+      const currentError = wrapper.querySelector('.field-error');
+      if (currentError) {
+        currentError.remove();
+      }
+    }, { once: true });
+  }
+  
+  function resetButtonState() {
+    if (btnGuardar) {
+      btnGuardar.classList.remove('loading');
+      btnGuardar.disabled = false;
+    }
+  }
+  
+  // Auto-formatear precio
+  const precioInput = document.getElementById('precio');
+  if (precioInput) {
+    precioInput.addEventListener('blur', function() {
+      const value = parseFloat(this.value);
+      if (!isNaN(value)) {
+        this.value = value.toFixed(2);
+      }
+    });
+  }
+});
+</script>

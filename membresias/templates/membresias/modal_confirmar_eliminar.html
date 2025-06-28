@@ -14,3 +14,33 @@
         </form>
     </div>
 </div>
+<script>
+// Script para pasar el ID y nombre de la membresía al modal de confirmación
+// Debes tener un botón para eliminar con clase .btn-eliminar-membresia y data-id/data-nombre
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Abrir el modal y setear datos
+    document.querySelectorAll('.btn-eliminar-membresia').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var id = this.getAttribute('data-id');
+            var nombre = this.getAttribute('data-nombre');
+            document.getElementById('membresia_id_eliminar').value = id;
+            document.getElementById('nombre-membresia-eliminar').textContent = nombre;
+            document.getElementById('modal-confirmar').style.display = 'block';
+        });
+    });
+    // Cerrar modal
+    document.querySelectorAll('.modal-close, #btn-cancelar-eliminar').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            document.getElementById('modal-confirmar').style.display = 'none';
+        });
+    });
+    // Cerrar modal al hacer click fuera del contenido
+    window.addEventListener('click', function(event) {
+        var modal = document.getElementById('modal-confirmar');
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
+</script>
