@@ -1,0 +1,183 @@
+/* Component Styles */
+
+/* White Block Component */
+.white-block,
+.white-block.checkboxes label {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.white-block {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.white-block__title {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #171717;
+  margin-bottom: 20px;
+}
+
+.white-block .select {
+  width: 100%;
+  background-color: #eff0f6;
+}
+
+.white-block.checkboxes label {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.white-block.checkboxes label:last-child {
+  margin-bottom: 0;
+}
+
+.white-block.checkboxes input {
+  margin-right: 12px;
+  width: 16px;
+  height: 16px;
+}
+
+.white-block.checkboxes span {
+  font-size: 14px;
+  line-height: 1.71;
+}
+
+/* Dropdown Styles */
+.dropdown {
+  position: absolute;
+  padding: 5px 10px;
+  background-color: #fff;
+  -webkit-box-shadow: 0 -2px 24px rgba(160, 163, 189, 0.25);
+  box-shadow: 0 -2px 24px rgba(160, 163, 189, 0.25);
+  border-radius: 4px;
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transition: 0.3s all;
+  -o-transition: 0.3s all;
+  transition: 0.3s all;
+  z-index: 3;
+}
+
+.dropdown::before {
+  content: "";
+  position: absolute;
+  right: 6px;
+  top: -10px;
+  border-style: solid;
+  border-width: 0 15px 15px;
+  border-color: transparent transparent #fff;
+}
+
+.dropdown li:last-child a {
+  border-width: 0;
+}
+
+.dropdown a {
+  display: inline-block;
+  width: 100%;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 2.43;
+  color: #767676;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.dropdown a:hover {
+  color: #2f49d1;
+}
+
+/* Badge Styles */
+.badge-active,
+.badge-danger,
+.badge-disabled,
+.badge-pending,
+.badge-success,
+.badge-trashed {
+  padding: 1px;
+  width: 85px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.67;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  border-radius: 100px;
+  text-align: center;
+}
+
+.badge-active {
+  color: #5887ff;
+  background-color: rgba(88, 135, 255, 0.1);
+}
+
+.badge-pending {
+  color: #ffb648;
+  background-color: rgba(255, 172, 50, 0.1);
+}
+
+.badge-danger {
+  color: #dc3545;
+  background-color: rgba(75, 222, 151, 0.1);
+}
+
+.badge-disabled {
+  color: #fff;
+  background-color: #ffb648;
+}
+
+.badge-trashed {
+  color: #f26464;
+  background-color: rgba(245, 91, 93, 0.1);
+}
+
+.badge-success {
+  color: #4bde97;
+  background-color: rgba(75, 222, 151, 0.1);
+}
+
+/* Language Switcher */
+.lang-switcher {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.1875;
+  letter-spacing: 0.75px;
+  color: #767676;
+}
+
+.lang-switcher-wrapper {
+  position: relative;
+}
+
+.lang-menu {
+  top: 40px;
+  right: 0;
+  width: 125px;
+}
+
+.lang-menu.active {
+  opacity: 1;
+  visibility: visible;
+}
