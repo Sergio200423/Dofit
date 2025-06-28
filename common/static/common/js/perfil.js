@@ -33,7 +33,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Actualizar imágenes de avatar
   function updateAvatarImages(avatarName) {
-    var avatarPath = "/static/img/avatar/" + avatarName + ".png"
+    // Usar la ruta y nombres de avatar del modal
+    var avatarPath = "/static/common/img/avatares/user-" + avatarName.split("-").pop() + ".jpg";
     if (sidebarUserImg) sidebarUserImg.src = avatarPath
     if (navUserImg) navUserImg.src = avatarPath
   }

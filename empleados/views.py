@@ -1,12 +1,13 @@
 from django.shortcuts import render
-from usuarios.models import Empleado
 from django.http import JsonResponse
 import json
+from empleados.servicio_empleados import ServicioEmpleados
 
 # Create your views here.
 def empleados(request):
     """Vista para empleados: responde con JSON si es petición AJAX/API, o HTML si es navegación normal."""
-    empleados = Empleado.objects.all().order_by('nombre_empleado')
+    servicio = ServicioEmpleados()
+    empleados_qs = servicio.listar_empleados().order_by('nombre_empleado')
     # Si la petición es AJAX o la URL es /api/empleados/, responde JSON
     if request.headers.get('x-requested-with') == 'XMLHttpRequest' or request.path.startswith('/api/empleados/'):
         empleados_list = [
@@ -16,11 +17,11 @@ def empleados(request):
                 'turno': e.turno,
                 'salario': e.salario,
             }
-            for e in empleados
+            for e in empleados_qs
         ]
         return JsonResponse({'empleados': empleados_list})
     # Si no, renderiza la página HTML como antes
-    return render(request, 'empleados/empleados.html', {'empleados': empleados})
+    return render(request, 'empleados/empleados.html', {'empleados': empleados_qs})
 
 def registrar_empleado(request):
     """
@@ -46,19 +47,21 @@ def registrar_empleado(request):
                     'message': 'Todos los campos obligatorios deben estar completos.'
                 }, status=400)
 
-            Empleado.objects.create(
+            servicio = ServicioEmpleados()
+            servicio.crear_empleado(
                 nombre_empleado=nombre_empleado,
                 turno=turno,
                 salario=salario
             )
 
+            # Cambiar clave a InformacionAceptada para sincronizar con JS
             return JsonResponse({
-                'success': True,
+                'InformacionAceptada': True,
                 'message': 'Empleado registrado correctamente.'
             })
         except Exception as e:
-            return JsonResponse({'success': False, 'message': f'Error interno: {str(e)}'}, status=500)
-    return JsonResponse({'success': False, 'message': 'Método no permitido'}, status=405)
+            return JsonResponse({'InformacionAceptada': False, 'message': f'Error interno: {str(e)}'}, status=500)
+    return JsonResponse({'InformacionAceptada': False, 'message': 'Método no permitido'}, status=405)
 
 def asistencia(request):
     return render(request, 'empleados/asistencia.html')

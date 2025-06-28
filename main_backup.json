@@ -1,0 +1,478 @@
+[
+{
+  "model": "main.tipomembresia",
+  "pk": 1,
+  "fields": {
+    "nombreMembresia": "Mensual",
+    "duracionDias": 30,
+    "precio": 500.0
+  }
+},
+{
+  "model": "main.tipomembresia",
+  "pk": 3,
+  "fields": {
+    "nombreMembresia": "Semanal",
+    "duracionDias": 7,
+    "precio": 200.0
+  }
+},
+{
+  "model": "main.tipomembresia",
+  "pk": 4,
+  "fields": {
+    "nombreMembresia": "Diaria",
+    "duracionDias": 1,
+    "precio": 40.0
+  }
+},
+{
+  "model": "main.cliente",
+  "pk": 1,
+  "fields": {
+    "nombre_cliente": "Caroline",
+    "sexo": "F",
+    "fecha_nacimiento": "2004-05-10",
+    "empleado": null,
+    "fecha_registro": "2025-05-20",
+    "estudiante": ""
+  }
+},
+{
+  "model": "main.cliente",
+  "pk": 2,
+  "fields": {
+    "nombre_cliente": "David Baltodano",
+    "sexo": "M",
+    "fecha_nacimiento": "1998-07-22",
+    "empleado": null,
+    "fecha_registro": "2025-05-25",
+    "estudiante": ""
+  }
+},
+{
+  "model": "main.cliente",
+  "pk": 4,
+  "fields": {
+    "nombre_cliente": "Regina Hernández",
+    "sexo": "F",
+    "fecha_nacimiento": "1996-08-12",
+    "empleado": null,
+    "fecha_registro": "2025-05-25",
+    "estudiante": ""
+  }
+},
+{
+  "model": "main.cliente",
+  "pk": 6,
+  "fields": {
+    "nombre_cliente": "Santiago Quintero",
+    "sexo": "M",
+    "fecha_nacimiento": "2000-07-27",
+    "empleado": null,
+    "fecha_registro": "2025-05-25",
+    "estudiante": ""
+  }
+},
+{
+  "model": "main.cliente",
+  "pk": 7,
+  "fields": {
+    "nombre_cliente": "Sergio Martínez",
+    "sexo": "M",
+    "fecha_nacimiento": "2004-08-28",
+    "empleado": null,
+    "fecha_registro": "2025-05-25",
+    "estudiante": ""
+  }
+},
+{
+  "model": "main.cliente",
+  "pk": 8,
+  "fields": {
+    "nombre_cliente": "Alanis Sotelo",
+    "sexo": "F",
+    "fecha_nacimiento": "2004-06-01",
+    "empleado": null,
+    "fecha_registro": "2025-05-25",
+    "estudiante": ""
+  }
+},
+{
+  "model": "main.cliente",
+  "pk": 9,
+  "fields": {
+    "nombre_cliente": "Amaru Montenegro",
+    "sexo": "M",
+    "fecha_nacimiento": "2005-05-05",
+    "empleado": null,
+    "fecha_registro": "2025-05-25",
+    "estudiante": ""
+  }
+},
+{
+  "model": "main.cliente",
+  "pk": 10,
+  "fields": {
+    "nombre_cliente": "Natasha Mendez",
+    "sexo": "F",
+    "fecha_nacimiento": "2003-10-08",
+    "empleado": null,
+    "fecha_registro": "2025-05-25",
+    "estudiante": ""
+  }
+},
+{
+  "model": "main.cliente",
+  "pk": 11,
+  "fields": {
+    "nombre_cliente": "Alejandro Mendoza",
+    "sexo": "M",
+    "fecha_nacimiento": "2005-04-13",
+    "empleado": null,
+    "fecha_registro": "2025-05-25",
+    "estudiante": ""
+  }
+},
+{
+  "model": "main.cliente",
+  "pk": 12,
+  "fields": {
+    "nombre_cliente": "Alanis Tobias",
+    "sexo": "F",
+    "fecha_nacimiento": "2004-01-01",
+    "empleado": null,
+    "fecha_registro": "2025-06-05",
+    "estudiante": ""
+  }
+},
+{
+  "model": "main.membresiacliente",
+  "pk": 1,
+  "fields": {
+    "cliente": 1,
+    "membresia": 1,
+    "fecha_inicio": "2025-05-20",
+    "fecha_fin": "2025-06-19"
+  }
+},
+{
+  "model": "main.membresiacliente",
+  "pk": 4,
+  "fields": {
+    "cliente": 4,
+    "membresia": 3,
+    "fecha_inicio": "2025-05-24",
+    "fecha_fin": "2025-05-31"
+  }
+},
+{
+  "model": "main.membresiacliente",
+  "pk": 6,
+  "fields": {
+    "cliente": 6,
+    "membresia": 1,
+    "fecha_inicio": "2025-05-25",
+    "fecha_fin": "2025-06-24"
+  }
+},
+{
+  "model": "main.membresiacliente",
+  "pk": 8,
+  "fields": {
+    "cliente": 8,
+    "membresia": 1,
+    "fecha_inicio": "2025-05-25",
+    "fecha_fin": "2025-06-24"
+  }
+},
+{
+  "model": "main.membresiacliente",
+  "pk": 10,
+  "fields": {
+    "cliente": 10,
+    "membresia": 3,
+    "fecha_inicio": "2025-05-25",
+    "fecha_fin": "2025-06-01"
+  }
+},
+{
+  "model": "main.membresiacliente",
+  "pk": 11,
+  "fields": {
+    "cliente": 11,
+    "membresia": 1,
+    "fecha_inicio": "2025-05-25",
+    "fecha_fin": "2025-06-24"
+  }
+},
+{
+  "model": "main.membresiacliente",
+  "pk": 12,
+  "fields": {
+    "cliente": 12,
+    "membresia": 1,
+    "fecha_inicio": "2025-06-05",
+    "fecha_fin": "2025-07-05"
+  }
+},
+{
+  "model": "main.producto",
+  "pk": 1,
+  "fields": {
+    "nombre_producto": "Botella de Agua",
+    "precio": 30.0,
+    "descripcion": "1000ml",
+    "fecha_ingreso": "2025-05-25",
+    "existencia": 20,
+    "tipo": "Bebidas",
+    "estado": "disponible",
+    "imagen": "productos/fuente_pura.jpg"
+  }
+},
+{
+  "model": "main.producto",
+  "pk": 2,
+  "fields": {
+    "nombre_producto": "Barra Energética",
+    "precio": 20.0,
+    "descripcion": "Precio por Unidad",
+    "fecha_ingreso": "2025-05-25",
+    "existencia": 24,
+    "tipo": "Barra energetica",
+    "estado": "disponible",
+    "imagen": "productos/barras.jpg"
+  }
+},
+{
+  "model": "main.producto",
+  "pk": 3,
+  "fields": {
+    "nombre_producto": "Powerade",
+    "precio": 40.0,
+    "descripcion": "Colores: azul, rojo, naranja",
+    "fecha_ingreso": "2025-05-25",
+    "existencia": 30,
+    "tipo": "Bebidas",
+    "estado": "disponible",
+    "imagen": "productos/powerade.jpg"
+  }
+},
+{
+  "model": "main.producto",
+  "pk": 4,
+  "fields": {
+    "nombre_producto": "Electrolit",
+    "precio": 100.0,
+    "descripcion": "Colores: azul, morado",
+    "fecha_ingreso": "2025-05-25",
+    "existencia": 20,
+    "tipo": "Bebidas",
+    "estado": "disponible",
+    "imagen": "productos/electrolit.jpg"
+  }
+},
+{
+  "model": "main.producto",
+  "pk": 5,
+  "fields": {
+    "nombre_producto": "Proteína",
+    "precio": 1500.0,
+    "descripcion": "Sabor Vainilla, 5lbs",
+    "fecha_ingreso": "2025-05-25",
+    "existencia": 2,
+    "tipo": "Proteina",
+    "estado": "disponible",
+    "imagen": "productos/proteina.jpg"
+  }
+},
+{
+  "model": "main.producto",
+  "pk": 6,
+  "fields": {
+    "nombre_producto": "Gatorade",
+    "precio": 40.0,
+    "descripcion": "Rojo",
+    "fecha_ingreso": "2025-06-06",
+    "existencia": 10,
+    "tipo": "Bebidas",
+    "estado": "disponible",
+    "imagen": ""
+  }
+},
+{
+  "model": "main.pago",
+  "pk": 1,
+  "fields": {
+    "tipo": "Membresia",
+    "fecha": "2025-05-20",
+    "cliente": 1,
+    "total_a_pagar": 500.0
+  }
+},
+{
+  "model": "main.pago",
+  "pk": 2,
+  "fields": {
+    "tipo": "Membresia",
+    "fecha": "2025-05-25",
+    "cliente": 2,
+    "total_a_pagar": 350.0
+  }
+},
+{
+  "model": "main.pago",
+  "pk": 3,
+  "fields": {
+    "tipo": "Membresia",
+    "fecha": "2025-05-24",
+    "cliente": 4,
+    "total_a_pagar": 200.0
+  }
+},
+{
+  "model": "main.pago",
+  "pk": 5,
+  "fields": {
+    "tipo": "Membresia",
+    "fecha": "2025-05-25",
+    "cliente": 6,
+    "total_a_pagar": 500.0
+  }
+},
+{
+  "model": "main.pago",
+  "pk": 6,
+  "fields": {
+    "tipo": "Membresia",
+    "fecha": "2025-05-25",
+    "cliente": 7,
+    "total_a_pagar": 350.0
+  }
+},
+{
+  "model": "main.pago",
+  "pk": 7,
+  "fields": {
+    "tipo": "Membresia",
+    "fecha": "2025-05-25",
+    "cliente": 8,
+    "total_a_pagar": 500.0
+  }
+},
+{
+  "model": "main.pago",
+  "pk": 8,
+  "fields": {
+    "tipo": "Membresia",
+    "fecha": "2025-05-25",
+    "cliente": 9,
+    "total_a_pagar": 350.0
+  }
+},
+{
+  "model": "main.pago",
+  "pk": 9,
+  "fields": {
+    "tipo": "Membresia",
+    "fecha": "2025-05-25",
+    "cliente": 10,
+    "total_a_pagar": 200.0
+  }
+},
+{
+  "model": "main.pago",
+  "pk": 10,
+  "fields": {
+    "tipo": "Membresia",
+    "fecha": "2025-05-25",
+    "cliente": 11,
+    "total_a_pagar": 500.0
+  }
+},
+{
+  "model": "main.pago",
+  "pk": 11,
+  "fields": {
+    "tipo": "Membresia",
+    "fecha": "2025-06-05",
+    "cliente": 12,
+    "total_a_pagar": 500.0
+  }
+},
+{
+  "model": "main.maquina",
+  "pk": 1,
+  "fields": {
+    "nombre": "Máquina de abdominales",
+    "cantidad": 1,
+    "estado": "activa",
+    "descripcion": "Abcore",
+    "imagen": "maquinas/abcore_OpUTXJT.png",
+    "razon_inactividad": "no_aplica",
+    "fecha_inactividad": null,
+    "notas_inactividad": null,
+    "fecha_estimada_reparacion": null
+  }
+},
+{
+  "model": "main.maquina",
+  "pk": 2,
+  "fields": {
+    "nombre": "Máquina de abductores y aductores",
+    "cantidad": 1,
+    "estado": "inactiva",
+    "descripcion": "Esta máquina está diseñada para trabajar los músculos de la parte interna y externa de los muslos.",
+    "imagen": "maquinas/abductored.png",
+    "razon_inactividad": "mal_estado",
+    "fecha_inactividad": "2025-05-25",
+    "notas_inactividad": "Asiento dañado",
+    "fecha_estimada_reparacion": "2025-06-25"
+  }
+},
+{
+  "model": "main.maquina",
+  "pk": 3,
+  "fields": {
+    "nombre": "Bicicleta estática de spinning",
+    "cantidad": 6,
+    "estado": "activa",
+    "descripcion": "Las bicicletas estáticas de spinning son equipos de cardio diseñados para simular el pedaleo de una bicicleta convencional, pero sin desplazamiento. ",
+    "imagen": "maquinas/Bicicletas_estáticas_z2sU9pW.png",
+    "razon_inactividad": "no_aplica",
+    "fecha_inactividad": null,
+    "notas_inactividad": null,
+    "fecha_estimada_reparacion": null
+  }
+},
+{
+  "model": "main.maquina",
+  "pk": 4,
+  "fields": {
+    "nombre": "Máquina de press de banca",
+    "cantidad": 2,
+    "estado": "activa",
+    "descripcion": "Diseñada para trabajar principalmente los músculos del pecho (pectorales).",
+    "imagen": "maquinas/pressbanca_GmYYIIW.png",
+    "razon_inactividad": "no_aplica",
+    "fecha_inactividad": null,
+    "notas_inactividad": null,
+    "fecha_estimada_reparacion": null
+  }
+},
+{
+  "model": "main.maquina",
+  "pk": 5,
+  "fields": {
+    "nombre": "Maquina de Femoral de Pie",
+    "cantidad": 1,
+    "estado": "activa",
+    "descripcion": "Trabaja el musculo de femoral",
+    "imagen": "maquinas/maquinafemoral_n28PyI5.png",
+    "razon_inactividad": "no_aplica",
+    "fecha_inactividad": null,
+    "notas_inactividad": null,
+    "fecha_estimada_reparacion": null
+  }
+}
+]

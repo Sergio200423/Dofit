@@ -4,7 +4,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // Elementos del DOM
   const modal = document.getElementById("modalRegistroEmpleados")
   const openModalBtn = document.getElementById("openModalEmpleadoBtn")
-  const closeModalBtn = document.querySelector(".close-modal-empleado")
+  // Ajuste: buscar correctamente el botón de cerrar (X) del modal
+  const closeModalBtn = document.querySelector(".close-modal")
   const cerrarBtn = document.getElementById("cerrarEmpleadoBtn")
   const form = document.getElementById("registroEmpleados")
   const alertMessage = document.getElementById("alert-message-empleado")
