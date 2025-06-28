@@ -3,6 +3,8 @@ from django.http import JsonResponse
 import json
 from empleados.servicio_empleados import ServicioEmpleados
 from usuarios.models import Usuario, Rol
+from django.views.decorators.http import require_POST
+from django.template.loader import render_to_string
 
 # Create your views here.
 def empleados(request):
@@ -71,4 +73,53 @@ def registrar_empleado(request):
     return JsonResponse({'InformacionAceptada': False, 'message': 'Método no permitido'}, status=405)
 
 def asistencia(request):
-    return render(request, 'empleados/asistencia.html')
+    # Listar asistencias
+    from main.models import Asistencia
+    asistencias = Asistencia.objects.all().order_by('-fecha')
+    return render(request, 'empleados/asistencia.html', {'asistencias': asistencias})
+
+@require_POST
+def crear_asistencia_ajax(request):
+    try:
+        data = json.loads(request.body)
+    except Exception:
+        return JsonResponse({'success': False, 'error': 'Datos JSON inválidos'})
+    from main.models import Asistencia
+    asistencia = Asistencia(
+        fecha=data.get('fecha'),
+        check_in=data.get('check_in'),
+        check_out=data.get('check_out'),
+        estado=data.get('estado'),
+    )
+    asistencia.save()
+    html_asistencia = render_to_string('empleados/fila_asistencia.html', {'asistencia': asistencia})
+    return JsonResponse({'success': True, 'asistencia_html': html_asistencia})
+
+@require_POST
+def editar_asistencia_ajax(request):
+    try:
+        data = json.loads(request.body)
+        asistencia_id = data.get('asistencia_id')
+        from .models import Asistencia
+        asistencia = Asistencia.objects.get(id_asistencia=asistencia_id)
+        asistencia.fecha = data.get('fecha')
+        asistencia.check_in = data.get('check_in')
+        asistencia.check_out = data.get('check_out')
+        asistencia.estado = data.get('estado')
+        asistencia.save()
+        html_asistencia = render_to_string('empleados/fila_asistencia.html', {'asistencia': asistencia})
+        return JsonResponse({'success': True, 'asistencia_html': html_asistencia})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
+
+@require_POST
+def eliminar_asistencia_ajax(request):
+    try:
+        data = json.loads(request.body)
+        asistencia_id = data.get('asistencia_id')
+        from .models import Asistencia
+        asistencia = Asistencia.objects.get(id_asistencia=asistencia_id)
+        asistencia.delete()
+        return JsonResponse({'success': True})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})

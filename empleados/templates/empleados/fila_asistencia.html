@@ -1,0 +1,14 @@
+{# Fila de asistencia para tabla, con clases para estilos #}
+<tr id="asistencia-{{ asistencia.id_asistencia }}">
+  <td class="col-fecha">{{ asistencia.fecha|date:"d M, Y" }}</td>
+  <td class="col-checkin">{{ asistencia.check_in }}</td>
+  <td class="col-checkout">{{ asistencia.check_out }}</td>
+  <td class="col-estado">
+    <span class="badge-estado {{ asistencia.estado|lower }}">{{ asistencia.estado }}</span>
+  </td>
+  <td class="acciones-asistencia">
+    <a href="#" class="accion-btn ver" title="Ver asistencia"><i class="fas fa-eye"></i></a>
+    <a href="#" class="accion-btn editar btn-editar-asistencia" title="Editar asistencia"><i class="fas fa-edit"></i></a>
+    <button type="button" class="btn-eliminar-asistencia accion-btn eliminar" title="Eliminar asistencia"><i class="fas fa-trash"></i></button>
+  </td>
+</tr>
