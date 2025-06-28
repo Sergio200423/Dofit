@@ -29,6 +29,7 @@ urlpatterns = [
     path('empleados/', include('empleados.urls')),
     path('maquinas/', include('maquinas.urls')),
     path('main/', include('main.urls')),
+    path('usuarios/', include('usuarios.urls')),
 ]
 
 # Añadir URLs para servir archivos multimedia durante el desarrollo

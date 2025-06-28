@@ -1,0 +1,322 @@
+<!-- Modal mejorado para agregar/editar usuario -->
+<div id="modalUsuario" class="modal" style="display:none;">
+  <div class="modal-content-enhanced">
+    <div class="modal-header-enhanced">
+      <div class="modal-icon">
+        <!-- Icono de usuario -->
+        <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
+          <circle cx="12" cy="8" r="4" fill="#fff" opacity="0.7"/>
+          <path d="M4 20c0-2.67 5.33-4 8-4s8 1.33 8 4v1H4v-1z" fill="#fff" opacity="0.7"/>
+          <circle cx="12" cy="8" r="4" stroke="#0066ff" stroke-width="2"/>
+          <path d="M4 20c0-2.67 5.33-4 8-4s8 1.33 8 4v1H4v-1z" stroke="#0066ff" stroke-width="2"/>
+        </svg>
+      </div>
+      <h2 id="modalUsuarioTitulo" class="modal-title-enhanced">Nuevo Usuario</h2>
+      <button type="button" class="modal-close-enhanced" onclick="closeModal('modalUsuario')">
+        <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
+          <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <form id="usuarioForm" method="post" class="form-enhanced">
+      {% csrf_token %}
+      <div class="form-body-enhanced">
+        <div id="usuarioFormFields">
+          <!-- Aquí se cargan los campos dinámicamente -->
+        </div>
+      </div>
+      <div class="form-actions-enhanced">
+        <button type="button" class="btn-cancelar-enhanced" onclick="closeModal('modalUsuario')">
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/>
+          </svg>
+          Cancelar
+        </button>
+        <button type="submit" class="btn-guardar-enhanced">
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="currentColor"/>
+          </svg>
+          <span class="btn-text">Guardar</span>
+          <div class="btn-loading">
+            <div class="spinner"></div>
+            Guardando...
+          </div>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal mejorado para eliminar usuario -->
+<div id="modalUsuarioEliminar" class="modal" style="display:none;">
+  <div class="modal-content-enhanced">
+    <div class="modal-header-enhanced" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);">
+      <div class="modal-icon">
+        <!-- Icono de advertencia -->
+        <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10" fill="#fff" opacity="0.7"/>
+          <circle cx="12" cy="12" r="10" stroke="#e74c3c" stroke-width="2"/>
+          <path d="M12 7v5" stroke="#e74c3c" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="12" cy="16" r="1.2" fill="#e74c3c"/>
+        </svg>
+      </div>
+      <h2 class="modal-title-enhanced">¿Eliminar Usuario?</h2>
+      <button type="button" class="modal-close-enhanced" onclick="closeModal('modalUsuarioEliminar')">
+        <svg width="20" height="20" fill="none" viewBox="0 0 20 20">
+          <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+    <form id="usuarioDeleteForm" method="post" class="form-enhanced">
+      {% csrf_token %}
+      <div class="form-body-enhanced" style="text-align:center;">
+        <p id="usuarioDeleteText" style="font-size:18px; color:#e74c3c; font-weight:600;">¿Estás seguro de eliminar este usuario?</p>
+      </div>
+      <div class="form-actions-enhanced" style="justify-content:center;">
+        <button type="button" class="btn-cancelar-enhanced" onclick="closeModal('modalUsuarioEliminar')">
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" fill="currentColor"/>
+          </svg>
+          Cancelar
+        </button>
+        <button type="submit" class="btn-guardar-enhanced" style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);">
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="currentColor"/>
+          </svg>
+          <span class="btn-text">Sí, eliminar</span>
+          <div class="btn-loading">
+            <div class="spinner"></div>
+            Eliminando...
+          </div>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<style>
+/* Estilos mejorados para el modal */
+.modal-content-enhanced {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  margin: 5% auto;
+  padding: 0;
+  border-radius: 16px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  max-width: 520px;
+  width: 90%;
+  transform: translateY(-20px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.modal.show .modal-content-enhanced {
+  transform: translateY(0);
+}
+
+.modal-header-enhanced {
+  background: linear-gradient(135deg, #0066ff 0%, #0052cc 100%);
+  color: white;
+  padding: 24px 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+}
+
+.modal-header-enhanced::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+  opacity: 0.3;
+}
+
+.modal-icon {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+}
+
+.modal-title-enhanced {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.modal-close-enhanced {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 8px;
+  padding: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  backdrop-filter: blur(10px);
+}
+
+.modal-close-enhanced:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.form-enhanced {
+  padding: 0;
+}
+
+.form-body-enhanced {
+  padding: 32px;
+  background: white;
+}
+
+.form-actions-enhanced {
+  padding: 24px 32px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+}
+
+.btn-cancelar-enhanced {
+  background: white;
+  color: #6b7280;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 120px;
+  justify-content: center;
+}
+
+.btn-cancelar-enhanced:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn-guardar-enhanced {
+  background: linear-gradient(135deg, #0066ff 0%, #0052cc 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 28px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 160px;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-guardar-enhanced::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-guardar-enhanced:hover::before {
+  left: 100%;
+}
+
+.btn-guardar-enhanced:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 102, 255, 0.3);
+}
+
+.btn-guardar-enhanced:active {
+  transform: translateY(0);
+}
+
+.btn-loading {
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-guardar-enhanced.loading .btn-text {
+  display: none;
+}
+
+.btn-guardar-enhanced.loading .btn-loading {
+  display: flex;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .modal-content-enhanced {
+    width: 95%;
+    margin: 2% auto;
+  }
+  .modal-header-enhanced,
+  .form-body-enhanced,
+  .form-actions-enhanced {
+    padding: 20px;
+  }
+  .form-actions-enhanced {
+    flex-direction: column;
+  }
+  .btn-cancelar-enhanced,
+  .btn-guardar-enhanced {
+    width: 100%;
+  }
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-50px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal.show .modal-content-enhanced {
+  animation: modalSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+</style>

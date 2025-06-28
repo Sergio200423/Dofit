@@ -1,0 +1,27 @@
+<!-- Modal para agregar/editar rol -->
+<div id="modalRol" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modalRol')">&times;</span>
+    <h3 id="modalRolTitulo">Nuevo Rol</h3>
+    <form id="rolForm" method="post">
+      {% csrf_token %}
+      <div id="rolFormFields">
+        <!-- Aquí se cargan los campos dinámicamente -->
+      </div>
+      <button type="submit" class="btn-agregar-usuario">Guardar</button>
+    </form>
+  </div>
+</div>
+
+<!-- Modal para eliminar rol -->
+<div id="modalRolEliminar" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modalRolEliminar')">&times;</span>
+    <h3>¿Eliminar Rol?</h3>
+    <form id="rolDeleteForm" method="post">
+      {% csrf_token %}
+      <p id="rolDeleteText">¿Estás seguro de eliminar este rol?</p>
+      <button type="submit" class="btn-agregar-usuario" style="background:#e74c3c;">Sí, eliminar</button>
+    </form>
+  </div>
+</div>

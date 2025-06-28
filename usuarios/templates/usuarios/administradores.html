@@ -1,0 +1,35 @@
+{% extends 'common/base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'usuarios/usuarios.css' %}">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+<script src="{% static 'usuarios/modals.js' %}"></script>
+<script src="{% static 'usuarios/admin_modals.js' %}"></script>
+{% include 'usuarios/modal_admin.html' %}
+{% include 'usuarios/modal_base.html' %}
+<div class="usuarios-container">
+  <div class="header-usuarios">
+    <h2>Administradores</h2>
+    <button class="btn-agregar-usuario" onclick="openAdminModal('Nuevo Administrador', '', '{% url 'administrador_create' %}')"><i class="fas fa-user-plus"></i> Nuevo Administrador</button>
+  </div>
+  <table class="table-usuarios">
+    <thead>
+      <tr><th>Usuario</th><th>Nombre</th><th>Acciones</th></tr>
+    </thead>
+    <tbody>
+      {% for administrador in administradores %}
+      <tr>
+        <td>{{ administrador.usuario }}</td>
+        <td>{{ administrador.nombre_administrador }}</td>
+        <td class="acciones-usuario">
+          <a href="#" onclick="openAdminModal('Editar Administrador', '', '{% url 'administrador_update' administrador.id_administrador %}')"><i class="fas fa-edit"></i> Editar</a>
+          <a href="#" onclick="openAdminDeleteModal('¿Estás seguro de eliminar a <strong>{{ administrador.nombre_administrador }}</strong>?', '{% url 'administrador_delete' administrador.id_administrador %}')"><i class="fas fa-trash"></i> Eliminar</a>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="3">No hay administradores registrados.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

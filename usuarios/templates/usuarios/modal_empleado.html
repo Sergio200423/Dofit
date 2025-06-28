@@ -1,0 +1,27 @@
+<!-- Modal para agregar/editar empleado -->
+<div id="modalEmpleado" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modalEmpleado')">&times;</span>
+    <h3 id="modalEmpleadoTitulo">Nuevo Empleado</h3>
+    <form id="empleadoForm" method="post">
+      {% csrf_token %}
+      <div id="empleadoFormFields">
+        <!-- Aquí se cargan los campos dinámicamente -->
+      </div>
+      <button type="submit" class="btn-agregar-usuario">Guardar</button>
+    </form>
+  </div>
+</div>
+
+<!-- Modal para eliminar empleado -->
+<div id="modalEmpleadoEliminar" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('modalEmpleadoEliminar')">&times;</span>
+    <h3>¿Eliminar Empleado?</h3>
+    <form id="empleadoDeleteForm" method="post">
+      {% csrf_token %}
+      <p id="empleadoDeleteText">¿Estás seguro de eliminar este empleado?</p>
+      <button type="submit" class="btn-agregar-usuario" style="background:#e74c3c;">Sí, eliminar</button>
+    </form>
+  </div>
+</div>
