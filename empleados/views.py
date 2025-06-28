@@ -2,12 +2,19 @@ from django.shortcuts import render
 from django.http import JsonResponse
 import json
 from empleados.servicio_empleados import ServicioEmpleados
+from usuarios.models import Usuario, Rol
 
 # Create your views here.
 def empleados(request):
     """Vista para empleados: responde con JSON si es petición AJAX/API, o HTML si es navegación normal."""
     servicio = ServicioEmpleados()
     empleados_qs = servicio.listar_empleados().order_by('nombre_empleado')
+    # Obtener usuarios con rol empleado
+    try:
+        rol_empleado = Rol.objects.get(nombre__iexact='empleado')
+        usuarios_empleado = Usuario.objects.filter(rol=rol_empleado)
+    except Rol.DoesNotExist:
+        usuarios_empleado = Usuario.objects.none()
     # Si la petición es AJAX o la URL es /api/empleados/, responde JSON
     if request.headers.get('x-requested-with') == 'XMLHttpRequest' or request.path.startswith('/api/empleados/'):
         empleados_list = [
@@ -21,7 +28,7 @@ def empleados(request):
         ]
         return JsonResponse({'empleados': empleados_list})
     # Si no, renderiza la página HTML como antes
-    return render(request, 'empleados/empleados.html', {'empleados': empleados_qs})
+    return render(request, 'empleados/empleados.html', {'empleados': empleados_qs, 'usuarios_empleado': usuarios_empleado})
 
 def registrar_empleado(request):
     """
