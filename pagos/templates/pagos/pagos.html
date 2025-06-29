@@ -1,200 +1,209 @@
 {% extends 'common/base.html' %}
 {% load static %}
-
-{% block title %}Carrito de Compras - Gimnasio Dofit{% endblock %}
-
+{% block title %}Sistema de Pagos - Gimnasio Dofit{% endblock %}
 {% block content %}
-<div class="content">
-    {% if messages %}
-    <div class="container mt-3">
-        {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
-        </div>
-        {% endfor %}
+
+<!-- CSRF Token para JavaScript -->
+<meta name="csrf-token" content="{{ csrf_token }}">
+
+<main class="main-content">
+  <div class="content-wrapper">
+    <!-- Success Message -->
+    {% if success_message %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <i class="fas fa-check-circle"></i> {{ success_message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
     {% endif %}
 
-    <div class="header">
-        <h1>Registro de Pagos</h1>
+    <!-- Header -->
+    <div class="page-header">
+      <h1 class="page-title">Registro de Pagos</h1>
     </div>
 
-    <div class="cart-container">
-        <div class="cart-left">
-            <div class="tabs">
-                <button class="tab-btn active" data-tab="products">
-                    <i class="fas fa-box"></i> Productos
-                </button>
-                <button class="tab-btn" data-tab="memberships">
-                    <i class="fas fa-id-card"></i> Membresías
-                </button>
-            </div>
-
-            <div class="tab-content" id="products-tab">
-                <div class="product-search">
-                    <h3>Añadir Productos</h3>
-                    <div class="search-box">
-                        <input type="text" id="product-search" placeholder="Buscar producto...">
-                        <button id="search-btn"><i class="fas fa-search"></i></button>
-                    </div>
-                </div>
-
-                <div class="product-list">
-                    <h3>Productos Disponibles</h3>
-                    <div class="product-grid" id="product-grid">
-                        <!-- Los productos se cargarán dinámicamente con JavaScript -->
-                    </div>
-                </div>
-            </div>
-
-            <div class="tab-content" id="memberships-tab" style="display: none;">
-                <div class="product-search">
-                    <h3>Añadir Membresías</h3>
-                    <div class="search-box">
-                        <input type="text" id="membership-search" placeholder="Buscar membresía...">
-                        <button id="membership-search-btn"><i class="fas fa-search"></i></button>
-                    </div>
-                </div>
-
-                <div class="product-list">
-                    <h3>Membresías Disponibles</h3>
-                    <div class="membership-grid" id="membership-grid">
-                        <!-- Las membresías se cargarán dinámicamente con JavaScript -->
-                    </div>
-                </div>
-            </div>
+    <div class="payment-container">
+      <!-- Left Panel - Products and Memberships -->
+      <div class="products-panel">
+        <!-- Tabs -->
+        <div class="tabs-container">
+          <button class="tab-btn active" data-tab="products">
+            <i class="fas fa-box"></i> Productos
+          </button>
+          <button class="tab-btn" data-tab="memberships">
+            <i class="fas fa-id-card"></i> Membresías
+          </button>
         </div>
 
-        <div class="cart-right">
-            <div class="cart-header">
-                <h3>Carrito</h3>
-                <div class="client-selector">
-                    <label for="client-select">Cliente:</label>
-                    <select id="client-select">
-                        <option value="">Seleccionar cliente</option>
-                        <option value="1">Juan Pérez</option>
-                        <option value="2">María García</option>
-                        <option value="3">Carlos López</option>
-                    </select>
-                </div>
+        <!-- Products Tab -->
+        <div class="tab-content active" id="products-tab">
+          <div class="section-header">
+            <h3>Añadir Productos</h3>
+            <div class="search-container">
+              <input type="text" id="product-search" placeholder="Buscar producto..." class="search-input">
+              <button id="search-btn" class="search-btn">
+                <i class="fas fa-search"></i>
+              </button>
             </div>
-
-            <div class="cart-items" id="cart-items">
-                <!-- Los items del carrito se cargarán dinámicamente con JavaScript -->
-                <div class="empty-cart">
-                    <i class="fas fa-shopping-cart"></i>
-                    <p>El carrito está vacío</p>
-                </div>
+          </div>
+          
+          <div class="products-grid" id="products-grid">
+            <div class="loading-message">
+              <i class="fas fa-spinner fa-spin"></i> Cargando productos...
             </div>
-
-            <div class="cart-categories" id="cart-categories" style="display: none;">
-                <div class="category-summary">
-                    <span>Productos:</span>
-                    <span id="products-total">$0.00</span>
-                </div>
-                <div class="category-summary">
-                    <span>Membresías:</span>
-                    <span id="memberships-total">$0.00</span>
-                </div>
-            </div>
-
-            <div class="cart-summary">
-                <div class="summary-row">
-                    <span>Subtotal:</span>
-                    <span id="subtotal">$0.00</span>
-                </div>
-                <div class="summary-row">
-                    <span>Descuento:</span>
-                    <div class="discount-input">
-                        <input type="number" id="discount" min="0" max="100" value="0">
-                        <span>%</span>
-                    </div>
-                </div>
-                <div class="summary-row total">
-                    <span>Total:</span>
-                    <span id="total">$0.00</span>
-                </div>
-                <button class="checkout-btn" id="checkout-btn" disabled>
-                    <i class="fas fa-check"></i> Finalizar Compra
-                </button>
-                <button class="clear-cart-btn" id="clear-cart-btn" disabled>
-                    <i class="fas fa-trash"></i> Vaciar Carrito
-                </button>
-            </div>
+          </div>
         </div>
+
+        <!-- Memberships Tab -->
+        <div class="tab-content" id="memberships-tab">
+          <div class="section-header">
+            <h3>Añadir Membresías</h3>
+            <div class="search-container">
+              <input type="text" id="membership-search" placeholder="Buscar membresía..." class="search-input">
+              <button id="membership-search-btn" class="search-btn">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="memberships-grid" id="memberships-grid">
+            <div class="loading-message">
+              <i class="fas fa-spinner fa-spin"></i> Cargando membresías...
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Panel - Cart -->
+      <div class="cart-panel">
+        <div class="cart-header">
+          <h3><i class="fas fa-shopping-cart"></i> Carrito</h3>
+        </div>
+
+        <div class="cart-items" id="cart-items">
+          <div class="empty-cart">
+            <i class="fas fa-shopping-cart"></i>
+            <p>El carrito está vacío</p>
+            <small>Añade productos o membresías para comenzar</small>
+          </div>
+        </div>
+
+        <div class="cart-summary">
+          <div class="summary-row">
+            <span>Subtotal:</span>
+            <span id="subtotal">C$0.00</span>
+          </div>
+          
+          <div class="summary-row">
+            <span>Descuento:</span>
+            <div class="discount-control">
+              <input type="number" id="discount" min="0" max="100" value="0" class="discount-input">
+              <span>%</span>
+            </div>
+          </div>
+          
+          <div class="summary-row total-row">
+            <span>Total:</span>
+            <span id="total">C$0.00</span>
+          </div>
+
+          <div class="cart-actions">
+            <button class="btn-primary" id="checkout-btn" disabled>
+              <i class="fas fa-credit-card"></i> Finalizar Compra
+            </button>
+            <button class="btn-secondary" id="clear-cart-btn" disabled>
+              <i class="fas fa-trash"></i> Vaciar Carrito
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
+</main>
 
-<!-- Modal para finalizar compra -->
+<!-- Checkout Modal -->
 <div class="modal" id="checkout-modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2>Finalizar Pago</h2>
-            <span class="close-modal">&times;</span>
-        </div>
-        <div class="modal-body">
-            <div class="checkout-summary">
-                <h3>Resumen del pago</h3>
-                <div class="summary-items" id="modal-items">
-                    <!-- Items del resumen se cargarán dinámicamente -->
-                </div>
-                <div class="summary-totals">
-                    <div class="summary-row">
-                        <span>Subtotal:</span>
-                        <span id="modal-subtotal">C$0.00</span>
-                    </div>
-                    <div class="summary-row">
-                        <span>Descuento:</span>
-                        <span id="modal-discount">C$0.00</span>
-                    </div>
-                    <div class="summary-row total">
-                        <span>Total:</span>
-                        <span id="modal-total">C$0.00</span>
-                    </div>
-                </div>
-            </div>
-            <div class="payment-method">
-                <h3>Método de Pago</h3>
-                <div class="payment-options">
-                    <label class="payment-option">
-                        <input type="radio" name="payment" value="cash" checked>
-                        <span class="radio-custom"></span>
-                        <i class="fas fa-money-bill-wave"></i> Efectivo
-                    </label>
-                    <label class="payment-option">
-                        <input type="radio" name="payment" value="card">
-                        <span class="radio-custom"></span>
-                        <i class="fas fa-credit-card"></i> Tarjeta
-                    </label>
-                    <label class="payment-option">
-                        <input type="radio" name="payment" value="transfer">
-                        <span class="radio-custom"></span>
-                        <i class="fas fa-exchange-alt"></i> Transferencia
-                    </label>
-                </div>
-            </div>
-            <div class="checkout-actions">
-                <button class="secondary-btn" id="cancel-checkout">Cancelar</button>
-                <button class="primary-btn" id="confirm-checkout">Confirmar Compra</button>
-            </div>
-        </div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Finalizar Pago</h2>
+      <button class="close-modal">&times;</button>
     </div>
+    <div class="modal-body">
+      <div class="checkout-summary">
+        <h3>Resumen de la compra</h3>
+        <div class="summary-items" id="modal-items"></div>
+        
+        <div class="summary-totals">
+          <div class="summary-row">
+            <span>Subtotal:</span>
+            <span id="modal-subtotal">C$0.00</span>
+          </div>
+          <div class="summary-row">
+            <span>Descuento:</span>
+            <span id="modal-discount">C$0.00</span>
+          </div>
+          <div class="summary-row total-row">
+            <span>Total:</span>
+            <span id="modal-total">C$0.00</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="payment-method">
+        <h3>Método de Pago</h3>
+        <div class="payment-options">
+          <label class="payment-option">
+            <input type="radio" name="payment" value="efectivo" checked>
+            <span class="radio-custom"></span>
+            <i class="fas fa-money-bill-wave"></i> Efectivo
+          </label>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-secondary" id="cancel-checkout">Cancelar</button>
+        <button class="btn-primary" id="confirm-checkout">
+          <i class="fas fa-check"></i> Confirmar Compra
+        </button>
+      </div>
+    </div>
+  </div>
 </div>
+
+<!-- Success Modal -->
+<div class="modal" id="success-modal">
+  <div class="modal-content">
+    <div class="modal-body text-center">
+      <div class="success-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <h2>¡Compra Exitosa!</h2>
+      <p>El pago se ha procesado correctamente</p>
+      <div class="modal-actions">
+        <button class="btn-primary" id="new-sale-btn">Nueva Venta</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'pagos/css/cart.css' %}">
+<link rel="stylesheet" href="{% static 'pagos/css/pagos.css' %}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+.loading-message {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-gray);
+}
+
+.loading-message i {
+  font-size: 24px;
+  margin-bottom: 12px;
+}
+</style>
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'pagos/js/cart.js' %}"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    if (typeof cargarProductosPagos === 'function') {
-        cargarProductosPagos();
-    }
-});
-</script>
+<script src="{% static 'pagos/js/pagos.js' %}"></script>
 {% endblock %}

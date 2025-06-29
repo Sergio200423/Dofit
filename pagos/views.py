@@ -1,86 +1,218 @@
 from django.shortcuts import render
-from django.contrib import messages
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
 import json
-from collections import defaultdict
-from pagos import repositorioPago as rpa
-from pagos import repositorioPagoDescuento as rpd
+from datetime import datetime, date
+from productos import repositorioProductos as rp
+from membresias import repositorioMembresia as rm
+from pagos import repositorioPago as rpago
 from pagos import repositorioPagoProductos as rpp
+from pagos import servicioPagos as sp
 
-# Create your views here.
 def pagos(request):
-    # Si viene ?success=1 en la URL, mostrar mensaje de éxito
+    """Vista principal del sistema de pagos"""
     if request.GET.get('success') == '1':
-        messages.success(request, '¡Compra realizada con éxito!')
+        return render(request, 'pagos/pagos.html', {'success_message': '¡Compra realizada con éxito!'})
     return render(request, 'pagos/pagos.html')
 
+@csrf_exempt
+@require_http_methods(["POST"])
+def realizar_pago(request):
+    """API endpoint para procesar pagos - CORREGIDO"""
+    try:
+        data = json.loads(request.body)
+        productos = data.get('productos', [])
+        membresias = data.get('membresias', [])
+        descuento_porcentaje = data.get('descuento', 0)
+        
+        # Validar que hay items en el carrito
+        if not productos and not membresias:
+            return JsonResponse({
+                'success': False,
+                'error': 'El carrito está vacío'
+            })
+        
+        # Calcular totales
+        total_productos = 0
+        total_membresias = 0
+        
+        # Validar y calcular productos
+        productos_validados = []
+        for item in productos:
+            producto = rp.obtenerProductoPorId(item['id'])
+            if not producto:
+                return JsonResponse({
+                    'success': False,
+                    'error': f'Producto con ID {item["id"]} no encontrado'
+                })
+            
+            if producto.existencia < item['quantity']:
+                return JsonResponse({
+                    'success': False,
+                    'error': f'Stock insuficiente para {producto.nombre_producto}'
+                })
+            
+            total_productos += producto.precio * item['quantity']
+            productos_validados.append({
+                'producto': producto,
+                'cantidad': item['quantity']
+            })
+        
+        # Validar y calcular membresías
+        membresias_validadas = []
+        for item in membresias:
+            membresia = rm.obtenerMembresiaPorId(item['id'])
+            if not membresia:
+                return JsonResponse({
+                    'success': False,
+                    'error': f'Membresía con ID {item["id"]} no encontrada'
+                })
+            
+            total_membresias += membresia.precio * item['quantity']
+            membresias_validadas.append({
+                'membresia': membresia,
+                'cantidad': item['quantity']
+            })
+        
+        # Calcular total con descuento
+        subtotal = total_productos + total_membresias
+        descuento_monto = (subtotal * descuento_porcentaje) / 100
+        total_final = subtotal - descuento_monto
+        
+        # SOLUCIÓN CORREGIDA: Usar los nombres de campo correctos
+        from main.models import Cliente, Pago
+        
+        # Buscar o crear cliente para ventas directas con los campos correctos
+        cliente_venta_directa, created = Cliente.objects.get_or_create(
+            nombre_cliente='VENTA DIRECTA',  # Corregido: usar nombre_cliente
+            defaults={
+                'empleado_id': 1,  # Asignar un empleado por defecto (ajusta según tu DB)
+                'fecha_nacimiento': date(1990, 1, 1),  # Fecha por defecto
+                'fecha_registro': date.today(),
+                'sexo': 'O'  # Otro/No especificado
+            }
+        )
+        
+        # Crear el pago con el cliente de venta directa
+        tipo_pago = []
+        if productos_validados:
+            tipo_pago.append('Producto')
+        if membresias_validadas:
+            tipo_pago.append('Membresia')
+        
+        # Crear pago usando el modelo directamente
+        pago = Pago.objects.create(
+            tipo=' + '.join(tipo_pago),
+            fecha=date.today(),
+            cliente=cliente_venta_directa,
+            total_a_pagar=total_final
+        )
+        
+        # Registrar productos en el pago
+        for item in productos_validados:
+            producto = item['producto']
+            cantidad = item['cantidad']
+            
+            # Crear registro de pago-producto
+            rpp.crearPagoProducto(
+                pago=pago,
+                producto=producto,
+                fecha_pago=date.today(),
+                cantidad=cantidad
+            )
+            
+            # Actualizar stock
+            nuevo_stock = producto.existencia - cantidad
+            producto.existencia = nuevo_stock
+            producto.save()
+        
+        # Registrar membresías (si las tienes en tu modelo de pagos)
+        # Por ahora solo registramos la venta
+        
+        return JsonResponse({
+            'success': True,
+            'pago_id': pago.id_pago,
+            'total': float(total_final),
+            'message': 'Pago procesado exitosamente'
+        })
+        
+    except Exception as e:
+        import traceback
+        error_details = traceback.format_exc()
+        print(f"Error completo en realizar_pago: {error_details}")
+        return JsonResponse({
+            'success': False,
+            'error': f'Error al procesar el pago: {str(e)}'
+        })
+
+def api_productos(request):
+    """API para obtener productos"""
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        productos = rp.obtenerProductos()
+        productos_data = []
+        
+        for producto in productos:
+            productos_data.append({
+                'id_producto': producto.id_producto,
+                'nombre_producto': producto.nombre_producto,
+                'precio': float(producto.precio),
+                'descripcion': producto.descripcion,
+                'existencia': producto.existencia,
+                'tipo': producto.tipo,
+                'imagen': producto.imagen.url if producto.imagen else None,
+            })
+        
+        return JsonResponse({'productos': productos_data})
+    
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+def api_membresias(request):
+    """API para obtener membresías"""
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        membresias = rm.obtenerMembresias()
+        membresias_data = []
+        
+        for membresia in membresias:
+            membresias_data.append({
+                'id_membresia': membresia.id_membresia,
+                'nombreMembresia': membresia.nombreMembresia,
+                'precio': float(membresia.precio),
+                'duracionDias': membresia.duracionDias,
+            })
+        
+        return JsonResponse({'membresias': membresias_data})
+    
+    return JsonResponse({'error': 'Método no permitido'}, status=405)
+
 def reporte_pagos(request):
-    pagos = rpa.obtenerPagos().order_by('-fecha')
+    """Vista del reporte de pagos"""
+    pagos = rpago.obtenerPagos().order_by('-fecha')
     pagos_context = []
-    total_pagos = 0
-    total_descuentos = 0
-    total_productos = 0
-    total_final = 0
-    historial_fechas = []
-    historial_totales = []
-    pagos_semanal = defaultdict(float)
-    pagos_mensual = defaultdict(float)
-    pagos_anual = defaultdict(float)
+    
     for pago in pagos:
-        descuentos = rpd.obtenerDescuentosPorPago(pago)
         productos = rpp.obtenerPagoProductosPorPago(pago)
-        suma_descuentos = sum([d.descuento.monto for d in descuentos])
-        suma_productos = sum([p.cantidad for p in productos])
-        total_pagos += pago.total_a_pagar
-        total_descuentos += suma_descuentos
-        total_productos += suma_productos
-        total_final += pago.total_a_pagar - suma_descuentos
-        historial_fechas.append(pago.fecha.strftime('%Y-%m-%d'))
-        historial_totales.append(float(pago.total_a_pagar))
-        year, week, _ = pago.fecha.isocalendar()
-        pagos_semanal[f"{year}-S{week:02d}"] += float(pago.total_a_pagar)
-        pagos_mensual[pago.fecha.strftime('%Y-%m')] += float(pago.total_a_pagar)
-        pagos_anual[str(pago.fecha.year)] += float(pago.total_a_pagar)
+        
         pagos_context.append({
             'id': pago.id_pago,
             'tipo': pago.tipo,
-            'fecha': pago.fecha.strftime('%d/%m/%Y'),  # <-- Formato dd/mm/yyyy para mostrar en el template
-            'cliente': pago.cliente.nombre_cliente if pago.cliente else '',
-            'total_original': pago.total_a_pagar,
-            'total_final': pago.total_a_pagar - suma_descuentos,
-            'descuentos': [
-                {
-                    'nombre': d.descuento.nombre,
-                    'monto': d.descuento.monto,
-                    'descripcion': d.descuento.descripcion
-                } for d in descuentos
-            ],
+            'fecha': pago.fecha.strftime('%d/%m/%Y'),
+            'total': pago.total_a_pagar,
+            'cliente': pago.cliente.nombre_cliente if pago.cliente else 'N/A',  # Corregido
             'productos': [
                 {
                     'nombre': p.producto.nombre_producto,
                     'cantidad': p.cantidad,
                     'precio': p.producto.precio,
-                    'total': p.total_a_pagar()
+                    'total': p.producto.precio * p.cantidad
                 } for p in productos
             ]
         })
-    semanal_labels = sorted(pagos_semanal.keys())
-    mensual_labels = sorted(pagos_mensual.keys())
-    anual_labels = sorted(pagos_anual.keys())
+    
     context = {
-        # Pass pagos_context as a Python list for template iteration
         'pagos': pagos_context,
-        # Only serialize to JSON the variables needed for JS
-        'total_pagos': json.dumps(total_pagos),
-        'total_descuentos': json.dumps(total_descuentos),
-        'total_productos': json.dumps(total_productos),
-        'total_final': json.dumps(total_final),
-        'historial_fechas': json.dumps(historial_fechas[::-1]),
-        'historial_totales': json.dumps(historial_totales[::-1]),
-        'historial_semanal_labels': json.dumps(semanal_labels),
-        'historial_semanal_data': json.dumps([pagos_semanal[k] for k in semanal_labels]),
-        'historial_mensual_labels': json.dumps(mensual_labels),
-        'historial_mensual_data': json.dumps([pagos_mensual[k] for k in mensual_labels]),
-        'historial_anual_labels': json.dumps(anual_labels),
-        'historial_anual_data': json.dumps([pagos_anual[k] for k in anual_labels]),
+        'total_ventas': sum(p.total_a_pagar for p in pagos),
+        'total_transacciones': len(pagos)
     }
+    
     return render(request, 'pagos/reportePagos.html', context)
