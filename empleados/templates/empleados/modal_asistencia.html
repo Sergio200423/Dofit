@@ -1,45 +1,94 @@
-<!-- Modal para crear/editar asistencia -->
-<div class="modal fade" id="modalAsistencia" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog">
+<!-- Modal Mejorado para crear/editar asistencia -->
+<div class="modal-overlay" id="modalAsistencia">
+  <div class="modal-container">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalAsistenciaTitulo">Nueva Asistencia</h5>
-        <button type="button" class="btn-close" id="cerrarModalAsistencia" aria-label="Cerrar"></button>
+        <div class="modal-title-section">
+          <div class="modal-icon">
+            <i class="fas fa-user-clock"></i>
+          </div>
+          <h2 class="modal-title" id="modalAsistenciaTitulo">Nueva Asistencia</h2>
+        </div>
+        <button type="button" class="modal-close" id="cerrarModalAsistencia">
+          <i class="fas fa-times"></i>
+        </button>
       </div>
-      <form id="asistenciaForm">
+      
+      <form id="asistenciaForm" class="modal-form">
         <div class="modal-body">
           <input type="hidden" id="asistencia_id" name="asistencia_id">
-          <div class="mb-3">
-            <label for="fecha" class="form-label">Fecha</label>
+          
+          <div class="form-group">
+            <label for="fecha" class="form-label">
+              <i class="fas fa-calendar"></i>
+              Fecha
+            </label>
             <input type="date" class="form-control" id="fecha" name="fecha" required>
             <div class="form-error" id="error_fecha"></div>
           </div>
-          <div class="mb-3">
-            <label for="check_in" class="form-label">Check-in</label>
-            <input type="time" class="form-control" id="check_in" name="check_in" required>
-            <div class="form-error" id="error_check_in"></div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="check_in" class="form-label">
+                <i class="fas fa-sign-in-alt"></i>
+                Hora de Entrada
+              </label>
+              <input type="time" class="form-control" id="check_in" name="check_in" required>
+              <div class="form-error" id="error_check_in"></div>
+            </div>
+            
+            <div class="form-group">
+              <label for="check_out" class="form-label">
+                <i class="fas fa-sign-out-alt"></i>
+                Hora de Salida
+              </label>
+              <input type="time" class="form-control" id="check_out" name="check_out">
+              <div class="form-error" id="error_check_out"></div>
+            </div>
           </div>
-          <div class="mb-3">
-            <label for="check_out" class="form-label">Check-out</label>
-            <input type="time" class="form-control" id="check_out" name="check_out">
-            <div class="form-error" id="error_check_out"></div>
-          </div>
-          <div class="mb-3">
-            <label for="estado" class="form-label">Estado</label>
-            <select class="form-select" id="estado" name="estado" required>
-              <option value="">Selecciona estado</option>
-              <option value="PRESENTE">Presente</option>
-              <option value="AUSENTE">Ausente</option>
+          
+          <div class="form-group">
+            <label for="estado" class="form-label">
+              <i class="fas fa-info-circle"></i>
+              Estado
+            </label>
+            <select class="form-control" id="estado" name="estado" required>
+              <option value="">Selecciona un estado</option>
+              <option value="PRESENTE">
+                <i class="fas fa-check-circle"></i> Presente
+              </option>
+              <option value="AUSENTE">
+                <i class="fas fa-times-circle"></i> Ausente
+              </option>
             </select>
             <div class="form-error" id="error_estado"></div>
           </div>
+          
+          <!-- Información calculada automáticamente -->
+          <div class="calculated-info" id="calculatedInfo" style="display: none;">
+            <div class="info-item">
+              <i class="fas fa-clock"></i>
+              <span>Horas trabajadas: <strong id="calculatedHours">00:00</strong></span>
+            </div>
+          </div>
         </div>
+        
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" id="cancelarModalAsistencia">Cancelar</button>
-          <button type="submit" class="btn btn-primary" id="guardarAsistencia"><span class="btn-text">Guardar Asistencia</span></button>
+          <button type="button" class="btn btn-secondary" id="cancelarModalAsistencia">
+            <i class="fas fa-times"></i>
+            Cancelar
+          </button>
+          <button type="submit" class="btn btn-primary" id="guardarAsistencia">
+            <span class="btn-spinner" style="display: none;">
+              <i class="fas fa-spinner fa-spin"></i>
+            </span>
+            <span class="btn-text">
+              <i class="fas fa-save"></i>
+              Guardar Asistencia
+            </span>
+          </button>
         </div>
       </form>
     </div>
   </div>
-  <div class="modal-overlay"></div>
 </div>

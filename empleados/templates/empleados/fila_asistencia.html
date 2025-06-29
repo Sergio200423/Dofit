@@ -1,14 +1,63 @@
-{# Fila de asistencia para tabla, con clases para estilos #}
-<tr id="asistencia-{{ asistencia.id_asistencia }}">
-  <td class="col-fecha">{{ asistencia.fecha|date:"d M, Y" }}</td>
-  <td class="col-checkin">{{ asistencia.check_in }}</td>
-  <td class="col-checkout">{{ asistencia.check_out }}</td>
-  <td class="col-estado">
-    <span class="badge-estado {{ asistencia.estado|lower }}">{{ asistencia.estado }}</span>
+<!-- Fila de asistencia mejorada para tabla -->
+<tr class="attendance-row" id="asistencia-{{ asistencia.id_asistencia }}">
+  <td class="col-fecha">
+    <div class="date-cell">
+      <span class="date-main">{{ asistencia.fecha|date:"d M" }}</span>
+      <span class="date-sub">{{ asistencia.fecha|date:"Y" }}</span>
+    </div>
   </td>
-  <td class="acciones-asistencia">
-    <a href="#" class="accion-btn ver" title="Ver asistencia"><i class="fas fa-eye"></i></a>
-    <a href="#" class="accion-btn editar btn-editar-asistencia" title="Editar asistencia"><i class="fas fa-edit"></i></a>
-    <button type="button" class="btn-eliminar-asistencia accion-btn eliminar" title="Eliminar asistencia"><i class="fas fa-trash"></i></button>
+  <td class="col-checkin">
+    <div class="time-cell">
+      {% if asistencia.check_in %}
+        <i class="fas fa-sign-in-alt time-icon"></i>
+        <span class="time-value">{{ asistencia.check_in }}</span>
+      {% else %}
+        <span class="time-empty">--:--</span>
+      {% endif %}
+    </div>
+  </td>
+  <td class="col-checkout">
+    <div class="time-cell">
+      {% if asistencia.check_out %}
+        <i class="fas fa-sign-out-alt time-icon"></i>
+        <span class="time-value">{{ asistencia.check_out }}</span>
+      {% else %}
+        <span class="time-empty">--:--</span>
+      {% endif %}
+    </div>
+  </td>
+  <td class="col-horas">
+    <div class="hours-cell">
+      {% if asistencia.horas_trabajadas %}
+        <span class="hours-value">{{ asistencia.horas_trabajadas }}</span>
+      {% else %}
+        <span class="hours-empty">00:00</span>
+      {% endif %}
+    </div>
+  </td>
+  <td class="col-estado">
+    <span class="badge badge-{{ asistencia.estado|lower }}">
+      {% if asistencia.estado == 'PRESENTE' %}
+        <i class="fas fa-check-circle"></i>
+      {% elif asistencia.estado == 'AUSENTE' %}
+        <i class="fas fa-times-circle"></i>
+      {% else %}
+        <i class="fas fa-question-circle"></i>
+      {% endif %}
+      {{ asistencia.estado }}
+    </span>
+  </td>
+  <td class="col-acciones">
+    <div class="action-buttons">
+      <button class="action-btn view-btn" title="Ver detalles">
+        <i class="fas fa-eye"></i>
+      </button>
+      <button class="action-btn edit-btn btn-editar-asistencia" title="Editar asistencia">
+        <i class="fas fa-edit"></i>
+      </button>
+      <button class="action-btn delete-btn btn-eliminar-asistencia" title="Eliminar asistencia">
+        <i class="fas fa-trash"></i>
+      </button>
+    </div>
   </td>
 </tr>

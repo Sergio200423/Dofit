@@ -1,0 +1,444 @@
+{% extends 'common/base.html' %}
+{% load static %}
+{% block title %}Reporte de Pagos - Gimnasio Dofit{% endblock %}
+{% block page_name %}reporte_pagos{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'pagos/css/reportePagos.css' %}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<div class="container">
+    <main class="main-content">
+        <!-- Tarjetas de resumen mejoradas -->
+        <div class="payment-summary">
+            <div class="summary-card">
+                <div class="icon-circle membership">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect width="20" height="14" x="2" y="5" rx="2"/>
+                        <line x1="2" x2="22" y1="10" y2="10"/>
+                    </svg>
+                </div>
+                <div class="summary-info">
+                    <h3>Pagos Membresías</h3>
+                    <p id="total-membresias">C$ {{ total_membresias|floatformat:2 }}</p>
+                    <span class="summary-count">{{ count_membresias }} pagos</span>
+                </div>
+            </div>
+            
+            <div class="summary-card">
+                <div class="icon-circle products">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+                        <path d="M3 6h18"/>
+                        <path d="M16 10a4 4 0 0 1-8 0"/>
+                    </svg>
+                </div>
+                <div class="summary-info">
+                    <h3>Pagos Productos</h3>
+                    <p id="total-productos-pagos">C$ {{ total_productos_pagos|floatformat:2 }}</p>
+                    <span class="summary-count">{{ count_productos }} pagos</span>
+                </div>
+            </div>
+            
+            <div class="summary-card">
+                <div class="icon-circle discount">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/>
+                        <path d="m15 9-6 6"/>
+                        <path d="M9 9h.01"/>
+                        <path d="M15 15h.01"/>
+                    </svg>
+                </div>
+                <div class="summary-info">
+                    <h3>Total Descuentos</h3>
+                    <p id="total-descuentos">C$ {{ total_descuentos|floatformat:2 }}</p>
+                    <span class="summary-count">{{ count_descuentos }} aplicados</span>
+                </div>
+            </div>
+            
+            <div class="summary-card">
+                <div class="icon-circle total">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 2v20l2-1 2 1 2-1 2 1 2-1 2 1 2-1 2 1V2l-2 1-2-1-2 1-2-1-2 1-2-1-2 1Z"/>
+                        <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/>
+                        <path d="M12 17.5v-11"/>
+                    </svg>
+                </div>
+                <div class="summary-info">
+                    <h3>Total General</h3>
+                    <p id="total-general">C$ {{ total_general|floatformat:2 }}</p>
+                    <span class="summary-count">{{ total_pagos_count }} pagos</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sección del gráfico mejorada -->
+        <div class="chart-section">
+            <div class="chart-header">
+                <h2>Análisis de Pagos por Tipo</h2>
+                <div class="chart-filters">
+                    <button class="filter-btn active" data-type="todos">
+                        <i class="fas fa-chart-bar"></i>
+                        Todos
+                    </button>
+                    <button class="filter-btn" data-type="membresias">
+                        <i class="fas fa-id-card"></i>
+                        Membresías
+                    </button>
+                    <button class="filter-btn" data-type="productos">
+                        <i class="fas fa-shopping-bag"></i>
+                        Productos
+                    </button>
+                    <button class="filter-btn" data-type="comparacion">
+                        <i class="fas fa-balance-scale"></i>
+                        Comparar
+                    </button>
+                </div>
+            </div>
+            <div class="chart-container">
+                <canvas id="payments-chart"></canvas>
+            </div>
+            <div class="chart-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Promedio Membresías:</span>
+                    <span class="stat-value" id="avg-membresias">C$ {{ promedio_membresias|floatformat:2 }}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Promedio Productos:</span>
+                    <span class="stat-value" id="avg-productos">C$ {{ promedio_productos|floatformat:2 }}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Mes más activo:</span>
+                    <span class="stat-value" id="mes-activo">{{ mes_mas_activo }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filtros avanzados -->
+        <div class="filters-section">
+            <div class="filters-header">
+                <h3><i class="fas fa-filter"></i> Filtros Avanzados</h3>
+                <button class="btn-clear-filters" id="clearFilters">
+                    <i class="fas fa-times"></i> Limpiar
+                </button>
+            </div>
+            
+            <div class="filters-container">
+                <div class="filter-group">
+                    <label class="filter-label">Período:</label>
+                    <div class="filter-pills">
+                        <label class="filter-pill" data-filter="periodo" data-value="hoy">
+                            <input type="checkbox" name="periodo" value="hoy">
+                            <span class="pill-content">
+                                <i class="fas fa-calendar-day"></i>
+                                Hoy
+                            </span>
+                        </label>
+                        <label class="filter-pill" data-filter="periodo" data-value="semana">
+                            <input type="checkbox" name="periodo" value="semana">
+                            <span class="pill-content">
+                                <i class="fas fa-calendar-week"></i>
+                                Esta Semana
+                            </span>
+                        </label>
+                        <label class="filter-pill" data-filter="periodo" data-value="mes">
+                            <input type="checkbox" name="periodo" value="mes">
+                            <span class="pill-content">
+                                <i class="fas fa-calendar-alt"></i>
+                                Este Mes
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Tipo de Pago:</label>
+                    <div class="filter-pills">
+                        <label class="filter-pill" data-filter="tipo" data-value="membresia">
+                            <input type="checkbox" name="tipo" value="membresia">
+                            <span class="pill-content">
+                                <i class="fas fa-id-card"></i>
+                                Membresía
+                            </span>
+                        </label>
+                        <label class="filter-pill" data-filter="tipo" data-value="producto">
+                            <input type="checkbox" name="tipo" value="producto">
+                            <span class="pill-content">
+                                <i class="fas fa-shopping-bag"></i>
+                                Producto
+                            </span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label class="filter-label">Rango de Monto:</label>
+                    <div class="filter-pills">
+                        <label class="filter-pill" data-filter="monto" data-value="bajo">
+                            <input type="checkbox" name="monto" value="bajo">
+                            <span class="pill-content">
+                                <i class="fas fa-dollar-sign"></i>
+                                C$ 0 - 500
+                            </span>
+                        </label>
+                        <label class="filter-pill" data-filter="monto" data-value="medio">
+                            <input type="checkbox" name="monto" value="medio">
+                            <span class="pill-content">
+                                <i class="fas fa-dollar-sign"></i>
+                                C$ 500 - 1500
+                            </span>
+                        </label>
+                        <label class="filter-pill" data-filter="monto" data-value="alto">
+                            <input type="checkbox" name="monto" value="alto">
+                            <span class="pill-content">
+                                <i class="fas fa-dollar-sign"></i>
+                                C$ 1500+
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="applied-filters" id="appliedFilters" style="display: none;">
+                <span class="applied-label">Filtros aplicados:</span>
+                <div class="applied-list" id="appliedList"></div>
+            </div>
+        </div>
+
+        <!-- Detalles de pagos con paginación -->
+        <div class="payment-details">
+            <div class="details-header">
+                <h2>Detalles de Pagos</h2>
+                <div class="details-actions">
+                    <div class="search-container">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchPayments" placeholder="Buscar por cliente, ID o tipo...">
+                    </div>
+                    <select id="sortPayments" class="sort-select">
+                        <option value="fecha-desc">Más recientes</option>
+                        <option value="fecha-asc">Más antiguos</option>
+                        <option value="monto-desc">Mayor monto</option>
+                        <option value="monto-asc">Menor monto</option>
+                        <option value="tipo">Por tipo</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="payments-list" id="paymentsList">
+                {% if pagos %}
+                    {% for pago in pagos %}
+                    <div class="payment-item" data-type="{{ pago.tipo|lower }}" data-monto="{{ pago.total_final }}" data-fecha="{{ pago.fecha }}">
+                        <div class="payment-header">
+                            <div class="payment-id">
+                                <span class="id-label">Pago #{{ pago.id_pago }}</span>
+                                <span class="payment-type-badge {{ pago.tipo|lower }}">
+                                    {% if pago.tipo == 'Membresia' %}
+                                        <i class="fas fa-id-card"></i>
+                                    {% else %}
+                                        <i class="fas fa-shopping-bag"></i>
+                                    {% endif %}
+                                    {{ pago.tipo }}
+                                </span>
+                            </div>
+                            <div class="payment-amount">
+                                <span class="amount-value">C$ {{ pago.total_final|floatformat:2 }}</span>
+                                <span class="payment-date">{{ pago.fecha|date:"d/m/Y" }}</span>
+                            </div>
+                        </div>
+
+                        <div class="payment-info">
+                            <div class="info-group">
+                                <div class="info-item">
+                                    <span class="label">Cliente:</span>
+                                    <span class="value">{{ pago.cliente }}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="label">Total Original:</span>
+                                    <span class="value">C$ {{ pago.total_original|floatformat:2 }}</span>
+                                </div>
+                                {% if pago.descuentos %}
+                                <div class="info-item">
+                                    <span class="label">Descuentos:</span>
+                                    <span class="value discount-value">-C$ {{ pago.total_descuentos|floatformat:2 }}</span>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        {% if pago.productos or pago.descuentos %}
+                        <div class="payment-details-toggle">
+                            <button class="toggle-btn" onclick="togglePaymentDetails('{{ pago.id_pago|default_if_none:0 }}')">
+                                <i class="fas fa-chevron-down"></i>
+                                Ver detalles
+                            </button>
+                        </div>
+
+                        <div class="payment-details-content" id="details-{{ pago.id_pago }}" style="display: none;">
+                            <div class="tables-container">
+                                {% if pago.descuentos %}
+                                <div class="table-section">
+                                    <h4>Descuentos Aplicados</h4>
+                                    <div class="table-responsive-scroll">
+                                        <table class="data-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nombre</th>
+                                                    <th>Monto</th>
+                                                    <th>Descripción</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for descuento in pago.descuentos %}
+                                                <tr>
+                                                    <td>{{ descuento.nombre }}</td>
+                                                    <td>C$ {{ descuento.monto|floatformat:2 }}</td>
+                                                    <td>{{ descuento.descripcion|default:"-" }}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                                {% if pago.productos %}
+                                <div class="table-section">
+                                    <h4>Productos Comprados</h4>
+                                    <div class="table-responsive-scroll">
+                                        <table class="data-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Producto</th>
+                                                    <th>Cantidad</th>
+                                                    <th>Precio</th>
+                                                    <th>Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for producto in pago.productos %}
+                                                <tr>
+                                                    <td>{{ producto.nombre }}</td>
+                                                    <td>{{ producto.cantidad }}</td>
+                                                    <td>C$ {{ producto.precio|floatformat:2 }}</td>
+                                                    <td>C$ {{ producto.total|floatformat:2 }}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-receipt"></i>
+                        <h3>No hay pagos registrados</h3>
+                        <p>Cuando se realicen pagos, aparecerán aquí.</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Paginación -->
+            <div class="pagination-section">
+                <div class="pagination-info">
+                    <span>Mostrando <strong id="showing-start">1</strong> a <strong id="showing-end">10</strong> de <strong id="total-payments">{{ total_pagos_count }}</strong> pagos</span>
+                </div>
+                <div class="pagination-controls">
+                    <button class="page-btn prev-btn" id="prevPage">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <div class="page-numbers" id="pageNumbers"></div>
+                    <button class="page-btn next-btn" id="nextPage">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="actions">
+        <button class="action-btn primary" id="download-pdf">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" x2="12" y1="15" y2="3"/>
+            </svg>
+            Descargar PDF
+        </button>
+        <button class="action-btn secondary" id="print-report">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="6 9 6 2 18 2 18 9"/>
+                <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+                <rect width="12" height="8" x="6" y="14"/>
+            </svg>
+            Imprimir
+        </button>
+        <button class="action-btn secondary" id="export-excel">
+            <i class="fas fa-file-excel"></i>
+            Exportar Excel
+        </button>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'pagos/js/reportePago.js' %}"></script>
+
+{% if datos_membresias %}
+<script id="datos-membresias-json" type="application/json">
+    {{ datos_membresias|safe }}
+</script>
+{% else %}
+<script id="datos-membresias-json" type="application/json">
+    {"labels": [], "data": []}
+</script>
+{% endif %}
+{% if datos_productos %}
+<script id="datos-productos-json" type="application/json">
+    {{ datos_productos|safe }}
+</script>
+{% else %}
+<script id="datos-productos-json" type="application/json">
+    {"labels": [], "data": []}
+</script>
+{% endif %}
+{% if datos_mensuales %}
+<script id="datos-mensuales-json" type="application/json">
+    {{ datos_mensuales|safe }}
+</script>
+{% else %}
+<script id="datos-mensuales-json" type="application/json">
+    {"labels": [], "membresias": [], "productos": []}
+</script>
+{% endif %}
+
+<script>
+    // Datos para el gráfico por tipo de pago - Asignar a window para acceso global
+    window.datosMembresias = JSON.parse(document.getElementById('datos-membresias-json').textContent);
+    window.datosProductos = JSON.parse(document.getElementById('datos-productos-json').textContent);
+    window.datosMensuales = JSON.parse(document.getElementById('datos-mensuales-json').textContent);
+
+    // Totales para las tarjetas (asegura formato numérico correcto)
+    window.totalMembresias = parseFloat("{% if total_membresias %}{{ total_membresias|floatformat:'2' }}{% else %}0{% endif %}");
+    window.totalProductosPagos = parseFloat("{% if total_productos_pagos %}{{ total_productos_pagos|floatformat:'2' }}{% else %}0{% endif %}");
+    window.totalDescuentos = parseFloat("{% if total_descuentos %}{{ total_descuentos|floatformat:'2' }}{% else %}0{% endif %}");
+    window.totalGeneral = parseFloat("{% if total_general %}{{ total_general|floatformat:'2' }}{% else %}0{% endif %}");
+    
+    // Contadores
+    window.countMembresias = parseInt("{% if count_membresias %}{{ count_membresias }}{% else %}0{% endif %}");
+    window.countProductos = parseInt("{% if count_productos %}{{ count_productos }}{% else %}0{% endif %}");
+    window.totalPagosCount = parseInt("{% if total_pagos_count %}{{ total_pagos_count }}{% else %}0{% endif %}");
+    
+    console.log('Datos inicializados:', {
+        membresias: window.totalMembresias,
+        productos: window.totalProductosPagos,
+        descuentos: window.totalDescuentos,
+        total: window.totalGeneral
+    });
+</script>
+{% endblock %}
