@@ -7,7 +7,10 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form id="editarProductoForm" method="POST"  enctype="multipart/form-data">
+        <!-- Mensaje de alerta -->
+        <div id="alert-message-editar" class="alert" style="display: none;" role="alert"></div>
+        
+        <form id="editarProductoForm" method="POST" enctype="multipart/form-data">
           {% csrf_token %}
           <input type="hidden" id="editar_producto_id" name="producto_id" value="">
           
@@ -32,10 +35,12 @@
               <label for="editar_tipo" class="form-label">Tipo</label>
               <select class="form-select" id="editar_tipo" name="tipo" required>
                 <option value="" disabled>Seleccionar tipo</option>
-                <option value="Suplemento">Suplemento</option>
-                <option value="Equipamiento">Equipamiento</option>
-                <option value="Ropa">Ropa</option>
-                <option value="Accesorios">Accesorios</option>
+                <option value="Barra energetica">Barra energética</option>
+                <option value="Proteina">Proteína</option>
+                <option value="Vitaminas">Vitaminas</option>
+                <option value="Suplementos">Suplementos</option>
+                <option value="Bebidas">Bebidas</option>
+                <option value="Caramelos">Caramelos</option>
               </select>
             </div>
             <div class="col-md-4">
@@ -45,9 +50,9 @@
             <div class="col-md-4">
               <label for="editar_estado" class="form-label">Estado</label>
               <select class="form-select" id="editar_estado" name="estado" required>
-                <option value="En Stock">En Stock</option>
-                <option value="Pocas Unidades">Pocas Unidades</option>
-                <option value="Agotado">Agotado</option>
+                <option value="disponible">Disponible</option>
+                <option value="pocas_unidades">Pocas Unidades</option>
+                <option value="agotado">Agotado</option>
               </select>
             </div>
           </div>

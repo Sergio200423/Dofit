@@ -1,211 +1,288 @@
-// Script para manejar el modal de registro de productos
+// Script para manejar el modal de registro/edición de productos
+console.log("registrarProducto.js cargado correctamente")
 
-// DEBUG: Verificar si el script se está cargando
-console.log('registrarProducto.js cargado correctamente');
+document.addEventListener("DOMContentLoaded", () => {
+  // Referencias a elementos del DOM
+  const openModalBtn = document.getElementById("openModalBtn")
+  const registroProductoModal = document.getElementById("registroProductoModal")
+  const registroProductoForm = document.getElementById("registroProductoForm")
+  const modalTitle = document.getElementById("registroProductoModalLabel")
+  const submitBtn = registroProductoForm?.querySelector('button[type="submit"]')
+  const imagenInput = document.getElementById("imagen")
+  const imagenUploadArea = document.getElementById("imagenUploadArea")
+  const imagenPreviewContainer = document.getElementById("imagenPreviewContainer")
+  const imagenPreview = document.getElementById("imagenPreview")
+  const eliminarImagen = document.getElementById("eliminarImagen")
 
-document.addEventListener('DOMContentLoaded', function() {
-    // Referencias a elementos del DOM para el registro de productos
-    const openModalBtn = document.getElementById('openModalBtn');
-    const registroProductoModal = document.getElementById('registroProductoModal');
-    const imagenInput = document.getElementById('imagen');
-    const imagenUploadArea = document.getElementById('imagenUploadArea');
-    const imagenPreviewContainer = document.getElementById('imagenPreviewContainer');
-    const imagenPreview = document.getElementById('imagenPreview');
-    const eliminarImagen = document.getElementById('eliminarImagen');
-    
-    // Funciones para abrir y cerrar el modal de productos (accesibilidad con inert)
-    function openProductoModal() {
-        registroProductoModal.style.display = "block";
-        document.body.style.overflow = "hidden"; // Prevenir scroll
-        registroProductoModal.removeAttribute("inert");
+  // Variables para controlar el modo (registro/edición)
+  let isEditMode = false
+  let editingProductId = null
+
+  // Funciones para abrir el modal
+  function openProductoModal(mode = "add", productData = null) {
+    if (!registroProductoModal) return
+
+    isEditMode = mode === "edit"
+    editingProductId = productData?.id_producto || null
+
+    // Cambiar título y botón según el modo
+    if (isEditMode) {
+      modalTitle.textContent = "Editar Producto"
+      submitBtn.textContent = "Guardar Cambios"
+      registroProductoForm.action = `/productos/editar/${editingProductId}/`
+    } else {
+      modalTitle.textContent = "Registrar Nuevo Producto"
+      submitBtn.textContent = "Registrar"
+      registroProductoForm.action = "/productos/registrar/"
     }
 
-    function closeProductoModal() {
-        registroProductoModal.style.display = "none";
-        document.body.style.overflow = ""; // Restaurar scroll
-        registroProductoModal.setAttribute("inert", "");
-        if (registroProductoForm) registroProductoForm.reset();
-        const alertMessage = document.getElementById('alert-message-productos');
-        if (alertMessage) alertMessage.style.display = 'none';
+    // Limpiar formulario primero
+    registroProductoForm.reset()
+    limpiarVistaPrevia()
+
+    // Si es modo edición, llenar los campos
+    if (isEditMode && productData) {
+      llenarFormulario(productData)
     }
 
-    // Event listeners para abrir/cerrar el modal
-    if (openModalBtn && registroProductoModal) {
-        openModalBtn.addEventListener('click', openProductoModal);
-        // Cerrar con botón de Bootstrap
-        const closeBtns = registroProductoModal.querySelectorAll('[data-bs-dismiss="modal"], .btn-close');
-        closeBtns.forEach(btn => btn.addEventListener('click', closeProductoModal));
-        // Cerrar al hacer clic fuera del contenido
-        window.addEventListener('click', function(event) {
-            if (event.target === registroProductoModal) {
-                closeProductoModal();
-            }
-        });
+    // Mostrar el modal
+    const modalInstance = new window.bootstrap.Modal(registroProductoModal)
+    modalInstance.show()
+  }
+
+  function llenarFormulario(productData) {
+    // Llenar campos básicos
+    document.getElementById("nombre_producto").value = productData.nombre_producto || ""
+    document.getElementById("precio").value = productData.precio || ""
+    document.getElementById("descripcion").value = productData.descripcion || ""
+    document.getElementById("tipo").value = productData.tipo || ""
+    document.getElementById("existencia").value = productData.existencia || ""
+
+    // Fecha de ingreso (si existe)
+    if (productData.fecha_ingreso) {
+      document.getElementById("fecha_ingreso").value = productData.fecha_ingreso
     }
-    
-    // Eliminar cualquier manejo de 'inert' para el modal de productos
-    // Solo dejar que Bootstrap maneje el modal
-    
-    // Manejar la carga de imágenes
+
+    // Mostrar imagen actual si existe
+    if (productData.imagen_url) {
+      imagenPreview.src = productData.imagen_url
+      imagenPreviewContainer.style.display = "block"
+      if (imagenUploadArea) {
+        const textCenter = imagenUploadArea.querySelector(".text-center")
+        if (textCenter) textCenter.style.display = "none"
+      }
+    }
+  }
+
+  function limpiarVistaPrevia() {
+    if (imagenPreviewContainer) imagenPreviewContainer.style.display = "none"
     if (imagenUploadArea) {
-        imagenUploadArea.addEventListener('click', function() {
-            imagenInput.click();
-        });
-        
-        // Arrastrar y soltar imágenes
-        imagenUploadArea.addEventListener('dragover', function(e) {
-            e.preventDefault();
-            imagenUploadArea.classList.add('border-primary');
-        });
-        
-        imagenUploadArea.addEventListener('dragleave', function() {
-            imagenUploadArea.classList.remove('border-primary');
-        });
-        
-        imagenUploadArea.addEventListener('drop', function(e) {
-            e.preventDefault();
-            imagenUploadArea.classList.remove('border-primary');
-            
-            if (e.dataTransfer.files.length) {
-                imagenInput.files = e.dataTransfer.files;
-                mostrarVistaPrevia();
-            }
-        });
+      const textCenter = imagenUploadArea.querySelector(".text-center")
+      if (textCenter) textCenter.style.display = "block"
     }
-    
-    // Mostrar vista previa de la imagen seleccionada
-    if (imagenInput) {
-        imagenInput.addEventListener('change', mostrarVistaPrevia);
-    }
-    
-    function mostrarVistaPrevia() {
-        if (imagenInput.files && imagenInput.files[0]) {
-            const reader = new FileReader();
-            
-            reader.onload = function(e) {
-                imagenPreview.src = e.target.result;
-                imagenPreviewContainer.style.display = 'block';
-                imagenUploadArea.querySelector('.text-center').style.display = 'none';
-            };
-            
-            reader.readAsDataURL(imagenInput.files[0]);
+    if (imagenInput) imagenInput.value = ""
+  }
+
+  // Event listeners para abrir el modal (nuevo producto)
+  if (openModalBtn) {
+    openModalBtn.addEventListener("click", () => openProductoModal("add"))
+  }
+
+  // Event listeners para botones de editar
+  function attachEditListeners() {
+    const editBtns = document.querySelectorAll(".editar-producto-btn")
+    editBtns.forEach((btn) => {
+      btn.removeEventListener("click", handleEditClick)
+      btn.addEventListener("click", handleEditClick)
+    })
+  }
+
+  function handleEditClick(event) {
+    event.preventDefault()
+    event.stopPropagation()
+
+    const productoId = this.getAttribute("data-id")
+    console.log("Editando producto ID:", productoId)
+
+    // Cargar datos del producto directamente sin mostrar alertas de error
+    fetch(`/productos/obtener/${productoId}/`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
         }
+        return response.json()
+      })
+      .then((data) => {
+        if (data.error) {
+          console.error("Error del servidor:", data.error)
+          return
+        }
+        console.log("Datos del producto cargados:", data)
+        // Abrir modal en modo edición con los datos
+        openProductoModal("edit", data)
+      })
+      .catch((error) => {
+        console.error("Error al cargar los datos del producto:", error)
+        // No mostrar alert, solo log en consola
+      })
+  }
+
+  // Manejar la carga de imágenes
+  if (imagenUploadArea) {
+    imagenUploadArea.addEventListener("click", () => {
+      if (imagenInput) imagenInput.click()
+    })
+
+    // Arrastrar y soltar imágenes
+    imagenUploadArea.addEventListener("dragover", (e) => {
+      e.preventDefault()
+      imagenUploadArea.classList.add("border-primary")
+    })
+
+    imagenUploadArea.addEventListener("dragleave", () => {
+      imagenUploadArea.classList.remove("border-primary")
+    })
+
+    imagenUploadArea.addEventListener("drop", (e) => {
+      e.preventDefault()
+      imagenUploadArea.classList.remove("border-primary")
+
+      if (e.dataTransfer.files.length && imagenInput) {
+        imagenInput.files = e.dataTransfer.files
+        mostrarVistaPrevia()
+      }
+    })
+  }
+
+  // Mostrar vista previa de la imagen seleccionada
+  if (imagenInput) {
+    imagenInput.addEventListener("change", mostrarVistaPrevia)
+  }
+
+  function mostrarVistaPrevia() {
+    if (imagenInput && imagenInput.files && imagenInput.files[0]) {
+      const reader = new FileReader()
+
+      reader.onload = (e) => {
+        if (imagenPreview) imagenPreview.src = e.target.result
+        if (imagenPreviewContainer) imagenPreviewContainer.style.display = "block"
+        if (imagenUploadArea) {
+          const textCenter = imagenUploadArea.querySelector(".text-center")
+          if (textCenter) textCenter.style.display = "none"
+        }
+      }
+
+      reader.readAsDataURL(imagenInput.files[0])
     }
-    
-    // Eliminar imagen seleccionada
-    if (eliminarImagen) {
-        eliminarImagen.addEventListener('click', function() {
-            imagenInput.value = '';
-            imagenPreviewContainer.style.display = 'none';
-            imagenUploadArea.querySelector('.text-center').style.display = 'block';
-        });
+  }
+
+  // Eliminar imagen seleccionada
+  if (eliminarImagen) {
+    eliminarImagen.addEventListener("click", () => {
+      limpiarVistaPrevia()
+    })
+  }
+
+  // Validación y envío del formulario
+  const alertMessage = document.getElementById("alert-message-productos")
+
+  if (registroProductoForm) {
+    registroProductoForm.addEventListener("submit", (e) => {
+      e.preventDefault()
+
+      // Validaciones
+      const precio = document.getElementById("precio")
+      if (precio && Number.parseFloat(precio.value) <= 0) {
+        mostrarAlerta("El precio debe ser mayor que cero.", "error")
+        return false
+      }
+
+      const existencia = document.getElementById("existencia")
+      if (
+        existencia &&
+        (Number.parseInt(existencia.value) < 0 || !Number.isInteger(Number.parseFloat(existencia.value)))
+      ) {
+        mostrarAlerta("La existencia debe ser un número entero positivo.", "error")
+        return false
+      }
+
+      // Preparar datos para envío
+      const formData = new FormData(registroProductoForm)
+
+      // Fecha actual si no se seleccionó (solo para nuevos productos)
+      if (!isEditMode && !formData.get("fecha_ingreso")) {
+        formData.set("fecha_ingreso", new Date().toISOString().slice(0, 10))
+      }
+
+      // Determinar URL y método
+      const url = isEditMode ? `/productos/editar/${editingProductId}/` : "/productos/registrar/"
+
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value,
+        },
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.InformacionValida) {
+            const mensaje = isEditMode
+              ? data.message || "Producto actualizado exitosamente."
+              : data.message || "Producto registrado exitosamente."
+
+            mostrarAlerta(mensaje, "success")
+
+            // Limpiar formulario
+            registroProductoForm.reset()
+            limpiarVistaPrevia()
+
+            // Cerrar modal
+            const modalInstance = window.bootstrap.Modal.getInstance(registroProductoModal)
+            if (modalInstance) {
+              modalInstance.hide()
+            }
+
+            // Recargar la página después de 1 segundo
+            setTimeout(() => {
+              location.reload()
+            }, 1000)
+          } else {
+            mostrarAlerta(data.message || "Error al procesar la solicitud", "error")
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error)
+          mostrarAlerta("Error en la operación: " + error, "error")
+        })
+    })
+  }
+
+  function mostrarAlerta(mensaje, tipo) {
+    if (alertMessage) {
+      alertMessage.style.display = "block"
+      alertMessage.textContent = mensaje
+
+      if (tipo === "success") {
+        alertMessage.style.backgroundColor = "rgba(16, 185, 129, 0.1)"
+        alertMessage.style.color = "#10b981"
+        alertMessage.style.border = "1px solid #10b981"
+      } else {
+        alertMessage.style.backgroundColor = "rgba(239, 68, 68, 0.1)"
+        alertMessage.style.color = "#ef4444"
+        alertMessage.style.border = "1px solid #ef4444"
+      }
+
+      // Auto-ocultar después de 5 segundos
+      setTimeout(() => {
+        alertMessage.style.display = "none"
+      }, 5000)
     }
-    
-    // Validación y envío AJAX del formulario de registro de producto
-    const registroProductoForm = document.getElementById('registroProductoForm');
-    const alertMessage = document.getElementById('alert-message-productos');
-    if (registroProductoForm) {
-        registroProductoForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            // Validaciones
-            const precio = document.getElementById('precio').value;
-            if (parseFloat(precio) <= 0) {
-                if (alertMessage) {
-                    alertMessage.style.display = 'block';
-                    alertMessage.style.backgroundColor = 'rgba(239, 68, 68, 0.1)';
-                    alertMessage.style.color = 'var(--danger-color)';
-                    alertMessage.style.border = '1px solid var(--danger-color)';
-                    alertMessage.textContent = 'El precio debe ser mayor que cero.';
-                }
-                return false;
-            }
-            const existencia = document.getElementById('existencia').value;
-            if (parseInt(existencia) < 0 || !Number.isInteger(parseFloat(existencia))) {
-                if (alertMessage) {
-                    alertMessage.style.display = 'block';
-                    alertMessage.style.backgroundColor = 'rgba(239, 68, 68, 0.1)';
-                    alertMessage.style.color = 'var(--danger-color)';
-                    alertMessage.style.border = '1px solid var(--danger-color)';
-                    alertMessage.textContent = 'La existencia debe ser un número entero positivo.';
-                }
-                return false;
-            }
-            // Usar FormData para enviar archivos
-            const formData = new FormData(registroProductoForm);
-            // Fecha actual si no se seleccionó
-            if (!formData.get('fecha_ingreso')) {
-                formData.set('fecha_ingreso', new Date().toISOString().slice(0, 10));
-            }
-            fetch(registroProductoForm.action, {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-                },
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.InformacionValida) {
-                    if (alertMessage) {
-                        alertMessage.style.display = 'block';
-                        alertMessage.style.backgroundColor = 'rgba(16, 185, 129, 0.1)';
-                        alertMessage.style.color = 'var(--success-color)';
-                        alertMessage.style.border = '1px solid var(--success-color)';
-                        alertMessage.textContent = data.message || 'Producto registrado exitosamente.';
-                    }
-                    registroProductoForm.reset();
-                    // Actualizar lista de productos si existe la función global (como en manejoModal.js)
-                    if (typeof window.actualizarListaProductos === 'function') {
-                        window.actualizarListaProductos();
-                    } else {
-                        // Fallback: intentar actualizar la tabla manualmente
-                        fetch('/api/productos/', {
-                            method: 'GET',
-                            headers: { 'X-Requested-With': 'XMLHttpRequest' }
-                        })
-                        .then(resp => resp.json())
-                        .then(data => {
-                            if (data.productos) {
-                                const listaProductos = document.getElementById('lista-productos');
-                                if (listaProductos) {
-                                    listaProductos.innerHTML = '';
-                                    data.productos.forEach(producto => {
-                                        const productoRow = document.createElement('tr');
-                                        productoRow.innerHTML = `
-                                            <td><div class="producto-imagen">${producto.imagen ? `<img src="${producto.imagen}" alt="${producto.nombre_producto}" class="img-thumbnail">` : `<img src="/static/img/placeholder.jpg" alt="Sin imagen" class="img-thumbnail">`}</div></td>
-                                            <td><div class="d-flex align-items-center"><div class="ms-3"><p class="fw-bold mb-1">${producto.nombre_producto}</p></div></div></td>
-                                            <td>$${producto.precio}</td>
-                                            <td><p class="descripcion-producto">${producto.descripcion}</p></td>
-                                            <td>${producto.existencia} unidades</td>
-                                            <td>${producto.tipo}</td>
-                                            <td>${producto.estado === 'agotado' ? '<span class="badge badge-trashed rounded-pill d-inline">Agotado</span>' : '<span class="badge badge-success rounded-pill d-inline">Disponible</span>'}</td>
-                                            <td><button class="btn btn-link btn-rounded btn-sm fw-bold editar-producto-btn" data-id="${producto.id_producto}"><i class="fas fa-edit"></i> Editar</button></td>
-                                        `;
-                                        listaProductos.appendChild(productoRow);
-                                    });
-                                }
-                            }
-                        });
-                    }
-                } else {
-                    if (alertMessage) {
-                        alertMessage.style.display = 'block';
-                        alertMessage.style.backgroundColor = 'rgba(239, 68, 68, 0.1)';
-                        alertMessage.style.color = 'var(--danger-color)';
-                        alertMessage.style.border = '1px solid var(--danger-color)';
-                        alertMessage.textContent = data.message || 'Error al registrar producto';
-                    }
-                }
-            })
-            .catch(error => {
-                if (alertMessage) {
-                    alertMessage.style.display = 'block';
-                    alertMessage.style.backgroundColor = 'rgba(239, 68, 68, 0.1)';
-                    alertMessage.style.color = 'var(--danger-color)';
-                    alertMessage.style.border = '1px solid var(--danger-color)';
-                    alertMessage.textContent = 'Error en el registro: ' + error;
-                }
-            });
-        });
-    }
-});
+  }
+
+  // Inicializar event listeners para botones de editar
+  attachEditListeners()
+
+  // Exponer función globalmente para uso en filtros
+  window.actualizarBotonesEditar = attachEditListeners
+})

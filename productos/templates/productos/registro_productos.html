@@ -1,5 +1,5 @@
-<!-- Modal para registrar un nuevo producto -->
-<div class="modal fade" id="registroProductoModal" tabindex="-1" aria-labelledby="registroProductoModalLabel">
+<!-- Modal para registrar/editar producto -->
+<div class="modal fade" id="registroProductoModal" tabindex="-1" aria-labelledby="registroProductoModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
@@ -7,44 +7,61 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+        <!-- Mensaje de alerta -->
+        <div id="alert-message-productos" class="alert" style="display: none;" role="alert"></div>
+        
         <form id="registroProductoForm" method="POST" enctype="multipart/form-data" action="{% url 'registrar_producto' %}">
+          {% csrf_token %}
+          
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="nombre_producto" class="form-label">Nombre del Producto</label>
               <input type="text" class="form-control" id="nombre_producto" name="nombre_producto" required>
             </div>
             <div class="col-md-6">
-              <label for="precio" class="form-label">Precio ($)</label>
-              <input type="number" class="form-control" id="precio" name="precio" step="1" min="0" required>
+              <label for="precio" class="form-label">Precio (C$)</label>
+              <input type="number" class="form-control" id="precio" name="precio" step="0.01" min="0" required>
             </div>
           </div>
+          
           <div class="mb-3">
             <label for="descripcion" class="form-label">Descripción</label>
             <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required></textarea>
           </div>
+          
           <div class="row mb-3">
             <div class="col-md-4">
               <label for="tipo" class="form-label">Tipo</label>
               <select class="form-select" id="tipo" name="tipo" required>
                 <option value="" selected disabled>Seleccionar tipo</option>
-                {% for tipo in tipos %}
-                  <option value="{{ tipo.0 }}">{{ tipo.1 }}</option>
-                {% endfor %}
+                <option value="Barra energetica">Barra energética</option>
+                <option value="Proteina">Proteína</option>
+                <option value="Vitaminas">Vitaminas</option>
+                <option value="Suplementos">Suplementos</option>
+                <option value="Bebidas">Bebidas</option>
+                <option value="Caramelos">Caramelos</option>
               </select>
             </div>
             <div class="col-md-4">
               <label for="existencia" class="form-label">Cantidad</label>
               <input type="number" class="form-control" id="existencia" name="existencia" min="0" required>
             </div>
+            <div class="col-md-4">
+              <label for="fecha_ingreso" class="form-label">Fecha de Ingreso</label>
+              <input type="date" class="form-control" id="fecha_ingreso" name="fecha_ingreso">
+            </div>
           </div>
+          
           <div class="mb-4">
             <label for="imagen" class="form-label">Imagen del Producto</label>
             <div class="imagen-upload-container">
               <div class="imagen-preview-container mb-2" id="imagenPreviewContainer" style="display: none;">
-                <img id="imagenPreview" src="#" alt="Vista previa" class="img-thumbnail" style="max-height: 200px;">
-                <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1" id="eliminarImagen">
-                  <i class="fas fa-times"></i>
-                </button>
+                <div class="position-relative d-inline-block">
+                  <img id="imagenPreview" src="#" alt="Vista previa" class="img-thumbnail" style="max-height: 200px;">
+                  <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1" id="eliminarImagen">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
               </div>
               <div class="imagen-upload-area" id="imagenUploadArea">
                 <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*" style="display: none;">
@@ -56,6 +73,7 @@
               </div>
             </div>
           </div>
+          
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
             <button type="submit" class="btn btn-primary">Registrar</button>
@@ -65,3 +83,30 @@
     </div>
   </div>
 </div>
+
+<style>
+.imagen-upload-area {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.imagen-upload-area:hover {
+  background-color: #f8f9fa;
+}
+
+.imagen-upload-area.border-primary {
+  border-color: #0d6efd !important;
+  background-color: rgba(13, 110, 253, 0.05);
+}
+
+.imagen-preview-container {
+  text-align: center;
+}
+
+.alert {
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+</style>
