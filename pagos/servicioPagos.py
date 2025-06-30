@@ -1,8 +1,8 @@
 from datetime import datetime, date
-from pagos import servicioPagos as sp
-from productos import servicioProducto as sp
 from clientes import repositorioMembresiaCliente as rmc
 from membresias import repositorioMembresia as rm
+from pagos.repositorioPago import crearPago
+from productos import servicioProducto as sp
 
 def validarCamposPago(tipo, fecha, cliente, items):
     if not tipo:
@@ -54,7 +54,7 @@ def calcularTotalMembresia(cliente):
     :return: Total a pagar por la membresía
     """
     # Obtener las membresías activas del cliente
-    resultado = rmc.obtener_membresias_cliente(cliente.id_cliente)
+    resultado = rmc.RepositorioMembresiaCliente.obtener_membresias_cliente(cliente.id_cliente)
 
     if not resultado["success"]:
         raise ValueError(resultado["error"])
@@ -120,9 +120,9 @@ def registrarPago(tipo, fecha, cliente, productos=None, renovar_membresia=False)
 
     # Crear el pago en la base de datos
     try:
-        pago = sp.crearPago(tipo=tipo, fecha=fecha, cliente=cliente, total_a_pagar=total_a_pagar)
+        pago = crearPago(tipo=tipo, fecha=fecha, cliente=cliente, total_a_pagar=total_a_pagar)
         print(f"Pago creado exitosamente: {pago}")
-        return True, f"Pago registrado exitosamente. Total a pagar: ${total_a_pagar:.2f}"
+        return True, f"Pago registrado exitosamente. Total a pagar: ${{total_a_pagar:.2f}}"
     except Exception as e:
         print(f"Error al registrar el pago: {str(e)}")
         return False, f"Error al registrar el pago: {str(e)}"
@@ -147,7 +147,7 @@ def registrarPagoMembresia(fecha, cliente, membresia_id, cantidad=1):
         # Calcular el total a pagar
         total_a_pagar = membresia.precio * cantidad
         # Crear el pago
-        pago = sp.crearPago(tipo="Membresia", fecha=fecha, cliente=cliente, total_a_pagar=total_a_pagar)
+        pago = crearPago(tipo="Membresia", fecha=fecha, cliente=cliente, total_a_pagar=total_a_pagar)
         # Registrar la membresía para el cliente
         resultado_membresia = rmc.crear_membresia_cliente(
             id_cliente=cliente.id_cliente,

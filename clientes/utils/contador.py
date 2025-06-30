@@ -5,15 +5,15 @@ from clientes import repositorioCliente as rc
 from clientes import repositorioMembresiaCliente as rmc
 from django.utils.timezone import now
 
+# Optimizado: usar .count() directamente
+
 def contar_total_clientes():
-    """Obtiene todos los clientes usando el repositorio y devuelve el total."""
-    lista_clientes = rc.obtenerTodosLosClientes()
-    return len(lista_clientes)
+    """Cuenta el total de clientes usando .count() para evitar cargar todos los objetos."""
+    return rc.obtenerTodosLosClientes().count()
 
 def contar_membresias_activas():
-    """Cuenta cuántos clientes tienen membresía activa usando el repositorio."""
-    clientes_activos = rc.obtenerClientesConMembresiaActiva()
-    return clientes_activos.count() if hasattr(clientes_activos, 'count') else len(clientes_activos)
+    """Cuenta cuántos clientes tienen membresía activa usando .count()."""
+    return rc.obtenerClientesConMembresiaActiva().count()
 
 def contar_membresias_por_vencer(dias=7):
     """Cuenta cuántas membresías vencen en los próximos 'dias' días usando el repositorio."""
@@ -24,19 +24,19 @@ def contar_membresias_expiradas():
     return rmc.RepositorioMembresiaCliente.contar_membresias_expiradas()
 
 def contar_membresias_diarias_activas():
-    """Cuenta clientes con membresía diaria activa."""
+    """Cuenta clientes con membresía diaria activa usando .count()."""
     return rc.obtenerClientesConMembresiaDiaria().filter(membresias_cliente__fecha_fin__gte=now().date()).count()
 
 def contar_membresias_semanales_activas():
-    """Cuenta clientes con membresía semanal activa."""
+    """Cuenta clientes con membresía semanal activa usando .count()."""
     return rc.obtenerClientesConMembresiaSemanal().filter(membresias_cliente__fecha_fin__gte=now().date()).count()
 
 def contar_membresias_quincenales_activas():
-    """Cuenta clientes con membresía quincenal activa."""
+    """Cuenta clientes con membresía quincenal activa usando .count()."""
     return rc.obtenerClientesConMembresiaQuincenal().filter(membresias_cliente__fecha_fin__gte=now().date()).count()
 
 def contar_membresias_mensuales_activas():
-    """Cuenta clientes con membresía mensual activa."""
+    """Cuenta clientes con membresía mensual activa usando .count()."""
     return rc.obtenerClientesConMembresiaMensual().filter(membresias_cliente__fecha_fin__gte=now().date()).count()
 
 # Aquí puedes agregar más funciones de conteo según necesidades futuras.

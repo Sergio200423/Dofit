@@ -180,19 +180,26 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{% static 'pagos/js/reportePago.js' %}"></script>
 <script>
+    // Función segura para parsear JSON
+    function safeJSONParse(str, fallback) {
+        try {
+            if (str && str !== 'undefined') return JSON.parse(str);
+        } catch (e) {}
+        return fallback;
+    }
     // Pasar datos de historial de pagos a JS para el gráfico
-    const historialFechas = JSON.parse('{{ historial_fechas|safe|escapejs }}');
-    const historialTotales = JSON.parse('{{ historial_totales|safe|escapejs }}');
-    const historialSemanalLabels = JSON.parse('{{ historial_semanal_labels|safe|escapejs }}');
-    const historialSemanalData = JSON.parse('{{ historial_semanal_data|safe|escapejs }}');
-    const historialMensualLabels = JSON.parse('{{ historial_mensual_labels|safe|escapejs }}');
-    const historialMensualData = JSON.parse('{{ historial_mensual_data|safe|escapejs }}');
-    const historialAnualLabels = JSON.parse('{{ historial_anual_labels|safe|escapejs }}');
-    const historialAnualData = JSON.parse('{{ historial_anual_data|safe|escapejs }}');
+    const historialFechas = safeJSONParse('{{ historial_fechas|safe|escapejs }}', []);
+    const historialTotales = safeJSONParse('{{ historial_totales|safe|escapejs }}', []);
+    const historialSemanalLabels = safeJSONParse('{{ historial_semanal_labels|safe|escapejs }}', []);
+    const historialSemanalData = safeJSONParse('{{ historial_semanal_data|safe|escapejs }}', []);
+    const historialMensualLabels = safeJSONParse('{{ historial_mensual_labels|safe|escapejs }}', []);
+    const historialMensualData = safeJSONParse('{{ historial_mensual_data|safe|escapejs }}', []);
+    const historialAnualLabels = safeJSONParse('{{ historial_anual_labels|safe|escapejs }}', []);
+    const historialAnualData = safeJSONParse('{{ historial_anual_data|safe|escapejs }}', []);
     // Si necesitas los totales en JS, usa JSON.parse para mantener el tipo correcto
-    const totalPagos = JSON.parse('{{ total_pagos|safe|escapejs }}');
-    const totalDescuentos = JSON.parse('{{ total_descuentos|safe|escapejs }}');
-    const totalProductos = JSON.parse('{{ total_productos|safe|escapejs }}');
-    const totalFinal = JSON.parse('{{ total_final|safe|escapejs }}');
+    const totalPagos = safeJSONParse('{{ total_pagos|safe|escapejs }}', 0);
+    const totalDescuentos = safeJSONParse('{{ total_descuentos|safe|escapejs }}', 0);
+    const totalProductos = safeJSONParse('{{ total_productos|safe|escapejs }}', 0);
+    const totalFinal = safeJSONParse('{{ total_final|safe|escapejs }}', 0);
 </script>
 {% endblock %}

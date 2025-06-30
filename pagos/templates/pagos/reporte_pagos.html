@@ -433,12 +433,21 @@
     window.countMembresias = parseInt("{% if count_membresias %}{{ count_membresias }}{% else %}0{% endif %}");
     window.countProductos = parseInt("{% if count_productos %}{{ count_productos }}{% else %}0{% endif %}");
     window.totalPagosCount = parseInt("{% if total_pagos_count %}{{ total_pagos_count }}{% else %}0{% endif %}");
-    
+
+    // --- SOLUCIÓN: Definir historialAnualLabels y historialAnualData para el JS ---
+    window.historialAnualLabels = {% if historial_anual_labels %}{{ historial_anual_labels|safe }}{% else %}[] {% endif %};
+    window.historialAnualData = {% if historial_anual_data %}{{ historial_anual_data|safe }}{% else %}[] {% endif %};
+    var historialAnualLabels = window.historialAnualLabels;
+    var historialAnualData = window.historialAnualData;
+    // Si tienes datos mensuales/semanales, define igual: historialMensualLabels, historialMensualData, etc.
+
     console.log('Datos inicializados:', {
         membresias: window.totalMembresias,
         productos: window.totalProductosPagos,
         descuentos: window.totalDescuentos,
-        total: window.totalGeneral
+        total: window.totalGeneral,
+        historialAnualLabels,
+        historialAnualData
     });
 </script>
 {% endblock %}
