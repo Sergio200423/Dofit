@@ -51,6 +51,8 @@ class Asistencia(models.Model):
     fecha = models.DateField(null=True, blank=True)
     empleado = models.ForeignKey(Empleado, on_delete=models.SET_NULL, null=True, related_name="asistencias")
     cliente = models.ForeignKey(Cliente, on_delete=models.SET_NULL, null=True, related_name="asistencias")
+    checkin = models.TimeField(null=True, blank=True)  # Hora de entrada (check-in)
+    checkout = models.TimeField(null=True, blank=True)  # Hora de salida (check-out)
 
     def __str__(self):
         return f"Asistencia {self.id_asistencia} - {self.fecha}"

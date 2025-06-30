@@ -35,8 +35,19 @@
             <div class="status-indicator" id="employeeStatus"></div>
           </div>
           <div class="employee-details">
-            <h3>Jose Luis</h3>
-            <p class="employee-meta">ID: 101 • Turno Mañana</p>
+            <h3>
+              {% if empleado_actual %}
+                {{ empleado_actual.nombre_empleado }}
+              {% elif usuario_actual %}
+                {{ usuario_actual.nombre_usuario }}
+              {% else %}
+                Usuario
+              {% endif %}
+            </h3>
+            <p class="employee-meta">
+              ID: {% if empleado_actual %}{{ empleado_actual.id_empleado }}{% else %}--{% endif %} •
+              {% if empleado_actual and empleado_actual.turno %}Turno {{ empleado_actual.turno }}{% else %}Sin turno{% endif %}
+            </p>
           </div>
         </div>
       </div>
@@ -48,13 +59,25 @@
             <span class="badge badge-ausente">Ausente</span>
           </div>
           <div class="time-info" id="timeInfo">
-            <div class="time-entry" id="entryTime" style="display: none;">
+            <div class="time-entry" id="entryTime" {% if not asistencia_hoy or not asistencia_hoy.checkin %}style="display: none;"{% endif %}>
               <i class="fas fa-sign-in-alt"></i>
-              <span>Entrada: <strong id="checkInTime">--:--</strong></span>
+              <span>Entrada: <strong id="checkInTime">
+                {% if asistencia_hoy and asistencia_hoy.checkin %}
+                  {{ asistencia_hoy.checkin|time:"H:i:s" }}
+                {% else %}
+                  --:--
+                {% endif %}
+              </strong></span>
             </div>
-            <div class="time-exit" id="exitTime" style="display: none;">
+            <div class="time-exit" id="exitTime" {% if not asistencia_hoy or not asistencia_hoy.checkout %}style="display: none;"{% endif %}>
               <i class="fas fa-sign-out-alt"></i>
-              <span>Salida: <strong id="checkOutTime">--:--</strong></span>
+              <span>Salida: <strong id="checkOutTime">
+                {% if asistencia_hoy and asistencia_hoy.checkout %}
+                  {{ asistencia_hoy.checkout|time:"H:i:s" }}
+                {% else %}
+                  --:--
+                {% endif %}
+              </strong></span>
             </div>
           </div>
         </div>

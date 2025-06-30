@@ -5,6 +5,10 @@ from empleados.servicio_empleados import ServicioEmpleados
 from usuarios.models import Usuario, Rol
 from django.views.decorators.http import require_POST
 from django.template.loader import render_to_string
+from main.models import Asistencia
+from usuarios.models import Empleado
+from datetime import date
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 def empleados(request):
@@ -73,10 +77,32 @@ def registrar_empleado(request):
     return JsonResponse({'InformacionAceptada': False, 'message': 'Método no permitido'}, status=405)
 
 def asistencia(request):
-    # Listar asistencias
-    from main.models import Asistencia
-    asistencias = Asistencia.objects.all().order_by('-fecha')
-    return render(request, 'empleados/asistencia.html', {'asistencias': asistencias})
+    # Listar asistencias SOLO del empleado actual
+    empleado_actual = None
+    usuario_actual = None
+    asistencia_hoy = None
+    asistencias = []
+    # Obtener usuario de la sesión personalizada (no autenticación Django)
+    usuario_id = request.session.get('usuario_id')
+    print('DEBUG: usuario_id en sesión:', usuario_id)
+    if usuario_id:
+        try:
+            usuario_actual = Usuario.objects.get(id_usuario=usuario_id)
+            empleado_actual = Empleado.objects.get(usuario=usuario_actual)
+            # Filtrar asistencias solo de este empleado
+            asistencias = Asistencia.objects.filter(empleado=empleado_actual).order_by('-fecha')
+            asistencia_hoy = Asistencia.objects.filter(
+                fecha=date.today(),
+                empleado=empleado_actual
+            ).first()
+        except (Usuario.DoesNotExist, Empleado.DoesNotExist):
+            empleado_actual = None
+    return render(request, 'empleados/asistencia.html', {
+        'asistencias': asistencias,
+        'empleado_actual': empleado_actual,
+        'usuario_actual': usuario_actual,
+        'asistencia_hoy': asistencia_hoy
+    })
 
 @require_POST
 def crear_asistencia_ajax(request):
@@ -121,5 +147,58 @@ def eliminar_asistencia_ajax(request):
         asistencia = Asistencia.objects.get(id_asistencia=asistencia_id)
         asistencia.delete()
         return JsonResponse({'success': True})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
+
+@csrf_exempt
+@require_POST
+def checkin_asistencia(request):
+    """
+    Marca la entrada (check-in) para el empleado logueado y la fecha recibida desde el frontend.
+    """
+    usuario_id = request.session.get('usuario_id')
+    if not usuario_id:
+        return JsonResponse({'success': False, 'error': 'No autenticado'})
+    try:
+        data = json.loads(request.body)
+        fecha_str = data.get('fecha')  # Debe venir en formato 'YYYY-MM-DD'
+        checkin_time = data.get('check_in')  # Debe venir en formato 'HH:MM:SS'
+        usuario_actual = Usuario.objects.get(id_usuario=usuario_id)
+        empleado_actual = Empleado.objects.get(usuario=usuario_actual)
+        # Buscar o crear asistencia para ese día y empleado
+        asistencia, created = Asistencia.objects.get_or_create(
+            empleado=empleado_actual,
+            fecha=fecha_str,
+            defaults={'check_in': checkin_time}
+        )
+        if not created:
+            asistencia.check_in = checkin_time
+            asistencia.save()
+        return JsonResponse({'success': True, 'check_in': asistencia.check_in})
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
+
+@csrf_exempt
+@require_POST
+def checkout_asistencia(request):
+    """
+    Marca la salida (check-out) para el empleado logueado y la fecha recibida desde el frontend.
+    """
+    usuario_id = request.session.get('usuario_id')
+    if not usuario_id:
+        return JsonResponse({'success': False, 'error': 'No autenticado'})
+    try:
+        data = json.loads(request.body)
+        fecha_str = data.get('fecha')  # Debe venir en formato 'YYYY-MM-DD'
+        checkout_time = data.get('check_out')  # Debe venir en formato 'HH:MM:SS'
+        usuario_actual = Usuario.objects.get(id_usuario=usuario_id)
+        empleado_actual = Empleado.objects.get(usuario=usuario_actual)
+        asistencia = Asistencia.objects.filter(empleado=empleado_actual, fecha=fecha_str).first()
+        if asistencia:
+            asistencia.check_out = checkout_time
+            asistencia.save()
+            return JsonResponse({'success': True, 'check_out': asistencia.check_out})
+        else:
+            return JsonResponse({'success': False, 'error': 'No existe asistencia para esa fecha'})
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)})

@@ -140,15 +140,16 @@ class AsistenciaRapida {
   }
 
   async makeApiCall(url, data) {
-    // Simular delay de red
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
-    // Simular respuesta exitosa (en producción, usar fetch real)
-    return {
-      success: true,
-      message: "Operación exitosa",
-      data: data,
-    }
+    // Llamada real a la API usando fetch
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": document.querySelector('meta[name="csrf-token"]').content
+      },
+      body: JSON.stringify(data)
+    });
+    return await response.json();
   }
 
   updateStatus(newStatus) {
