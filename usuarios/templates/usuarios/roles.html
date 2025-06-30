@@ -1,13 +1,11 @@
+{% extends 'common/base.html' %}
+{% block title %}Registro de Clientes - Gimnasio Dofit{% endblock %}
+{% block page_name%}clientes{% endblock %}
+{% block content %}
+
 {% load static %}
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Roles</title>
+
     <link rel="stylesheet" href="{% static 'usuarios/css/roles.css' %}">
-</head>
-<body>
     <div class="container">
         <header class="header">
             <h1>Gestión de Roles</h1>
@@ -86,5 +84,4 @@
     </div>
 
     <script src="{% static 'usuarios/js/roles.js' %}"></script>
-</body>
-</html>
+{% endblock %}
