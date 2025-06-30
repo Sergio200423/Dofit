@@ -145,26 +145,63 @@ function initChart(data, label = 'Pagos Anuales') {
     button.addEventListener("click", function () {
       document.querySelectorAll(".filter-btn").forEach((btn) => btn.classList.remove("active"))
       this.classList.add("active")
-      const period = this.dataset.period
+      const type = this.dataset.type;
       let labels = [];
       let values = [];
       let chartLabel = '';
-      if (period === "weekly") {
-        labels = historialSemanalLabels;
-        values = historialSemanalData;
-        chartLabel = "Pagos Semanales";
-      } else if (period === "monthly") {
-        labels = historialMensualLabels;
-        values = historialMensualData;
-        chartLabel = "Pagos Mensuales";
+      if (type === "membresias") {
+        // Mostrar solo pagos de membresías
+        labels = window.datosMembresias.labels || [];
+        values = window.datosMembresias.data || [];
+        chartLabel = "Pagos Membresías";
+      } else if (type === "productos") {
+        // Mostrar solo pagos de productos
+        labels = window.datosProductos.labels || [];
+        values = window.datosProductos.data || [];
+        chartLabel = "Pagos Productos";
+      } else if (type === "comparacion") {
+        // Comparación membresías vs productos por mes
+        if (window.datosMensuales && window.datosMensuales.labels) {
+          labels = window.datosMensuales.labels;
+          window.paymentsChart.data.datasets = [
+            {
+              label: "Membresías",
+              data: window.datosMensuales.membresias,
+              backgroundColor: "#4F46E5",
+              borderColor: "#4F46E5",
+              borderWidth: 1,
+              borderRadius: 4,
+            },
+            {
+              label: "Productos",
+              data: window.datosMensuales.productos,
+              backgroundColor: "#22C55E",
+              borderColor: "#22C55E",
+              borderWidth: 1,
+              borderRadius: 4,
+            }
+          ];
+          window.paymentsChart.data.labels = labels;
+          window.paymentsChart.update();
+          return;
+        }
       } else {
+        // Todos (anual)
         labels = historialAnualLabels;
         values = historialAnualData;
         chartLabel = "Pagos Anuales";
       }
       window.paymentsChart.data.labels = labels;
-      window.paymentsChart.data.datasets[0].data = values;
-      window.paymentsChart.data.datasets[0].label = chartLabel;
+      window.paymentsChart.data.datasets = [
+        {
+          label: chartLabel,
+          data: values,
+          backgroundColor: type === "productos" ? "#22C55E" : (type === "todos" || type === undefined ? "#F59E42" : "#4F46E5"),
+          borderColor: type === "productos" ? "#22C55E" : (type === "todos" || type === undefined ? "#F59E42" : "#4F46E5"),
+          borderWidth: 1,
+          borderRadius: 4,
+        }
+      ];
       window.paymentsChart.update();
     })
   })
