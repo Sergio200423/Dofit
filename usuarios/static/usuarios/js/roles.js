@@ -38,8 +38,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function limpiarFormulario() {
         formRol.reset();
         rolIdInput.value = '';
-        // Cambiar la acción del formulario para crear
-        formRol.action = formRol.action.replace(/\/editar\/\d+\/$/, '/crear/');
+        // Siempre deja el action fijo para crear
+        formRol.action = '/usuarios/roles/crear/';
     }
 
     // Función para limpiar mensajes de error
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Función para mostrar errores
     function mostrarError(campo, mensaje) {
-        const errorElement = document.getElementById(error${campo.charAt(0).toUpperCase() + campo.slice(1)});
+        const errorElement = document.getElementById(`error${campo.charAt(0).toUpperCase() + campo.slice(1)}`);
         const inputElement = document.getElementById(campo);
         
         if (errorElement && inputElement) {
@@ -159,7 +159,7 @@ document.addEventListener('DOMContentLoaded', function() {
             descripcionInput.value = descripcion || '';
             
             // Cambiar la acción del formulario para editar
-            formRol.action = formRol.action.replace('/crear/', /editar/${id}/);
+            formRol.action = formRol.action.replace('/crear/', `/editar/${id}/`);
             
             abrirModal('Editar Rol', true);
         });
@@ -171,11 +171,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const id = this.getAttribute('data-id');
             const nombre = this.closest('tr').querySelector('td:nth-child(2)').textContent;
             
-            if (confirm(¿Estás seguro de que deseas eliminar el rol "${nombre}"?)) {
+            if (confirm(`¿Estás seguro de que deseas eliminar el rol "${nombre}"?`)) {
                 // Crear formulario para eliminar
                 const form = document.createElement('form');
                 form.method = 'POST';
-                form.action = /roles/eliminar/${id}/;
+                form.action = `/roles/eliminar/${id}/`;
                 
                 // Agregar token CSRF
                 const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (currentLength > maxLength) {
             this.style.borderColor = '#e74c3c';
-            mostrarError('descripcion', La descripción excede el límite (${currentLength}/${maxLength}));
+            mostrarError('descripcion', `La descripción excede el límite (${currentLength}/${maxLength})`);
         } else {
             this.style.borderColor = '#ecf0f1';
             document.getElementById('errorDescripcion').style.display = 'none';

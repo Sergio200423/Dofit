@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from .models import Rol, Permiso, Usuario, Empleado, Administrador
@@ -6,6 +6,7 @@ from .servicio_usuarios import ServicioUsuarios
 from .servicio_roles import ServicioRoles
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages
 import json
 
 
@@ -48,3 +49,16 @@ def eliminar_usuario_ajax(request):
             return JsonResponse({'success': False, 'error': 'No se pudo eliminar el usuario'})
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)})
+@require_POST
+def crear_rol(request):
+    nombre = request.POST.get('nombre', '').strip()
+    descripcion = request.POST.get('descripcion', '').strip()
+    if not nombre:
+        messages.error(request, 'El nombre del rol es obligatorio.')
+        return redirect('roles')
+    if Rol.objects.filter(nombre=nombre).exists():
+        messages.error(request, 'Ya existe un rol con ese nombre.')
+        return redirect('roles')
+    Rol.objects.create(nombre=nombre, descripcion=descripcion)
+    messages.success(request, 'Rol creado exitosamente.')
+    return redirect('roles')
