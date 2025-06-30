@@ -15,6 +15,11 @@ def usuarios(request):
     return render(request, 'usuarios/usuarios.html', {'usuarios': usuarios, 'roles': roles})
 
 
+def roles(request):
+    roles = Rol.objects.all()
+    return render(request, 'usuarios/roles.html', {'roles': roles})
+
+
 @require_POST
 def crear_usuario_ajax(request):
     try:

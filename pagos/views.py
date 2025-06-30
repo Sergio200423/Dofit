@@ -2,13 +2,16 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
+from django.db.models import Sum, Count, Avg
 import json
 from datetime import datetime, date
+import calendar
 from productos import repositorioProductos as rp
 from membresias import repositorioMembresia as rm
 from pagos import repositorioPago as rpago
 from pagos import repositorioPagoProductos as rpp
 from pagos import servicioPagos as sp
+from main.models import Pago, PagoProducto
 
 def pagos(request):
     """Vista principal del sistema de pagos"""
@@ -186,33 +189,94 @@ def api_membresias(request):
     return JsonResponse({'error': 'Método no permitido'}, status=405)
 
 def reporte_pagos(request):
-    """Vista del reporte de pagos"""
-    pagos = rpago.obtenerPagos().order_by('-fecha')
+    """Vista del reporte de pagos con totales, promedios y datos para gráficos"""
+    pagos_qs = rpago.obtenerPagos().order_by('-fecha')
     pagos_context = []
-    
-    for pago in pagos:
+    total_membresias = 0
+    count_membresias = 0
+    total_productos_pagos = 0
+    count_productos = 0
+    total_descuentos = 0
+    count_descuentos = 0
+    total_general = 0
+    total_pagos_count = pagos_qs.count()
+    sum_membresias = []
+    sum_productos = []
+    meses = [calendar.month_name[i] for i in range(1, 13)]
+    mensual_membresias = [0]*12
+    mensual_productos = [0]*12
+    for pago in pagos_qs:
         productos = rpp.obtenerPagoProductosPorPago(pago)
-        
+        productos_list = [
+            {
+                'nombre': p.producto.nombre_producto,
+                'cantidad': p.cantidad,
+                'precio': p.producto.precio,
+                'total': p.producto.precio * p.cantidad
+            } for p in productos
+        ]
+        # Sumar totales y contar tipos
+        if 'Membresia' in pago.tipo:
+            total_membresias += pago.total_a_pagar
+            count_membresias += 1
+            sum_membresias.append(pago.total_a_pagar)
+            mensual_membresias[pago.fecha.month-1] += pago.total_a_pagar
+        if 'Producto' in pago.tipo:
+            total_productos_pagos += pago.total_a_pagar
+            count_productos += 1
+            sum_productos.append(pago.total_a_pagar)
+            mensual_productos[pago.fecha.month-1] += pago.total_a_pagar
+        total_general += pago.total_a_pagar
         pagos_context.append({
-            'id': pago.id_pago,
+            'id_pago': pago.id_pago,
             'tipo': pago.tipo,
-            'fecha': pago.fecha.strftime('%d/%m/%Y'),
-            'total': pago.total_a_pagar,
-            'cliente': pago.cliente.nombre_cliente if pago.cliente else 'N/A',  # Corregido
-            'productos': [
-                {
-                    'nombre': p.producto.nombre_producto,
-                    'cantidad': p.cantidad,
-                    'precio': p.producto.precio,
-                    'total': p.producto.precio * p.cantidad
-                } for p in productos
-            ]
+            'fecha': pago.fecha,
+            'total_final': pago.total_a_pagar,
+            'total_original': pago.total_a_pagar,  # Ajusta si tienes descuentos
+            'cliente': pago.cliente.nombre_cliente if pago.cliente else 'N/A',
+            'productos': productos_list,
+            'descuentos': [],  # Agrega si tienes descuentos
+            'total_descuentos': 0,  # Ajusta si tienes descuentos
         })
-    
+    # Promedios
+    promedio_membresias = sum(sum_membresias)/count_membresias if count_membresias else 0
+    promedio_productos = sum(sum_productos)/count_productos if count_productos else 0
+    # Mes más activo
+    mes_mas_activo_idx = (mensual_membresias + mensual_productos).index(max(mensual_membresias + mensual_productos)) if total_pagos_count else 0
+    mes_mas_activo = meses[mes_mas_activo_idx] if total_pagos_count else ''
+    # Datos para gráficos
+    datos_membresias = json.dumps({
+        'labels': meses,
+        'data': mensual_membresias
+    })
+    datos_productos = json.dumps({
+        'labels': meses,
+        'data': mensual_productos
+    })
+    datos_mensuales = json.dumps({
+        'labels': meses,
+        'membresias': mensual_membresias,
+        'productos': mensual_productos
+    })
+    historial_anual_labels = json.dumps(meses)
+    historial_anual_data = json.dumps([mensual_membresias[i] + mensual_productos[i] for i in range(12)])
     context = {
         'pagos': pagos_context,
-        'total_ventas': sum(p.total_a_pagar for p in pagos),
-        'total_transacciones': len(pagos)
+        'total_membresias': total_membresias,
+        'count_membresias': count_membresias,
+        'total_productos_pagos': total_productos_pagos,
+        'count_productos': count_productos,
+        'total_descuentos': total_descuentos,
+        'count_descuentos': count_descuentos,
+        'total_general': total_general,
+        'total_pagos_count': total_pagos_count,
+        'promedio_membresias': promedio_membresias,
+        'promedio_productos': promedio_productos,
+        'mes_mas_activo': mes_mas_activo,
+        'datos_membresias': datos_membresias,
+        'datos_productos': datos_productos,
+        'datos_mensuales': datos_mensuales,
+        'historial_anual_labels': historial_anual_labels,
+        'historial_anual_data': historial_anual_data,
     }
-    
-    return render(request, 'pagos/reportePagos.html', context)
+    return render(request, 'pagos/reporte_pagos.html', context)

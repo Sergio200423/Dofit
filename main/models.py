@@ -103,7 +103,7 @@ class Pago(models.Model):
     id_pago = models.AutoField(primary_key=True)
     tipo = models.CharField(max_length=10, choices=TIPO_CHOICES, default='Membresia')  # Tipo de pago
     fecha = models.DateField(null=True, blank=True)
-    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, related_name="pagos")
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE, related_name="pagos", null=True, blank=True)  # Ahora acepta null
     total_a_pagar = models.FloatField(null=True, blank=True)
 
     def save(self, *args, **kwargs):

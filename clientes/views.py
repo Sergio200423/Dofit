@@ -62,7 +62,7 @@ def clientes(request):
 
         # Obtener la membresía asociada al cliente desde la tabla intermedia
         try:
-            membresia_cliente = rmc.obtener_membresia_activa(cliente_id)
+            membresia_cliente = rmc.RepositorioMembresiaCliente.obtener_membresia_activa(cliente_id)
             if membresia_cliente and membresia_cliente["success"]:
                 membresia_nombre = membresia_cliente["membresia_activa"].membresia.nombreMembresia
             else:
@@ -117,6 +117,7 @@ def clientes(request):
 def registrar_cliente(request):
     if request.method == 'POST':
         try:
+            import traceback
             data = json.loads(request.body)
             nombre_cliente = data.get('nombre_cliente')
             sexo = data.get('sexo')
@@ -129,6 +130,7 @@ def registrar_cliente(request):
             membresia = rm.obtenerMembresiaPorNombre(nombre_membresia)
 
             if not membresia:
+                print(f"No se encontró la membresía: {nombre_membresia}")
                 return JsonResponse({
                     'InformacionAceptada': False,
                     'message': f"No se encontró la membresía con el nombre '{nombre_membresia}'."
@@ -144,6 +146,8 @@ def registrar_cliente(request):
                     carnet_estudiante=carnet_estudiante
                 )
 
+                print(f"Resultado registrarClientes: {valido}, {mensaje}")
+
                 if not valido:
                     return JsonResponse({
                         'InformacionAceptada': False,
@@ -154,17 +158,20 @@ def registrar_cliente(request):
                 cliente = rc.obtenerClientePorNombre(nombre_cliente)
 
                 if not cliente:
+                    print("No se pudo encontrar el cliente recién registrado.")
                     return JsonResponse({
                         'InformacionAceptada': False,
                         'message': "No se pudo encontrar el cliente recién registrado."
                     })
 
                 # Registrar membresía del cliente
-                resultado_membresia = rmc.crear_membresia_cliente(
+                resultado_membresia = rmc.RepositorioMembresiaCliente.crear_membresia_cliente(
                     id_cliente=cliente.id_cliente,
                     id_membresia=membresia.id_membresia,
                     fecha_inicio=fecha_registro
                 )
+
+                print(f"Resultado crear_membresia_cliente: {resultado_membresia}")
 
                 if not resultado_membresia["success"]:
                     raise Exception(resultado_membresia["error"])
@@ -177,6 +184,8 @@ def registrar_cliente(request):
                     renovar_membresia=True
                 )
 
+                print(f"Resultado registrarPago: {valido}, {mensaje_pago}")
+
                 if not valido:
                     raise Exception(mensaje_pago)
 
@@ -186,6 +195,7 @@ def registrar_cliente(request):
                     if descuento:
                         pago = rp.obtenerUltimoPagoPorCliente(cliente)
                         valido_descuento, mensaje_descuento = spd.registrarPagoDescuentos(pago, descuento)
+                        print(f"Resultado registrarPagoDescuentos: {valido_descuento}, {mensaje_descuento}")
                         if not valido_descuento:
                             raise Exception(mensaje_descuento)
 
@@ -196,7 +206,8 @@ def registrar_cliente(request):
 
         except Exception as e:
             print(f"Error interno del servidor: {str(e)}")
-            return JsonResponse({"error": f"Error interno del servidor: {str(e)}"}, status=500)
+            print(traceback.format_exc())
+            return JsonResponse({"error": f"Error interno del servidor: {str(e)}", "trace": traceback.format_exc()}, status=500)
 
     return JsonResponse({"error": "Método no permitido"}, status=405)
 
@@ -271,7 +282,7 @@ def editar_cliente(request, cliente_id):
 
             # Actualizar la membresía del cliente si es necesario
             if membresia:
-                membresia_activa = rmc.obtener_membresia_activa(cliente_id)
+                membresia_activa = rmc.RepositorioMembresiaCliente.obtener_membresia_activa(cliente_id)
 
                 if not membresia_activa["success"]:
                     return JsonResponse({

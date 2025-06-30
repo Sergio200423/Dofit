@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Roles</title>
+    <link rel="stylesheet" href="{% static 'usuarios/css/roles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Gestión de Roles</h1>
+            <button id="btnAgregarRol" class="btn btn-primary">
+                <i class="icon-plus"></i>
+                Agregar Rol
+            </button>
+        </header>
+
+        <div class="table-container">
+            <table class="roles-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for rol in roles %}
+                    <tr>
+                        <td>{{ rol.id_rol }}</td>
+                        <td>{{ rol.nombre }}</td>
+                        <td>{{ rol.descripcion|default:"Sin descripción" }}</td>
+                        <td class="actions">
+                            <button class="btn btn-secondary btn-edit" data-id="{{ rol.id_rol }}" data-nombre="{{ rol.nombre }}" data-descripcion="{{ rol.descripcion }}">
+                                Editar
+                            </button>
+                            <button class="btn btn-danger btn-delete" data-id="{{ rol.id_rol }}">
+                                Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="no-data">No hay roles registrados</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modalRol" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Agregar Rol</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="formRol" method="post" action="{% url 'crear_rol' %}">
+                    {% csrf_token %}
+                    <input type="hidden" id="rolId" name="id_rol" value="">
+                    
+                    <div class="form-group">
+                        <label for="nombre">Nombre del Rol:</label>
+                        <input type="text" id="nombre" name="nombre" required maxlength="50">
+                        <div class="error-message" id="errorNombre"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="descripcion">Descripción:</label>
+                        <textarea id="descripcion" name="descripcion" rows="4" placeholder="Descripción opcional del rol"></textarea>
+                        <div class="error-message" id="errorDescripcion"></div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" id="btnCancelar">Cancelar</button>
+                        <button type="submit" class="btn btn-primary" id="btnGuardar">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'usuarios/js/roles.js' %}"></script>
+</body>
+</html>
